@@ -47,7 +47,7 @@ const FormField = ({ label, icon: Icon, error, children }) => (
 
 // ── Main component ───────────────────────────────────────────────
 const PriestLoginForm = () => {
-  const [loginForm, setLoginForm] = useState({ priest_email: "", priest_password: "" });
+  const [loginForm, setLoginForm] = useState({ priest_email: "eugine@gmail.com", priest_password: "Eugine@123" });
   const [fieldErrors, setFieldErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);

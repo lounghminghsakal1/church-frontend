@@ -21,7 +21,6 @@ const PriestAvailabilitySection = () => {
       }
       setPriestAvailabilityData(responseData.data);
     } catch (err) {
-      console.error(err);
       toast.error(err.message);
     } finally {
       setLoading(false);
@@ -102,7 +101,7 @@ const PriestAvailabilitySection = () => {
               <CalendarCheck size={20} className="text-[#0F2A4A]/30 flex-shrink-0" />
               <div>
                 <p className="text-[#0F2A4A]/50 font-sans text-xs uppercase tracking-widest mb-0.5">Available Until</p>
-                <p className="text-[#0F2A4A] font-sans text-sm font-medium">{available_until}</p>
+                <p className="text-[#0F2A4A] font-sans text-sm font-medium">{formatDateTime(available_until)}</p>
               </div>
             </div>
           )}
@@ -112,7 +111,7 @@ const PriestAvailabilitySection = () => {
               <CalendarX size={20} className="text-[#0F2A4A]/30 flex-shrink-0" />
               <div>
                 <p className="text-[#0F2A4A]/50 font-sans text-xs uppercase tracking-widest mb-0.5">Next Available</p>
-                <p className="text-[#0F2A4A] font-sans text-sm font-medium">{next_available}</p>
+                <p className="text-[#0F2A4A] font-sans text-sm font-medium">{formatDateTime(next_available)}</p>
               </div>
             </div>
           )}
@@ -134,6 +133,20 @@ const PriestAvailabilitySection = () => {
       </div>
     </div>
   );
+};
+
+export const formatDateTime = (dateString) => {
+  if (!dateString) return "-";
+
+  return new Date(dateString).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
 };
 
 export default PriestAvailabilitySection;

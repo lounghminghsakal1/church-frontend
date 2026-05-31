@@ -12,7 +12,6 @@ const PublicLayout = ({ children }) => {
       <footer className="bg-[#0F2A4A] text-[#C9A84C] text-center py-8 mt-20 text-sm tracking-widest uppercase font-sans">
         © {new Date().getFullYear()} St. Antony's Church, Illuppur — All Rights Reserved
       </footer>
-      <Toaster richColors />
     </div>
   )
 }

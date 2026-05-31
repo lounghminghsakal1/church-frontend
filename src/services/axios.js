@@ -6,11 +6,29 @@ const api = axios.create({
 });
 
 export const apiGet = async (apiEndpoint, params = {}) => {
-  const response = await api.get(apiEndpoint, { params });
-  return response.data;
+  try {
+    const response = await api.get(apiEndpoint, { params });
+    return response.data;
+  } catch (err) {
+    throw new Error(err?.response?.data?.message ?? "Something went wrong, please try again later.");
+  }
+
 }
 
-export const apiPost = async (apiEndpoint, payload, params = {}) => {
-  const response = await api.post(apiEndpoint, payload, {withCredentials: true});
-  return response.data;
+export const apiPost = async (apiEndpoint, payload = {}, params = {}) => {
+  try {
+    const response = await api.post(apiEndpoint, payload);
+    return response.data;
+  } catch (err) {
+    throw new Error(err?.response?.data?.message ?? "Something went wrong, please try again later.");
+  }
+}
+
+export const apiPut = async (apiEndPoint, payload = {}, params = {}) => {
+  try {
+    const response = await api.put(apiEndPoint, payload); 
+    return response.data
+  } catch (err) {
+    throw new Error(err?.response?.data?.message ?? "Something went wrong, try again later");
+  }
 }

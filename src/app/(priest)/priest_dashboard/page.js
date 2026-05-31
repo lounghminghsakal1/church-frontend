@@ -141,7 +141,7 @@ const PriestDashboardPage = () => {
       {/* Availability (implemented) */}
       <div>
         <SectionHeading>Availability</SectionHeading>
-        <EditPriestAvailability />
+        <EditPriestAvailability loggedInPriestId={loggedInPriest?._id} />
       </div>
 
       {/* Quick links to not-yet-implemented sections */}
