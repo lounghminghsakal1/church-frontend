@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthPriestProvider } from "@/hooks/useAuthPriest";
 import { Toaster } from "sonner";
+import { AuthUserProvider } from "@/hooks/useAuthUser";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +29,11 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <AuthPriestProvider>
-          <main className="flex-1">
-            {children}
-          </main>
+          <AuthUserProvider>
+            <main className="flex-1">
+              {children}
+            </main>
+          </AuthUserProvider>
         </AuthPriestProvider>
         <Toaster richColors />
       </body>

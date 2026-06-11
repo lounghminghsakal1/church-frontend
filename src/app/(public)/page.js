@@ -1,7 +1,41 @@
+"use client";
 import PriestAvailabilitySection from "@/components/pages_components/PriestAvailabilitySection";
 import HeroSection from "@/components/pages_components/HeroSection";
+import { Droplets, ArrowRight, ClipboardList } from "lucide-react";
+import Link from "next/link";
+import { useAuthUser } from "@/hooks/useAuthUser";
+import { useState } from "react";
+import { toast } from "sonner";
+import LoginSignupModal from "@/components/common_components/LoginSignupModal";
+import { useRouter } from "next/navigation";
 
 export default function PublicHomePage() {
+
+  const { user } = useAuthUser();
+  const [loginSignupModalOpen, setLoginSignupModalOpen] = useState(false);
+  const [applicationType, setApplicationType] = useState(null);
+  const router = useRouter();
+
+  const handleBaptismAction = (actionObjective = "apply") => {
+    setApplicationType("baptism");
+    if (!user) {
+      toast.info("Please login to continue");
+      setLoginSignupModalOpen(true);
+      return;
+    }
+    actionObjective === "apply" ? router.push("/applications/baptism_request/apply") : router.push("/applications/baptism_request/edit");
+  }
+
+    const applications = [
+    { id: 1, title: "Baptism", description: "Register your child for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Droplets, handleActionFunction: handleBaptismAction },
+  ];
+
+  const getGoToLink = () => {
+    if (!applicationType) return null;
+    if (applicationType === "baptism") return "/applications/baptism_request/apply";
+
+  }
+
   return (
     <div>
       {/* Hero */}
@@ -22,11 +56,15 @@ export default function PublicHomePage() {
 
       {/* Services Placeholder */}
       <section id="services" className="max-w-6xl mx-auto px-6 py-16">
-        <SectionPlaceholder
+        <SectionTitle
           label="Parish Services"
           title="Our Services"
-          description="Services card with application link — coming soon"
         />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {applications.map(application => (<ApplicationCard key={application.id} title={application.title} description={application.description} Icon={application.Icon} handleActionFunction={application.handleActionFunction} />))}
+        </div>
+
+
       </section>
 
       <Divider />
@@ -50,6 +88,8 @@ export default function PublicHomePage() {
           description="Contact priest / request schedule for meeting form — coming soon"
         />
       </section>
+
+      {loginSignupModalOpen && (<LoginSignupModal onSuccess={() => setLoginSignupModalOpen(false)} onCancel={() => setLoginSignupModalOpen(false)} onSuccessGoToLink={getGoToLink()} />)}
     </div>
   );
 }
@@ -64,15 +104,69 @@ function Divider() {
   );
 }
 
-function SectionPlaceholder({ label, title, description }) {
+function SectionTitle({ label, title }) {
+  return (
+    <div className="text-center">
+      <p className="text-[#C9A84C] uppercase text-xs tracking-[0.3em] font-sans mb-2">{label}</p>
+      <h2 className="text-3xl text-[#0F2A4A] font-serif font-semibold">{title}</h2>
+      <div className="mt-3 h-[2px] w-16 bg-[#C9A84C] mx-auto rounded-full mb-8" />
+    </div>);
+}
+
+function SectionPlaceholder({ label, title, description, children }) {
   return (
     <div className="text-center">
       <p className="text-[#C9A84C] uppercase text-xs tracking-[0.3em] font-sans mb-2">{label}</p>
       <h2 className="text-3xl text-[#0F2A4A] font-serif font-semibold">{title}</h2>
       <div className="mt-3 h-[2px] w-16 bg-[#C9A84C] mx-auto rounded-full mb-8" />
       <div className="border-2 border-dashed border-[#0F2A4A]/15 rounded-lg py-20 px-10 bg-[#F3EDE3]/50">
-        <p className="text-[#0F2A4A]/40 font-sans text-sm italic">{description}</p>
+        {/* <p className="text-[#0F2A4A]/40 font-sans text-sm italic">{description}</p> */}
+        {children}
       </div>
+    </div>
+  );
+}
+
+
+function ApplicationCard({ Icon, title, description, handleActionFunction }) {
+  return (
+    <div className="group bg-white rounded-2xl border border-[#0F2A4A]/10 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-[#C9A84C]/50 transition-all duration-200 overflow-hidden flex flex-col">
+
+      {/* Icon header */}
+      <div className="bg-[#0F2A4A] px-6 py-7 flex items-center justify-center relative">
+        <Icon className="w-9 h-9 text-[#C9A84C]" strokeWidth={1.4} />
+        <span className="absolute top-3 right-3 text-[10px] uppercase tracking-widest text-[#C9A84C] border border-[#C9A84C]/40 bg-[#C9A84C]/10 rounded-full px-2.5 py-0.5">
+          Open
+        </span>
+      </div>
+
+      {/* Body */}
+      <div className="p-5 flex-1">
+        <h3 className="text-[#0F2A4A] font-medium text-[15px] mb-2">{title}</h3>
+        <p className="text-sm text-gray-500 leading-relaxed">
+          {description}
+        </p>
+      </div>
+
+      {/* Footer actions */}
+      <div className="px-5 pb-5 flex flex-col gap-2">
+        <button
+          onClick={() => handleActionFunction("apply")}
+          className="flex items-center justify-between bg-[#0F2A4A] hover:bg-[#1a3d6b] text-white rounded-lg px-4 py-2.5 transition-colors"
+        >
+          <span className="text-sm font-medium">Apply now</span>
+          <ArrowRight className="w-4 h-4 text-[#C9A84C]" />
+        </button>
+
+        <button
+          onClick={() => handleActionFunction("viewOrEdit")}
+          className="flex items-center justify-center gap-2 border border-[#0F2A4A]/20 hover:border-[#0F2A4A]/40 hover:bg-[#0F2A4A]/5 text-[#0F2A4A] rounded-lg px-4 py-2.5 transition-colors"
+        >
+          <ClipboardList className="w-3.5 h-3.5" />
+          <span className="text-xs font-medium">View my applications</span>
+        </button>
+      </div>
+
     </div>
   );
 }
