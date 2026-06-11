@@ -140,7 +140,7 @@ const LoginSignupModal = ({ onSuccess, onCancel, onSuccessGoToLink }) => {
     setLoading(true)
     try {
       const res = await apiPost('/auth/user/signup', signupForm)
-      if (res.data?.status === 'success') {
+      if (res.status === 'success') {
         toast.success('Account created! Log in to continue.')
         switchMode('login')
         setLoginForm(p => ({ ...p, user_name: signupForm.user_name }))
