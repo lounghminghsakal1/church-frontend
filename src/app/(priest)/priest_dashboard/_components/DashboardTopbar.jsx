@@ -49,12 +49,12 @@ const PAGE_TITLES = {
 
 // ── All nav items (mirrors sidebar) ──────────────────────────────
 const NAV_ITEMS = [
-  { label: "Dashboard",    href: "/priest_dashboard",               icon: LayoutDashboard, implemented: true  },
-  { label: "Availability", href: "/priest_dashboard/availability",  icon: CalendarDays,    implemented: true  },
-  { label: "Profile",      href: "/priest_dashboard/profile",       icon: UserCog,         implemented: false },
-  { label: "Activities",   href: "/priest_dashboard/activities",    icon: ClipboardList,   implemented: false },
-  { label: "Announcements",href: "/priest_dashboard/announcements", icon: Megaphone,       implemented: false },
-  { label: "Requests",     href: "/priest_dashboard/requests",      icon: ClipboardList,   implemented: false },
+  { label: "Dashboard", href: "/priest_dashboard", icon: LayoutDashboard, implemented: true },
+  { label: "Availability", href: "/priest_dashboard/availability", icon: CalendarDays, implemented: true },
+  { label: "Profile", href: "/priest_dashboard/profile", icon: UserCog, implemented: true },
+  { label: "Requests", href: "/priest_dashboard/requests", icon: ClipboardList, implemented: true },
+  { label: "Activities", href: "/priest_dashboard/activities", icon: ClipboardList, implemented: false },
+  { label: "Announcements", href: "/priest_dashboard/announcements", icon: Megaphone, implemented: false },
 ];
 
 // ── Profile dropdown ──────────────────────────────────────────────
@@ -202,22 +202,19 @@ const DashboardTopbar = () => {
         <div className="relative flex items-center gap-2.5 pl-2 md:pl-3 border-l border-[#0F2A4A]/8">
           <button
             onClick={() => setDropdownOpen((v) => !v)}
-            className={`flex items-center gap-2.5 rounded-sm transition-all duration-150 ${
-              dropdownOpen ? "opacity-80" : "hover:opacity-80"
-            }`}
+            className={`flex items-center gap-2.5 rounded-sm transition-all duration-150 ${dropdownOpen ? "opacity-80" : "hover:opacity-80"
+              }`}
             aria-label="Open profile menu"
           >
             <div
-              className={`w-7 h-7 md:w-8 md:h-8 rounded-sm flex items-center justify-center flex-shrink-0 transition-all duration-150 ${
-                dropdownOpen
+              className={`w-7 h-7 md:w-8 md:h-8 rounded-sm flex items-center justify-center flex-shrink-0 transition-all duration-150 ${dropdownOpen
                   ? "bg-[#C9A84C] ring-2 ring-[#C9A84C]/30"
                   : "bg-[#0F2A4A]"
-              }`}
+                }`}
             >
               <span
-                className={`font-serif text-xs font-bold ${
-                  dropdownOpen ? "text-[#0F2A4A]" : "text-[#C9A84C]"
-                }`}
+                className={`font-serif text-xs font-bold ${dropdownOpen ? "text-[#0F2A4A]" : "text-[#C9A84C]"
+                  }`}
               >
                 {loggedInPriest?.priest_name?.charAt(0) ?? "P"}
               </span>

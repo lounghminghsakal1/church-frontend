@@ -33,7 +33,13 @@ const NAV_ITEMS = [
     label: "Profile",
     href: "/priest_dashboard/profile",
     icon: UserCog,
-    implemented: false,
+    implemented: true,
+  },
+  {
+    label: "Requests",
+    href: "/priest_dashboard/requests",
+    icon: ClipboardList,
+    implemented: true,
   },
   {
     label: "Activities",
@@ -45,12 +51,6 @@ const NAV_ITEMS = [
     label: "Announcements",
     href: "/priest_dashboard/announcements",
     icon: Megaphone,
-    implemented: false,
-  },
-  {
-    label: "Requests",
-    href: "/priest_dashboard/requests",
-    icon: ClipboardList,
     implemented: false,
   },
 ];
