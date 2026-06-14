@@ -1,7 +1,7 @@
 "use client";
 import PriestAvailabilitySection from "@/components/pages_components/PriestAvailabilitySection";
 import HeroSection from "@/components/pages_components/HeroSection";
-import { Droplets, ArrowRight, ClipboardList } from "lucide-react";
+import { Droplets, ArrowRight, ClipboardList, Cross } from "lucide-react";
 import Link from "next/link";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import { useState } from "react";
@@ -26,14 +26,25 @@ export default function PublicHomePage() {
     actionObjective === "apply" ? router.push("/applications/baptism_request/apply") : router.push("/applications/baptism_request/edit");
   }
 
-    const applications = [
+  const handleEucharistAction = (actionObjective = "apply") => {
+    setApplicationType("eucharist");
+    if (!user) {
+      toast.info("Please login to continue");
+      setLoginSignupModalOpen(true);
+      return;
+    }
+    actionObjective === "apply" ? router.push("/applications/eucharist_request/apply") : router.push("/applications/eucharist_request/edit");
+  }
+
+  const applications = [
     { id: 1, title: "Baptism", description: "Register your child for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Droplets, handleActionFunction: handleBaptismAction },
+    { id: 2, title: "Eucharist", description: "Register for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Cross, handleActionFunction: handleEucharistAction },
   ];
 
   const getGoToLink = () => {
     if (!applicationType) return null;
     if (applicationType === "baptism") return "/applications/baptism_request/apply";
-
+    if(applicationType === "eucharist") return "/applications/eucharist_request/apply";
   }
 
   return (

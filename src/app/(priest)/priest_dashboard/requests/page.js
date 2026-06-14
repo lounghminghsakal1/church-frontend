@@ -10,6 +10,7 @@ import {
   Inbox,
   RefreshCcw,
   Clock,
+  Cross,
 } from "lucide-react";
 
 // ─── config: add more request types here as the app grows ───────────────────
@@ -21,6 +22,17 @@ const REQUEST_TYPES = [
     icon: Droplets,
     route: "/priest_dashboard/requests/baptism_requests",
     fetchEndpoint: "/priest/baptism_requests",
+    accentColor: "text-sky-500",
+    bgColor: "bg-sky-50",
+    borderColor: "border-sky-200",
+  },
+  {
+    id: "eucharist",
+    title: "Eucharist Requests",
+    description: "Sacrament registration submissions awaiting review",
+    icon: Cross,
+    route: "/priest_dashboard/requests/eucharist_requests",
+    fetchEndpoint: "/priest/eucharist_requests",
     accentColor: "text-sky-500",
     bgColor: "bg-sky-50",
     borderColor: "border-sky-200",
