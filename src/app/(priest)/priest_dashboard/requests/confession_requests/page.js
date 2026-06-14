@@ -11,7 +11,6 @@ import {
   Inbox,
   User,
   Phone,
-  Baby,
   CalendarDays,
   MessageSquarePlus,
   ChevronLeft,

@@ -2,11 +2,11 @@
 
 import LoginSignupModal from '@/components/common_components/LoginSignupModal';
 import { useAuthUser } from '@/hooks/useAuthUser';
-import { apiGet, apiPatch } from '@/services/axios';
-import React, { useEffect, useState } from 'react';
+import { apiGet, apiPatch, apiPost } from '@/services/axios';
+import React, { useEffect, useState, useRef } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Pencil, X, Save, PlusCircle } from 'lucide-react';
+import { ArrowLeft, Pencil, X, Save, PlusCircle, Loader2, XCircle, MoreVertical } from 'lucide-react';
 
 // ── Shared primitives ────────────────────────────────────────────────
 
@@ -41,6 +41,7 @@ const statusStyles = {
   pending: { dot: 'bg-amber-400', text: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-200', label: 'Pending' },
   approved: { dot: 'bg-emerald-400', text: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200', label: 'Approved' },
   rejected: { dot: 'bg-red-400', text: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200', label: 'Rejected' },
+  cancelled: { dot: 'bg-red-500', text: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200', label: 'Cancelled' },
 };
 
 const StatusBadge = ({ status }) => {
@@ -77,7 +78,24 @@ const toDateTimeValue = (v) => {
 const ConfReqCard = ({ ConfReq, onUpdated }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [cababMenuOpen, setCababMenuOpen] = useState(false);
+
   const canEdit = ConfReq.status === 'pending';
+  const canCancel = ConfReq.status === 'pending';
+
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!cababMenuOpen) return;
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setCababMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [cababMenuOpen]);
 
   const [conRForm, setconRForm] = useState({
     confession_person_name: ConfReq.confession_person_name ?? '',
@@ -88,7 +106,7 @@ const ConfReqCard = ({ ConfReq, onUpdated }) => {
 
   const validate = () => {
     const e = {};
-    if (!conRForm.confession_person_name.trim()) e.confession_person_name = "Child's name is required";
+    if (!conRForm.confession_person_name.trim()) e.confession_person_name = "Person's name is required";
     if (!conRForm.preferred_confession_date_and_time) e.preferred_confession_date_and_time = "Preferred date & time is required";
     else if (new Date(conRForm.preferred_confession_date_and_time) <= new Date())
       e.preferred_confession_date_and_time = "Preferred date must be in the future";
@@ -125,6 +143,24 @@ const ConfReqCard = ({ ConfReq, onUpdated }) => {
     }
   };
 
+  const handleCancelRequest = async () => {
+    setCababMenuOpen(false);
+    setCancelling(true);
+    try {
+      const res = await apiPost(`/user/confession_request/${ConfReq._id}/cancel`);
+      if (res.status === 'success') {
+        toast.success("Request cancelled successfully.");
+        onUpdated?.();
+      } else {
+        throw new Error(res?.message);
+      }
+    } catch (err) {
+      toast.error(err.message ?? "Something went wrong");
+    } finally {
+      setCancelling(false);
+    }
+  };
+
   const set = (key) => (e) => setconRForm(p => ({ ...p, [key]: e.target.value }));
 
   return (
@@ -132,55 +168,100 @@ const ConfReqCard = ({ ConfReq, onUpdated }) => {
 
       {/* Card header */}
       <div className="px-7 py-4 bg-[#faf9f6] border-b border-[#f0ece0] flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+
+        {/* Left: status + meta */}
+        <div className="flex items-center gap-3 flex-wrap min-w-0">
           <StatusBadge status={ConfReq.status} />
-          <span className="text-xs text-[#0F2A4A]/40">
+          <span className="text-xs text-[#0F2A4A]/40 shrink-0">
             Submitted {formatDate(ConfReq.createdAt)}
           </span>
-          {ConfReq?.priest_response && <span className='text-gray-800 text-xs md:text-sm'><span className='font-semibold'>Priest Response:</span> {ConfReq.priest_response}</span>}
+          {ConfReq?.priest_response && (
+            <span className="text-gray-800 text-xs md:text-sm">
+              <span className="font-semibold">Priest Response:</span> {ConfReq.priest_response}
+            </span>
+          )}
         </div>
-        {canEdit && !isEditing && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="flex items-center gap-1.5 text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
-          >
-            <Pencil size={11} />
-            Edit
-          </button>
-        )}
-        {isEditing && (
-          <div className="flex items-center gap-2">
+
+        {/* Right: actions */}
+        <div className="flex items-center gap-2 shrink-0">
+
+          {canEdit && !isEditing && (
             <button
-              onClick={handleCancel}
-              className="flex items-center gap-1.5 text-[#0F2A4A]/50 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
+              onClick={() => setIsEditing(true)}
+              className="flex items-center gap-1.5 text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
             >
-              <X size={11} />
-              Cancel
+              <Pencil size={11} /> Edit
             </button>
-            <button
-              onClick={handleSave}
-              disabled={loading}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer
-                ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
-            >
-              <Save size={11} />
-              {loading ? 'Saving…' : 'Save Changes'}
-            </button>
-          </div>
-        )}
+          )}
+
+          {isEditing && (
+            <>
+              <button
+                onClick={handleCancel}
+                className="flex items-center gap-1.5 text-[#0F2A4A]/50 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
+              >
+                <X size={11} /> Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={loading}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer
+                  ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
+              >
+                {loading ? <Loader2 size={11} className="animate-spin" /> : <Save size={11} />}
+                {loading ? 'Saving…' : 'Save Changes'}
+              </button>
+            </>
+          )}
+
+          {/* Kebab menu */}
+          {canCancel && !isEditing && (
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setCababMenuOpen(prev => !prev)}
+                disabled={cancelling}
+                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-colors cursor-pointer
+                  ${cababMenuOpen
+                    ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white'
+                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/50 hover:text-[#0F2A4A] hover:bg-[#f4f2ed]'}
+                  disabled:opacity-40`}
+              >
+                {cancelling
+                  ? <Loader2 size={13} className="animate-spin" />
+                  : <MoreVertical size={13} />}
+              </button>
+
+              {cababMenuOpen && (
+                <div className="absolute right-0 top-[calc(100%+6px)] z-20 w-44 bg-white border border-[#e2ddd0] rounded-xl shadow-lg overflow-hidden">
+                  <div className="absolute -top-1.5 right-2.5 w-3 h-3 bg-white border-l border-t border-[#e2ddd0] rotate-45" />
+                  <div className="py-1">
+                    <button
+                      onClick={handleCancelRequest}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-red-500 hover:bg-red-50 transition-colors cursor-pointer font-[inherit]"
+                    >
+                      <XCircle size={13} className="shrink-0" />
+                      Cancel request
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+        </div>
       </div>
 
-      {/* Confession person's details */}
+      {/* Confession details */}
       <div className="px-7 py-6">
         <SectionHeading>Confession Person's Details</SectionHeading>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <Field label="Child's Name" error={errors.confession_person_name}>
+          <Field label="Person's Name" error={errors.confession_person_name}>
             {isEditing
-              ? <input value={conRForm.confession_person_name} onChange={set('confession_person_name')} placeholder="Enter child's full name" className={inputCls(errors.confession_person_name)} />
-              : <span className="text-sm text-[#0F2A4A] font-medium">{ConfReq.confession_person_name}</span>
+              ? <input value={conRForm.confession_person_name} onChange={set('confession_person_name')} placeholder="Enter full name" className={inputCls(errors.confession_person_name)} />
+              : <span className="text-sm text-[#0F2A4A] font-medium">{ConfReq.confession_person_name || '—'}</span>
             }
           </Field>
-          <Field label="Preferred confession Date & Time" error={errors.preferred_confession_date_and_time}>
+          <Field label="Preferred Confession Date & Time" error={errors.preferred_confession_date_and_time}>
             {isEditing
               ? <input type="datetime-local" value={conRForm.preferred_confession_date_and_time} onChange={set('preferred_confession_date_and_time')} className={inputCls(errors.preferred_confession_date_and_time) + ' cursor-pointer'} />
               : <span className="text-sm text-[#0F2A4A] font-medium">{formatDateTime(ConfReq.preferred_confession_date_and_time)}</span>
@@ -188,8 +269,6 @@ const ConfReqCard = ({ ConfReq, onUpdated }) => {
           </Field>
         </div>
       </div>
-
-
 
     </div>
   );
