@@ -1,7 +1,7 @@
 "use client";
 import PriestAvailabilitySection from "@/components/pages_components/PriestAvailabilitySection";
 import HeroSection from "@/components/pages_components/HeroSection";
-import { Droplets, ArrowRight, ClipboardList, Cross } from "lucide-react";
+import { Droplets, ArrowRight, ClipboardList, Cross, PersonStandingIcon } from "lucide-react";
 import Link from "next/link";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import { useState } from "react";
@@ -36,15 +36,27 @@ export default function PublicHomePage() {
     actionObjective === "apply" ? router.push("/applications/eucharist_request/apply") : router.push("/applications/eucharist_request/edit");
   }
 
+  const handleConfessionAction = (actionObjective = "apply") => {
+    setApplicationType("confession");
+    if (!user) {
+      toast.info("Please login to continue");
+      setLoginSignupModalOpen(true);
+      return;
+    }
+    actionObjective === "apply" ? router.push("/applications/confession_request/apply") : router.push("/applications/confession_request/edit");
+  }
+
   const applications = [
     { id: 1, title: "Baptism", description: "Register your child for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Droplets, handleActionFunction: handleBaptismAction },
     { id: 2, title: "Eucharist", description: "Register for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Cross, handleActionFunction: handleEucharistAction },
+    { id: 3, title: "Confession", description: "Register for the sacrament of Confession. Our priest will confirm the scheduled date.", Icon: PersonStandingIcon, handleActionFunction: handleConfessionAction },
   ];
 
   const getGoToLink = () => {
     if (!applicationType) return null;
     if (applicationType === "baptism") return "/applications/baptism_request/apply";
-    if(applicationType === "eucharist") return "/applications/eucharist_request/apply";
+    if (applicationType === "eucharist") return "/applications/eucharist_request/apply";
+    if (applicationType === "confession") return "/applications/confession_request/apply";
   }
 
   return (
