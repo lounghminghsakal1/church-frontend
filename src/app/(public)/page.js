@@ -1,7 +1,7 @@
 "use client";
 import PriestAvailabilitySection from "@/components/pages_components/PriestAvailabilitySection";
 import HeroSection from "@/components/pages_components/HeroSection";
-import { Droplets, ArrowRight, ClipboardList, Cross, PersonStandingIcon } from "lucide-react";
+import { Droplets, ArrowRight, ClipboardList, Cross, PersonStandingIcon, User2 } from "lucide-react";
 import Link from "next/link";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import { useState } from "react";
@@ -46,10 +46,21 @@ export default function PublicHomePage() {
     actionObjective === "apply" ? router.push("/applications/confession_request/apply") : router.push("/applications/confession_request/edit");
   }
 
+  const handleMeetingAction = (actionObjective = "apply") => {
+    setApplicationType("meeting");
+    if (!user) {
+      toast.info("Please login to continue");
+      setLoginSignupModalOpen(true);
+      return;
+    }
+    actionObjective === "apply" ? router.push("/applications/meeting_request/apply") : router.push("/applications/meeting_request/edit");
+  }
+
   const applications = [
     { id: 1, title: "Baptism", description: "Register your child for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Droplets, handleActionFunction: handleBaptismAction },
     { id: 2, title: "Eucharist", description: "Register for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Cross, handleActionFunction: handleEucharistAction },
     { id: 3, title: "Confession", description: "Register for the sacrament of Confession. Our priest will confirm the scheduled date.", Icon: PersonStandingIcon, handleActionFunction: handleConfessionAction },
+    { id: 4, title: "Meeting", description: "Book the meeting request to meet the priest", Icon: User2, handleActionFunction: handleMeetingAction },
   ];
 
   const getGoToLink = () => {
@@ -57,6 +68,7 @@ export default function PublicHomePage() {
     if (applicationType === "baptism") return "/applications/baptism_request/apply";
     if (applicationType === "eucharist") return "/applications/eucharist_request/apply";
     if (applicationType === "confession") return "/applications/confession_request/apply";
+    if (applicationType === "meeting") return "/applications/meeting_request/apply";
   }
 
   return (
@@ -83,7 +95,7 @@ export default function PublicHomePage() {
           label="Parish Services"
           title="Our Services"
         />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {applications.map(application => (<ApplicationCard key={application.id} title={application.title} description={application.description} Icon={application.Icon} handleActionFunction={application.handleActionFunction} />))}
         </div>
 
