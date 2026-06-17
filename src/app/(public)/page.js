@@ -1,7 +1,7 @@
 "use client";
 import PriestAvailabilitySection from "@/components/pages_components/PriestAvailabilitySection";
 import HeroSection from "@/components/pages_components/HeroSection";
-import { Droplets, ArrowRight, ClipboardList, Cross, PersonStandingIcon, User2 } from "lucide-react";
+import { Droplets, ArrowRight, ClipboardList, Cross, PersonStandingIcon, User2, HandshakeIcon, BookPlusIcon } from "lucide-react";
 import Link from "next/link";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import { useState } from "react";
@@ -46,6 +46,16 @@ export default function PublicHomePage() {
     actionObjective === "apply" ? router.push("/applications/confession_request/apply") : router.push("/applications/confession_request/edit");
   }
 
+  const handleConfirmationAction = (actionObjective = "apply") => {
+    setApplicationType("confirmation");
+    if (!user) {
+      toast.info("Please login to continue");
+      setLoginSignupModalOpen(true);
+      return;
+    }
+    actionObjective === "apply" ? router.push("/applications/confirmation_request/apply") : router.push("/applications/confirmation_request/edit");
+  }
+
   const handleMeetingAction = (actionObjective = "apply") => {
     setApplicationType("meeting");
     if (!user) {
@@ -60,7 +70,8 @@ export default function PublicHomePage() {
     { id: 1, title: "Baptism", description: "Register your child for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Droplets, handleActionFunction: handleBaptismAction },
     { id: 2, title: "Eucharist", description: "Register for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Cross, handleActionFunction: handleEucharistAction },
     { id: 3, title: "Confession", description: "Register for the sacrament of Confession. Our priest will confirm the scheduled date.", Icon: PersonStandingIcon, handleActionFunction: handleConfessionAction },
-    { id: 4, title: "Meeting", description: "Book the meeting request to meet the priest", Icon: User2, handleActionFunction: handleMeetingAction },
+    { id: 4, title: "Confirmation", description: "Register for the sacrament of Confirmation. Our priest will confirm the scheduled date.", Icon: BookPlusIcon, handleActionFunction: handleConfirmationAction },
+    { id: 5, title: "Meeting", description: "Book the meeting request to meet the priest", Icon: User2, handleActionFunction: handleMeetingAction },
   ];
 
   const getGoToLink = () => {
@@ -117,11 +128,21 @@ export default function PublicHomePage() {
 
       {/* Contact Placeholder */}
       <section id="contact" className="max-w-6xl mx-auto px-6 py-16">
-        <SectionPlaceholder
+        <SectionTitle
           label="Get in Touch"
           title="Contact & Schedule a Meeting"
           description="Contact priest / request schedule for meeting form — coming soon"
         />
+        <div className="flex justify-center items-center">
+          <button
+            onClick={() => router.push("/applications/meeting_request/apply")}
+            className="inline-flex items-center gap-2 bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A] text-xs font-bold uppercase tracking-[0.8px] px-5 py-2.5 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit]"
+          >
+            <HandshakeIcon className="w-3.5 h-3.5" />
+            Book a Meeting with Priest
+          </button>
+        </div>
+
       </section>
 
       {loginSignupModalOpen && (<LoginSignupModal onSuccess={() => setLoginSignupModalOpen(false)} onCancel={() => setLoginSignupModalOpen(false)} onSuccessGoToLink={getGoToLink()} />)}
