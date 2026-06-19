@@ -1,7 +1,7 @@
 "use client";
 import PriestAvailabilitySection from "@/components/pages_components/PriestAvailabilitySection";
 import HeroSection from "@/components/pages_components/HeroSection";
-import { Droplets, ArrowRight, ClipboardList, Cross, PersonStandingIcon, User2, HandshakeIcon, BookPlusIcon } from "lucide-react";
+import { Droplets, ArrowRight, ClipboardList, Cross, PersonStandingIcon, User2, HandshakeIcon, BookPlusIcon, MapPinPlusInside } from "lucide-react";
 import Link from "next/link";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import { useState } from "react";
@@ -66,12 +66,23 @@ export default function PublicHomePage() {
     actionObjective === "apply" ? router.push("/applications/meeting_request/apply") : router.push("/applications/meeting_request/edit");
   }
 
+  const handleMassPrayerAction = (actionObjective = "apply") => {
+    setApplicationType("massPrayer");
+    if (!user) {
+      toast.info("Please login to continue");
+      setLoginSignupModalOpen(true);
+      return;
+    }
+    actionObjective === "apply" ? router.push("/applications/mass_prayer/apply") : router.push("/applications/mass_prayer/edit");
+  }
+
   const applications = [
     { id: 1, title: "Baptism", description: "Register your child for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Droplets, handleActionFunction: handleBaptismAction },
     { id: 2, title: "Eucharist", description: "Register for the sacrament of baptism. Our priest will confirm the scheduled date.", Icon: Cross, handleActionFunction: handleEucharistAction },
     { id: 3, title: "Confession", description: "Register for the sacrament of Confession. Our priest will confirm the scheduled date.", Icon: PersonStandingIcon, handleActionFunction: handleConfessionAction },
     { id: 4, title: "Confirmation", description: "Register for the sacrament of Confirmation. Our priest will confirm the scheduled date.", Icon: BookPlusIcon, handleActionFunction: handleConfirmationAction },
-    { id: 5, title: "Meeting", description: "Book the meeting request to meet the priest", Icon: User2, handleActionFunction: handleMeetingAction },
+    { id: 5, title: "Mass Prayer", description: "Send your prayer written in a image to be prayed by priest during mass", Icon: MapPinPlusInside , handleActionFunction: handleMassPrayerAction },
+    { id: 6, title: "Meeting", description: "Book  the meeting request to meet the priest", Icon: User2, handleActionFunction: handleMeetingAction },
   ];
 
   const getGoToLink = () => {
@@ -79,6 +90,7 @@ export default function PublicHomePage() {
     if (applicationType === "baptism") return "/applications/baptism_request/apply";
     if (applicationType === "eucharist") return "/applications/eucharist_request/apply";
     if (applicationType === "confession") return "/applications/confession_request/apply";
+    if (applicationType === "massPrayer") return "/applications/mass_prayer/apply";
     if (applicationType === "meeting") return "/applications/meeting_request/apply";
   }
 

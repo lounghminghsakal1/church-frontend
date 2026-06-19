@@ -14,6 +14,7 @@ import {
   PersonStanding,
   MessageSquareQuoteIcon,
   BookPlus,
+  MapPinPlusInside,
 } from "lucide-react";
 
 // ─── config: add more request types here as the app grows ───────────────────
@@ -58,6 +59,17 @@ const REQUEST_TYPES = [
     icon: BookPlus,
     route: "/priest_dashboard/requests/confirmation_requests",
     fetchEndpoint: "/priest/confirmation_requests",
+    accentColor: "text-sky-500",
+    bgColor: "bg-sky-50",
+    borderColor: "border-sky-200",
+  },
+  {
+    id: "mass_prayer",
+    title: "Mass Prayers",
+    description: "Mass prayers",
+    icon: MapPinPlusInside,
+    route: "/priest_dashboard/requests/mass_prayers",
+    fetchEndpoint: "/priest/mass_prayers",
     accentColor: "text-sky-500",
     bgColor: "bg-sky-50",
     borderColor: "border-sky-200",
