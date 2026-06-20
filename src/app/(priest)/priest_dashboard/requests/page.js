@@ -15,7 +15,8 @@ import {
   MessageSquareQuoteIcon,
   BookPlus,
   MapPinPlusInside,
-  UserRoundPlusIcon
+  UserRoundPlusIcon,
+  BriefcaseMedicalIcon
 } from "lucide-react";
 
 // ─── config: add more request types here as the app grows ───────────────────
@@ -71,6 +72,17 @@ const REQUEST_TYPES = [
     icon: BookPlus,
     route: "/priest_dashboard/requests/confirmation_requests",
     fetchEndpoint: "/priest/confirmation_requests",
+    accentColor: "text-sky-500",
+    bgColor: "bg-sky-50",
+    borderColor: "border-sky-200",
+  },
+  {
+    id: "anointing_of_the_sick",
+    title: "Anointing Of The Sick Requests",
+    description: "Sacrament registration submissions awaiting review",
+    icon: BriefcaseMedicalIcon ,
+    route: "/priest_dashboard/requests/anointing_of_the_sick_requests",
+    fetchEndpoint: "/priest/aos_requests",
     accentColor: "text-sky-500",
     bgColor: "bg-sky-50",
     borderColor: "border-sky-200",
