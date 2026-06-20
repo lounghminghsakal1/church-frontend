@@ -15,6 +15,7 @@ import {
   MessageSquareQuoteIcon,
   BookPlus,
   MapPinPlusInside,
+  UserRoundPlusIcon
 } from "lucide-react";
 
 // ─── config: add more request types here as the app grows ───────────────────
@@ -52,7 +53,18 @@ const REQUEST_TYPES = [
     bgColor: "bg-sky-50",
     borderColor: "border-sky-200",
   },
-   {
+  {
+    id: "marriage",
+    title: "Marriage Requests",
+    description: "Sacrament registration submissions awaiting review",
+    icon:  UserRoundPlusIcon,
+    route: "/priest_dashboard/requests/marriage_requests",
+    fetchEndpoint: "/priest/marriage_requests",
+    accentColor: "text-sky-500",
+    bgColor: "bg-sky-50",
+    borderColor: "border-sky-200",
+  },
+  {
     id: "confirmation",
     title: "Confirmation Requests",
     description: "Sacrament registration submissions awaiting review",
@@ -230,7 +242,7 @@ function RequestFaceCard({ type, count, onNavigate }) {
 
   return (
     <div className="group bg-white rounded-2xl border border-[#0F2A4A]/10 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-[#C9A84C]/50 transition-all duration-200 overflow-hidden flex flex-col">
-      
+
       {/* Header */}
       <div className="bg-[#0F2A4A] px-6 py-6 flex items-center justify-between relative">
         <div className={`w-12 h-12 rounded-xl ${type.bgColor} flex items-center justify-center`}>
