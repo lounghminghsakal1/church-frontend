@@ -5,6 +5,7 @@ const api = axios.create({
   withCredentials: true
 });
 
+
 export const apiGet = async (apiEndpoint, params = {}) => {
   try {
     const response = await api.get(apiEndpoint, { params });

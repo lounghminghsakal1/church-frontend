@@ -3,9 +3,11 @@
 import { Church } from 'lucide-react'
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useAuthUser } from '@/hooks/useAuthUser';
 
-const NavBar = () => {
+const NavBar = ({ onLoginClick, onLogoutClick }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useAuthUser();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0F2A4A]/95 backdrop-blur-md shadow-lg">
@@ -44,14 +46,36 @@ const NavBar = () => {
             </li>
           ))}
 
-          <li>
-            <Link
-              href="/login"
-              className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
-            >
-              Login
-            </Link>
-          </li>
+          {!user ? (
+            <li>
+              <button
+                onClick={onLoginClick}
+                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
+              >
+                Login
+              </button>
+            </li>
+          ) : (
+            <li>
+              <button
+                onClick={onLogoutClick}
+                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
+              >
+                Logout
+              </button>
+            </li>
+          )}
+
+          {user && (
+            <li className='ml-2'>
+              <Link
+                href='/profile'
+                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
+              >
+                Profile
+              </Link>
+            </li>
+          )}
 
           <li className="ml-2">
             <Link
