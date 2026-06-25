@@ -291,8 +291,15 @@ const LoginSignupModal = ({ onSuccess, onCancel, onSuccessGoToLink }) => {
               <Field
                 label="Mobile number"
                 value={signupForm.user_mobile_number}
-                onChange={e => {
-                  if (e.target.value.length <= 10) setSignupForm(p => ({ ...p, user_mobile_number: e.target.value }));
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  if (/^\d{0,10}$/.test(value)) {
+                    setSignupForm((prev) => ({
+                      ...prev,
+                      user_mobile_number: value,
+                    }));
+                  }
                 }}
                 error={signupErrors.user_mobile_number}
                 placeholder="10-digit number"
