@@ -346,7 +346,7 @@ const ConfirmationRequestEditPage = () => {
               <p className="text-xs text-[#0F2A4A]/45">Submit a new request to get started.</p>
             </div>
             <button
-              onClick={() => router.push("/applications/confirmation_reqest/apply")}
+              onClick={() => router.push("/applications/confirmation_request/apply")}
               className="mt-2 flex items-center gap-2 bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A] font-bold text-xs uppercase tracking-[0.8px] px-5 py-2.5 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit]"
             >
               <PlusCircle size={13} />
@@ -361,7 +361,7 @@ const ConfirmationRequestEditPage = () => {
                 {allconfirRequests.length} request{allconfirRequests.length > 1 ? 's' : ''} found. Pending requests can be edited.
               </p>
               <button
-                onClick={() => router.push("/applications/confirmation_reqest/apply")}
+                onClick={() => router.push("/applications/confirmation_request/apply")}
                 className="flex items-center gap-1.5 bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A] font-bold text-xs uppercase tracking-[0.8px] px-4 py-2 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit]"
               >
                 <PlusCircle size={12} />

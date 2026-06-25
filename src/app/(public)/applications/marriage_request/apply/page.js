@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { ArrowLeft } from 'lucide-react';
-import FamilyCardUploadModal from '@/components/common_components/FamilyCardUploadModal';
+import UserFamilyCardUploadModal from '@/components/common_components/UserFamilyCardUploadModal';
 
 // ── Moved outside component to prevent re-creation on every render ──
 
@@ -94,7 +94,7 @@ const MarriageRequestApplypage = ({ user }) => {
         throw new Error(res?.message);
       }
     } catch (err) {
-      if (err?.message === "You have not uploaded family card document or its not verified yet so please contact priest") {
+      if (err?.message === "You have not uploaded family card document or its not verified yet so please contact priest" || err?.message === "Family card was not found in the server, so please upload again") {
         setFamilyCardUploadModalOpen(true);
       }
       toast.error(err.message ?? "Something went wrong");
@@ -243,7 +243,7 @@ const MarriageRequestApplypage = ({ user }) => {
           </div>
 
           {familyCardUploadModalOpen && (
-            <FamilyCardUploadModal mode='upload' onCancel={() => setFamilyCardUploadModalOpen(false)} onSuccess={() => setFamilyCardUploadModalOpen(false)} />
+            <UserFamilyCardUploadModal mode='upload' onCancel={() => setFamilyCardUploadModalOpen(false)} onSuccess={() => setFamilyCardUploadModalOpen(false)} />
           )}
 
         </div>

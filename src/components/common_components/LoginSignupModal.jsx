@@ -27,6 +27,8 @@ function getSignupErrors(f) {
   else if (!validateEmail(f.user_email)) e.user_email = 'Enter a valid email address'
   if (!f.user_password) e.user_password = 'Password is required'
   else if (f.user_password.length < 6) e.user_password = 'Minimum 6 characters'
+  if (!f.confirm_user_password) e.confirm_user_password = 'Confirm Password is required'
+  else if (f.user_password !== f.confirm_user_password) e.confirm_user_password = 'Confirm user password should match the password you entered'
   if (!f.user_mobile_number.trim()) e.user_mobile_number = 'Mobile number is required'
   else if (!validateMobile(f.user_mobile_number)) e.user_mobile_number = 'Enter a valid 10-digit number'
   if (!f.prayer_group) e.prayer_group = 'Please select a prayer group'
@@ -84,7 +86,7 @@ const LoginSignupModal = ({ onSuccess, onCancel, onSuccessGoToLink }) => {
 
   const [loginForm, setLoginForm] = useState({ user_email: 'sakal@gmail.com', user_password: 'Sakal@123' })
   const [signupForm, setSignupForm] = useState({
-    user_name: '', user_email: '', user_password: '',
+    user_name: '', user_email: '', user_password: '', confirm_user_password: "",
     user_mobile_number: '', prayer_group: '',
   })
   const { setUser } = useAuthUser();
@@ -117,7 +119,7 @@ const LoginSignupModal = ({ onSuccess, onCancel, onSuccessGoToLink }) => {
       if (res.status === 'success') {
         toast.success('Logged in successfully')
         setUser(res.data);
-        if(onSuccessGoToLink) {
+        if (onSuccessGoToLink) {
           onSuccess();
           router.push(onSuccessGoToLink);
           return;
@@ -143,7 +145,7 @@ const LoginSignupModal = ({ onSuccess, onCancel, onSuccessGoToLink }) => {
       if (res.status === 'success') {
         toast.success('Account created! Log in to continue.')
         switchMode('login')
-        setLoginForm(p => ({ ...p, user_name: signupForm.user_name }))
+        setLoginForm({ user_email: res.data.user_email, user_password: "" })
       } else {
         throw new Error(res.data?.message ?? 'Signup failed')
       }
@@ -289,7 +291,9 @@ const LoginSignupModal = ({ onSuccess, onCancel, onSuccessGoToLink }) => {
               <Field
                 label="Mobile number"
                 value={signupForm.user_mobile_number}
-                onChange={e => setSignupForm(p => ({ ...p, user_mobile_number: e.target.value }))}
+                onChange={e => {
+                  if (e.target.value.length <= 10) setSignupForm(p => ({ ...p, user_mobile_number: e.target.value }));
+                }}
                 error={signupErrors.user_mobile_number}
                 placeholder="10-digit number"
                 autoComplete="tel"
@@ -302,6 +306,16 @@ const LoginSignupModal = ({ onSuccess, onCancel, onSuccessGoToLink }) => {
                 onChange={e => setSignupForm(p => ({ ...p, user_password: e.target.value }))}
                 error={signupErrors.user_password}
                 placeholder="Min. 6 characters"
+                autoComplete="new-password"
+              />
+
+              <Field
+                label="Confirm Password"
+                type="password"
+                value={signupForm.confirm_user_password}
+                onChange={e => setSignupForm(p => ({ ...p, confirm_user_password: e.target.value }))}
+                error={signupErrors.confirm_user_password}
+                placeholder="Enter your password again to confirm it"
                 autoComplete="new-password"
               />
 

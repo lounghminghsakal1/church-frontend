@@ -153,11 +153,12 @@ export default function PublicHomePage() {
 
       {/* Activities Placeholder */}
       <section id="activities" className="max-w-6xl mx-auto px-6 py-16">
-        <SectionPlaceholder
+        <SectionTitle
           label="Events & Calendar"
           title="Upcoming Activities"
           description="Upcoming activities section — coming soon"
         />
+        <h1 className="text-center text-2xl"> Coming soon </h1>
       </section>
 
       <Divider />
@@ -171,7 +172,14 @@ export default function PublicHomePage() {
         />
         <div className="flex justify-center items-center">
           <button
-            onClick={() => router.push("/applications/meeting_request/apply")}
+            onClick={() => {
+              if(!user) {
+                setApplicationType("meeting");
+                setLoginSignupModalOpen(true);
+                return;
+              }
+              router.push("/applications/meeting_request/apply")
+            }}
             className="inline-flex items-center gap-2 bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A] text-xs font-bold uppercase tracking-[0.8px] px-5 py-2.5 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit]"
           >
             <HandshakeIcon className="w-3.5 h-3.5" />
