@@ -6,9 +6,10 @@ import { apiPatch, apiPost } from '@/services/axios';
 import { toast } from 'sonner';
 import {
   Pencil, X, Save, Loader2, User, Phone, Heart, MapPin,
-  Users, FileText, ExternalLink, ChevronDown, Check, Eye,
+  Users, FileText, ExternalLink, ChevronDown, Check, Eye, ArrowLeft
 } from 'lucide-react';
-import FamilyCardUploadModal from '@/components/common_components/FamilyCardUploadModal2';
+import FamilyCardUploadModal from '@/components/common_components/UserFamilyCardUploadModal';
+import { useRouter } from 'next/navigation';
 
 // ── Shared primitives ────────────────────────────────────────────────
 
@@ -130,17 +131,22 @@ const MultiSelectOrgs = ({ value, onChange, error }) => {
 // ── Page ─────────────────────────────────────────────────────────────
 
 const UserProfilePage = () => {
-  const { user, setUser, fetchLoggedInUser } = useAuthUser();
+  const { user, setUser } = useAuthUser();
 
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const router = useRouter();
 
   // 'closed' | 'view'  — there is no separate "upload" modal mode anymore;
   // replacing the document now happens via a direct file-picker, either from
   // the file row's Replace button or from inside the view modal.
   const [familyCardModal, setFamilyCardModal] = useState('closed');
   const [replacingCard, setReplacingCard] = useState(false);
+  
+  const fileUrl = user?.family_card_document?.file_path
+    ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/${user.family_card_document.file_path.replaceAll('\\', '/')}`
+    : '';
   const replaceInputRef = useRef(null);
 
   const buildFormFromUser = (u) => ({
@@ -156,7 +162,9 @@ const UserProfilePage = () => {
 
   // Keep form in sync if user loads asynchronously
   useEffect(() => {
-    if (user) setForm(buildFormFromUser(user));
+    if (user) {
+      setForm(buildFormFromUser(user));
+    }
   }, [user]);
 
   const set = (key) => (e) => setForm(p => ({ ...p, [key]: e.target.value }));
@@ -202,10 +210,9 @@ const UserProfilePage = () => {
     }
   };
 
-  const handleFamilyCardSuccess = (newFileData) => {
-    setUser?.(prev => ({ ...prev, family_card_document: newFileData, verification_status: 'pending' }));
+  const handleFamilyCardSuccess = (newUserData) => {
+    setUser?.(newUserData);
     setFamilyCardModal('closed');
-    toast.success("Family card updated. It's now pending re-verification.");
   };
 
   // ── Direct "Replace" from the file row: opens the OS file picker immediately,
@@ -238,10 +245,8 @@ const UserProfilePage = () => {
       formData.append('family_card', f);
       const res = await apiPost('/uploads/family_card', formData);
       if (res?.status === 'success') {
+        handleFamilyCardSuccess(res?.data);
         toast.success('Family card replaced successfully.');
-        const updatedUserData = await fetchLoggedInUser();
-        setUser(updatedUserData?.data);
-        handleFamilyCardSuccess(res.data);
       } else {
         throw new Error(res?.message);
       }
@@ -260,9 +265,6 @@ const UserProfilePage = () => {
     );
   }
 
-  const fileUrl = user?.family_card_document?.file_path
-    ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/${user.family_card_document.file_path.replaceAll('\\', '/')}`
-    : '';
 
   const verificationStyles = {
     pending:  { bg: 'bg-amber-50',   text: 'text-amber-700',   border: 'border-amber-200',   label: 'Pending Verification' },
@@ -275,13 +277,24 @@ const UserProfilePage = () => {
     <div className="min-h-screen bg-[#f4f2ed]">
 
       {/* Page header bar */}
+           {/* Page header bar */}
       <div className="bg-[#0F2A4A] border-b border-white/10">
-        <div className="max-w-5xl mx-auto px-6 py-5">
-          <div className="text-white/50 text-[10px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
-            Account
-          </div>
-          <div className="text-white font-bold text-base tracking-[0.2px] leading-none">
-            My Profile
+        <div className="max-w-5xl mx-auto px-6 py-5 flex items-center gap-4">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors bg-white/10 hover:bg-white/15 border border-white/15 rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] cursor-pointer shrink-0"
+          >
+            <ArrowLeft size={12} />
+            Back
+          </button>
+          <div className="h-5 w-px bg-white/20" />
+          <div>
+            <div className="text-white/50 text-[10px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
+              Profile Page
+            </div>
+            <div className="text-white font-bold text-base tracking-[0.2px] leading-none">
+              Baptism Application
+            </div>
           </div>
         </div>
       </div>

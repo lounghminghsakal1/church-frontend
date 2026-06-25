@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
-import FamilyCardModal from "@/components/common_components/FamilyCardUploadModal";
+import PriestViewFamilyCardModal from "@/components/common_components/PriestViewFamilyCardModal";
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 const safeFormat = (dateStr, fmt = "dd MMM yyyy, hh:mm a") => {
@@ -289,7 +289,7 @@ function MarriageRequestCard({ req, submitting, onResponseChange, onApprove, onR
         </div>
       )}
 
-      {openFamilyCardViewModal && (<FamilyCardModal mode="view" familyCardUrl={fileUrl} onCancel={() => setOpenFamilyCardViewModal(false)} />)}
+      {openFamilyCardViewModal && (<PriestViewFamilyCardModal mode="view" familyCardUrl={fileUrl} onCancel={() => setOpenFamilyCardViewModal(false)} />)}
 
       {/* Already-reviewed banner */}
       {isActedOn && (

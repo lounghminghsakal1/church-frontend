@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useRef } from 'react';
 import { toast } from 'sonner';
 import { ArrowLeft, X, QrCode, CheckCircle, XCircle, ImagePlus, Trash2 } from 'lucide-react';
-import FamilyCardUploadModal from '@/components/common_components/FamilyCardUploadModal';
 
 // ── Shared primitives ────────────────────────────────────────────────
 
@@ -132,7 +131,6 @@ const MassPrayerApplyPage = ({ user }) => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
 
   const [qrModalOpen, setQrModalOpen] = useState(false);
-  const [familyCardUploadModalOpen, setFamilyCardUploadModalOpen] = useState(false);
 
   const set = (key) => (e) => setMpForm(p => ({ ...p, [key]: e.target.value }));
 
@@ -220,9 +218,6 @@ const MassPrayerApplyPage = ({ user }) => {
         throw new Error(res?.message);
       }
     } catch (err) {
-      if (err?.message === "You have not uploaded family card document or its not verified yet so please contact priest") {
-        setFamilyCardUploadModalOpen(true);
-      }
       toast.error(err.message ?? "Something went wrong");
     } finally {
       setLoading(false);
@@ -391,14 +386,6 @@ const MassPrayerApplyPage = ({ user }) => {
               {loading ? 'Submitting…' : 'Submit Request'}
             </button>
           </div>
-
-          {familyCardUploadModalOpen && (
-            <FamilyCardUploadModal
-              mode='upload'
-              onCancel={() => setFamilyCardUploadModalOpen(false)}
-              onSuccess={() => setFamilyCardUploadModalOpen(false)}
-            />
-          )}
 
         </div>
       </div>

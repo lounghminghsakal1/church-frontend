@@ -25,7 +25,7 @@ import { X, UploadCloud, FileText, RefreshCcw, Loader2, CheckCircle2, ExternalLi
  * - onProceed: () => void — called when "Looks good, proceed" is clicked.
  *     Only relevant when showVerifyActions=true. Modal closes after calling this.
  */
-const FamilyCardUploadModal2 = ({
+const UserFamilyCardUploadModal = ({
   mode = 'upload',
   familyCardUrl = '',
   fileName = '',
@@ -298,4 +298,4 @@ const FamilyCardUploadModal2 = ({
   );
 };
 
-export default FamilyCardUploadModal2;
+export default UserFamilyCardUploadModal;

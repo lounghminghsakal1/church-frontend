@@ -22,17 +22,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
-import FamilyCardModal from "@/components/common_components/FamilyCardUploadModal";
-
-// ─── helpers ──────────────────────────────────────────────────────────────────
-const safeFormat = (dateStr, fmt = "dd MMM yyyy, hh:mm a") => {
-  if (!dateStr) return "—";
-  try {
-    return format(parseISO(dateStr), fmt);
-  } catch {
-    return dateStr;
-  }
-};
+import PriestViewFamilyCardModal from "@/components/common_components/PriestViewFamilyCardModal";
 
 const STATUS_STYLES = {
   pending: "bg-amber-50 text-amber-600 border-amber-200",
@@ -268,7 +258,7 @@ function ConfirmationRequestCard({ req, submitting, onResponseChange, onApprove,
         </div>
       )}
 
-      {openFamilyCardViewModal && (<FamilyCardModal mode="view" familyCardUrl={fileUrl} onCancel={() => setOpenFamilyCardViewModal(false)} />)}
+      {openFamilyCardViewModal && (<PriestViewFamilyCardModal mode="view" familyCardUrl={fileUrl} onCancel={() => setOpenFamilyCardViewModal(false)} />)}
 
       {/* Already-reviewed banner */}
       {isActedOn && (

@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useAuthUser } from '@/hooks/useAuthUser';
 
-const NavBar = ({ onLoginClick, onLogoutClick }) => {
+const NavBar = ({ onLoginOrSignupClick, onLogoutClick }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useAuthUser();
 
@@ -46,13 +46,24 @@ const NavBar = ({ onLoginClick, onLogoutClick }) => {
             </li>
           ))}
 
+          {user && (
+            <li className='ml-2'>
+              <Link
+                href='/profile'
+                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
+              >
+                Profile
+              </Link>
+            </li>
+          )}
+
           {!user ? (
             <li>
               <button
-                onClick={onLoginClick}
+                onClick={onLoginOrSignupClick}
                 className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
               >
-                Login
+                Login/Signup
               </button>
             </li>
           ) : (
@@ -63,17 +74,6 @@ const NavBar = ({ onLoginClick, onLogoutClick }) => {
               >
                 Logout
               </button>
-            </li>
-          )}
-
-          {user && (
-            <li className='ml-2'>
-              <Link
-                href='/profile'
-                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
-              >
-                Profile
-              </Link>
             </li>
           )}
 

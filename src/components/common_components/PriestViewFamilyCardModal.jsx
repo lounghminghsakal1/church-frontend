@@ -20,28 +20,28 @@ const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 // USAGE:
 //
 // MODE 1 — User upload:
-//   <FamilyCardModal
+//   <PriestViewFamilyCardModal
 //     mode="upload"
 //     onCancel={() => setOpen(false)}
 //     onSuccess={() => { setOpen(false); refetch(); }}
 //   />
 //
 // MODE 2 — Priest view (fetches PDF from DB by family/user id):
-//   <FamilyCardModal
+//   <PriestViewFamilyCardModal
 //     mode="view"
 //     familyCardUrl="https://your-s3-or-cdn-url/family_card.pdf"
 //     onCancel={() => setOpen(false)}
 //   />
 //
 //   If you fetch the URL lazily (e.g. from an API), pass `fetchUrl` instead:
-//   <FamilyCardModal
+//   <PriestViewFamilyCardModal
 //     mode="view"
 //     fetchUrl="/priest/family_card/userId123"
 //     onCancel={() => setOpen(false)}
 //   />
 // ─────────────────────────────────────────────────────────────────────────────
 
-const FamilyCardModal = ({
+const PriestViewFamilyCardModal = ({
   mode = "upload",          // "upload" | "view"
   onCancel,
   onSuccess,                // upload mode only
@@ -308,26 +308,26 @@ const FamilyCardModal = ({
   );
 };
 
-export default FamilyCardModal;
+export default PriestViewFamilyCardModal;
 
 
 
 // // ── User side: upload their family card ──
-// <FamilyCardModal
+// <PriestViewFamilyCardModal
 //   mode="upload"
 //   onCancel={() => setModalOpen(false)}
 //   onSuccess={() => { setModalOpen(false); refetch(); }}
 // />
 
 // // ── Priest side (option A): you already have the PDF URL from the list API ──
-// <FamilyCardModal
+// <PriestViewFamilyCardModal
 //   mode="view"
 //   familyCardUrl={selectedFamily.family_card_url}
 //   onCancel={() => setModalOpen(false)}
 // />
 
 // // ── Priest side (option B): fetch the URL lazily by user/family id ──
-// <FamilyCardModal
+// <PriestViewFamilyCardModal
 //   mode="view"
 //   fetchUrl={`/priest/family_card/${selectedFamily._id}`}
 //   onCancel={() => setModalOpen(false)}
