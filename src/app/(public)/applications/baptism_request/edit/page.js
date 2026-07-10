@@ -207,13 +207,7 @@ const BapReqCard = ({ bapReq, onUpdated }) => {
             </button>
           )}
           {isEditing && (
-            <>
-              <button
-                onClick={handleCancel}
-                className="flex items-center gap-1.5 text-[#0F2A4A]/50 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
-              >
-                <X size={11} /> Cancel
-              </button>
+            <div className='flex flex-col sm:flex-row gap-2'>
               <button
                 onClick={handleSave}
                 disabled={loading}
@@ -223,7 +217,13 @@ const BapReqCard = ({ bapReq, onUpdated }) => {
                 {loading ? <Loader2 size={11} className="animate-spin" /> : <Save size={11} />}
                 {loading ? 'Saving…' : 'Save Changes'}
               </button>
-            </>
+              <button
+                onClick={handleCancel}
+                className="flex items-center gap-1.5 text-[#0F2A4A]/50 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
+              >
+                <X size={11} /> Cancel
+              </button>
+            </div>
           )}
 
           {/* Kebab menu */}
@@ -269,7 +269,7 @@ const BapReqCard = ({ bapReq, onUpdated }) => {
       {/* Parent details */}
       <div className="px-7 py-6 border-b border-[#f0ece0]">
         <SectionHeading>Parent Details</SectionHeading>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
           <Field label="Father's Name" error={errors.father_name}>
             {isEditing
               ? <input value={bRform.father_name} onChange={set('father_name')} placeholder="Enter father's full name" className={inputCls(errors.father_name)} />
@@ -295,7 +295,7 @@ const BapReqCard = ({ bapReq, onUpdated }) => {
               : <span className="text-sm text-[#0F2A4A] font-medium">{bapReq.child_name}</span>
             }
           </Field>
-          <div className="grid grid-cols-2 gap-x-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <Field label="Date of Birth" error={errors.child_date_of_birth}>
               {isEditing
                 ? <input type="date" value={bRform.child_date_of_birth} onChange={set('child_date_of_birth')} className={inputCls(errors.child_date_of_birth) + ' cursor-pointer'} />
@@ -329,7 +329,7 @@ const BaptismRequestEditPage = () => {
       const res = await apiGet("/user/baptism_request");
       if (res.status === "success") setAllBaptismRequests(res.data);
     } catch (err) {
-      toast.error("Failed to load baptism requests.");
+      toast.error("Failed to load baptism requests. "+err.message);
     } finally {
       setFetching(false);
     }
