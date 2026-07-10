@@ -127,7 +127,7 @@ const EucharistRequestApplypage = ({ user }) => {
             <div className="text-[11px] font-bold text-[#C9A84C] tracking-[1.4px] uppercase mb-5">
               Parent Details
             </div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
               <Field label="Father's Name" error={errors.father_name}>
                 <input
                   value={eRForm.father_name}
@@ -175,7 +175,7 @@ const EucharistRequestApplypage = ({ user }) => {
           </div>
 
           {/* Footer / Submit */}
-          <div className="px-7 py-5 bg-[#faf9f6] flex items-center justify-between gap-4">
+          <div className="px-7 py-5 bg-[#faf9f6] flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-[#0F2A4A]/40 leading-relaxed max-w-sm">
               By submitting, you agree to be contacted by the parish regarding this request.
             </p>

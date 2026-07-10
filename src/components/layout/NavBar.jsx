@@ -61,7 +61,7 @@ const NavBar = ({ onLoginOrSignupClick, onLogoutClick }) => {
             <li>
               <button
                 onClick={onLoginOrSignupClick}
-                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
+                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide cursor-pointer"
               >
                 Login/Signup
               </button>
@@ -70,7 +70,7 @@ const NavBar = ({ onLoginOrSignupClick, onLogoutClick }) => {
             <li>
               <button
                 onClick={onLogoutClick}
-                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
+                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide cursor-pointer"
               >
                 Logout
               </button>
@@ -107,7 +107,26 @@ const NavBar = ({ onLoginOrSignupClick, onLogoutClick }) => {
         <div className="md:hidden bg-[#0F2A4A] border-t border-[#C9A84C]/20 px-6 pb-6 pt-2 flex flex-col gap-3 font-sans text-sm">
           <a href="#services" className="text-[#D9CDB8] py-2 border-b border-white/5">Services</a>
           <a href="#activities" className="text-[#D9CDB8] py-2 border-b border-white/5">Activities</a>
-          <Link href="/login" className="text-[#D9CDB8] py-2 border-b border-white/5">Login</Link>
+          {user && (<Link href="/profile" className="text-[#D9CDB8] py-2 border-b border-white/5">Profile</Link>)}
+          {!user ? (
+            <li>
+              <button
+                onClick={onLoginOrSignupClick}
+                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide cursor-pointer"
+              >
+                Login/Signup
+              </button>
+            </li>
+          ) : (
+            <li>
+              <button
+                onClick={onLogoutClick}
+                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide cursor-pointer"
+              >
+                Logout
+              </button>
+            </li>
+          )}
           <Link href="/priest_login" className="text-[#C9A84C] font-semibold py-2">Priest Login →</Link>
         </div>
       )}
