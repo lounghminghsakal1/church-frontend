@@ -124,7 +124,7 @@ const NavBar = ({ onLoginOrSignupClick, onLogoutClick }) => {
                 className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide cursor-pointer"
               >
                 Logout
-              </button>
+              </button>  
             </li>
           )}
           <Link href="/priest_login" className="text-[#C9A84C] font-semibold py-2">Priest Login →</Link>
