@@ -133,7 +133,7 @@ const UserFamilyCardUploadModal = ({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#f0ece0] shrink-0">
           <div>
-            <div className="text-[10px] font-semibold tracking-[1.5px] uppercase text-[#C9A84C] mb-0.5">
+            <div className="text-[11px] font-semibold tracking-[1.5px] uppercase text-[#C9A84C] mb-0.5">
               Family Card
             </div>
             <div className="text-sm font-bold text-[#0F2A4A]">
@@ -142,7 +142,7 @@ const UserFamilyCardUploadModal = ({
           </div>
           <button
             onClick={onCancel}
-            className="w-8 h-8 flex items-center justify-center rounded-md text-[#0F2A4A]/40 hover:text-[#0F2A4A] hover:bg-[#f4f2ed] transition-colors cursor-pointer border-none bg-transparent"
+            className="w-8 h-8 flex items-center justify-center rounded-md text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#f4f2ed] transition-colors cursor-pointer border-none bg-transparent"
           >
             <X size={16} />
           </button>
@@ -170,13 +170,13 @@ const UserFamilyCardUploadModal = ({
                   href={familyCardUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0F2A4A]/50 hover:text-[#0F2A4A] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0F2A4A]/65 hover:text-[#0F2A4A] transition-colors"
                 >
                   <ExternalLink size={12} />
                   Open in new tab
                 </a>
                 {fileName && (
-                  <span className="text-xs text-[#0F2A4A]/40 truncate max-w-[55%] text-right">
+                  <span className="text-xs text-[#0F2A4A]/65 truncate max-w-[55%] text-right">
                     {fileName}
                   </span>
                 )}
@@ -204,15 +204,15 @@ const UserFamilyCardUploadModal = ({
                   <FileText size={28} className="text-[#C9A84C]" strokeWidth={1.5} />
                   <div>
                     <p className="text-sm font-semibold text-[#0F2A4A]">{file.name}</p>
-                    <p className="text-xs text-[#0F2A4A]/40 mt-0.5">{(file.size / 1024 / 1024).toFixed(2)} MB · click to change</p>
+                    <p className="text-xs text-[#0F2A4A]/65 mt-0.5">{(file.size / 1024 / 1024).toFixed(2)} MB · click to change</p>
                   </div>
                 </>
               ) : (
                 <>
-                  <UploadCloud size={28} className="text-[#0F2A4A]/30" strokeWidth={1.5} />
+                  <UploadCloud size={28} className="text-[#0F2A4A]/65" strokeWidth={1.5} />
                   <div>
                     <p className="text-sm font-semibold text-[#0F2A4A]">Drag & drop your file here</p>
-                    <p className="text-xs text-[#0F2A4A]/40 mt-0.5">or click to browse · PDF or image, max 10MB</p>
+                    <p className="text-xs text-[#0F2A4A]/65 mt-0.5">or click to browse · PDF or image, max 10MB</p>
                   </div>
                 </>
               )}

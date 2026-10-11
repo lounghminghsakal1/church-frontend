@@ -1,4 +1,6 @@
 "use client";
+import Field from '@/components/common_components/FormField';
+
 
 import { apiPost } from '@/services/axios';
 import { useRouter } from 'next/navigation';
@@ -21,13 +23,7 @@ const inputCls = (error) => `
   ${error ? 'border-[#e05252] bg-[#fff5f5] focus:border-[#e05252]' : 'border-[#d4c9a8]'}
 `;
 
-const Field = ({ label, error, children }) => (
-  <div className="flex flex-col gap-1.5">
-    <Label>{label}</Label>
-    {children}
-    {error && <span className="text-xs text-[#c0392b]">{error}</span>}
-  </div>
-);
+
 
 // ────────────────────────────────────────────────────────────────────
 
@@ -75,7 +71,7 @@ const ConfessionRequestApplyPage = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f2ed]">
+    <div className="min-h-screen bg-[#faf8f3]">
 
       {/* Page header bar */}
       <div className="bg-[#0F2A4A] border-b border-white/10">
@@ -89,7 +85,7 @@ const ConfessionRequestApplyPage = ({ user }) => {
           </button>
           <div className="h-5 w-px bg-white/20" />
           <div>
-            <div className="text-white/50 text-[10px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
+            <div className="text-white/70 text-[11px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
               Sacrament Request
             </div>
             <div className="text-white font-bold text-base tracking-[0.2px] leading-none">
@@ -102,12 +98,12 @@ const ConfessionRequestApplyPage = ({ user }) => {
       {/* Form area */}
       <div className="max-w-5xl mx-auto px-6 py-10">
 
-        <p className="text-sm text-[#0F2A4A]/50 mb-8 leading-relaxed">
+        <p className="text-sm text-[#0F2A4A]/65 mb-8 leading-relaxed">
           Fill in the details below to submit a Confession request. The priest will review your application
           and reach out to confirm the schedule.
         </p>
 
-        <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-[0_6px_24px_#18344806] overflow-hidden">
 
           {/* Section: Confession person Details */}
           <div className="px-7 py-6 border-b border-[#f0ece0]">
@@ -138,7 +134,7 @@ const ConfessionRequestApplyPage = ({ user }) => {
 
           {/* Footer / Submit */}
           <div className="px-7 py-5 bg-[#faf9f6] flex items-center justify-between gap-4">
-            <p className="text-xs text-[#0F2A4A]/40 leading-relaxed max-w-sm">
+            <p className="text-xs text-[#0F2A4A]/65 leading-relaxed max-w-sm">
               By submitting, you agree to be contacted by the parish regarding this request.
             </p>
             <button

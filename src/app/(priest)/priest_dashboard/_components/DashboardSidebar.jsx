@@ -53,7 +53,7 @@ const NAV_ITEMS = [
     icon: Megaphone,
     implemented: false,
   },
-];
+].filter(item => item.implemented);
 
 // Bottom tab bar shows first 4 items + "More" overflow
 const BOTTOM_TAB_PRIMARY = NAV_ITEMS.slice(0, 4);
@@ -65,7 +65,7 @@ const NavItem = ({ item, isActive, collapsed }) => {
   return (
     <Link
       href={item.href}
-      className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-sm transition-all duration-200
+      className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200
         ${isActive
           ? "bg-[#C9A84C]/15 text-[#C9A84C] border-l-2 border-[#C9A84C]"
           : "text-slate-300/70 hover:bg-white/5 hover:text-slate-100 border-l-2 border-transparent"
@@ -84,12 +84,12 @@ const NavItem = ({ item, isActive, collapsed }) => {
         </span>
       )}
       {!item.implemented && !collapsed && (
-        <span className="ml-auto text-[9px] font-sans font-semibold uppercase tracking-widest text-[#C9A84C]/50 bg-[#C9A84C]/10 px-1.5 py-0.5 rounded-sm">
+        <span className="ml-auto text-[9px] font-sans font-semibold uppercase tracking-widest text-[#C9A84C]/50 bg-[#C9A84C]/10 px-1.5 py-0.5 rounded-xl">
           Soon
         </span>
       )}
       {collapsed && (
-        <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 z-50 hidden group-hover:flex items-center gap-2 bg-[#0F2A4A] border border-[#C9A84C]/20 text-white text-xs font-sans px-3 py-1.5 rounded-sm shadow-xl whitespace-nowrap pointer-events-none">
+        <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 z-50 hidden group-hover:flex items-center gap-2 bg-[#0F2A4A] border border-[#C9A84C]/20 text-white text-xs font-sans px-3 py-1.5 rounded-xl shadow-xl whitespace-nowrap pointer-events-none">
           {item.label}
           {!item.implemented && (
             <span className="text-[#C9A84C]/60 text-[9px] uppercase tracking-widest">
@@ -112,12 +112,12 @@ const BottomTabItem = ({ item, isActive, onClick }) => {
       className="flex flex-col items-center justify-center gap-1 flex-1 py-2 relative"
     >
       <div
-        className={`relative flex items-center justify-center w-10 h-7 rounded-sm transition-all duration-200 ${isActive ? "bg-[#C9A84C]/15" : ""
+        className={`relative flex items-center justify-center w-10 h-7 rounded-xl transition-all duration-200 ${isActive ? "bg-[#C9A84C]/15" : ""
           }`}
       >
         <Icon
           size={18}
-          className={`transition-colors duration-200 ${isActive ? "text-[#C9A84C]" : "text-[#0F2A4A]/35"
+          className={`transition-colors duration-200 ${isActive ? "text-[#C9A84C]" : "text-[#0F2A4A]/65"
             }`}
         />
         {!item.implemented && (
@@ -125,7 +125,7 @@ const BottomTabItem = ({ item, isActive, onClick }) => {
         )}
       </div>
       <span
-        className={`font-sans text-[9px] font-semibold uppercase tracking-widest transition-colors duration-200 ${isActive ? "text-[#C9A84C]" : "text-[#0F2A4A]/30"
+        className={`font-sans text-[9px] font-semibold uppercase tracking-widest transition-colors duration-200 ${isActive ? "text-[#C9A84C]" : "text-[#0F2A4A]/65"
           }`}
       >
         {item.label}
@@ -147,12 +147,12 @@ const MobileOverflowDrawer = ({ open, onClose, pathname, onLogout }) => {
       {/* Drawer */}
       <div className="fixed bottom-16 left-0 right-0 z-50 bg-white border-t border-[#0F2A4A]/10 rounded-t-xl shadow-2xl px-4 pt-4 pb-6 animate-slide-up">
         <div className="flex items-center justify-between mb-4">
-          <p className="font-sans text-[10px] text-[#0F2A4A]/40 uppercase tracking-widest font-medium">
+          <p className="font-sans text-[11px] text-[#0F2A4A]/65 uppercase tracking-widest font-medium">
             More
           </p>
           <button
             onClick={onClose}
-            className="w-7 h-7 flex items-center justify-center rounded-full bg-[#0F2A4A]/5 text-[#0F2A4A]/40"
+            className="w-7 h-7 flex items-center justify-center rounded-full bg-[#0F2A4A]/5 text-[#0F2A4A]/65"
           >
             <X size={14} />
           </button>
@@ -166,7 +166,7 @@ const MobileOverflowDrawer = ({ open, onClose, pathname, onLogout }) => {
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className={`flex items-center gap-3 px-4 py-3 rounded-sm transition-all duration-150 ${isActive
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-150 ${isActive
                   ? "bg-[#C9A84C]/10 text-[#C9A84C]"
                   : "text-[#0F2A4A]/60 hover:bg-[#0F2A4A]/5"
                   }`}
@@ -176,7 +176,7 @@ const MobileOverflowDrawer = ({ open, onClose, pathname, onLogout }) => {
                   {item.label}
                 </span>
                 {!item.implemented && (
-                  <span className="ml-auto text-[9px] font-sans font-semibold uppercase tracking-widest text-[#C9A84C]/50 bg-[#C9A84C]/10 px-1.5 py-0.5 rounded-sm">
+                  <span className="ml-auto text-[9px] font-sans font-semibold uppercase tracking-widest text-[#C9A84C]/50 bg-[#C9A84C]/10 px-1.5 py-0.5 rounded-xl">
                     Soon
                   </span>
                 )}
@@ -187,14 +187,14 @@ const MobileOverflowDrawer = ({ open, onClose, pathname, onLogout }) => {
           <Link
             href="/"
             onClick={onClose}
-            className="flex items-center gap-3 px-4 py-3 rounded-sm text-[#0F2A4A]/50 hover:bg-[#0F2A4A]/5 transition-all duration-150"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#0F2A4A]/65 hover:bg-[#0F2A4A]/5 transition-all duration-150"
           >
             <Globe size={16} />
             <span className="font-sans text-sm font-medium">Public Website</span>
           </Link>
           <button
             onClick={() => { onLogout(); onClose(); }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-sm text-rose-500 hover:bg-rose-50 transition-all duration-150"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-rose-500 hover:bg-rose-50 transition-all duration-150"
           >
             <LogOut size={16} />
             <span className="font-sans text-sm font-medium">Sign Out</span>
@@ -222,7 +222,7 @@ const DashboardSidebar = () => {
         router.push("/");
       }
     } catch (err) {
-      toast.error(err.message ?? "Something went wrong, please do later , ha ha ha haaaaa");
+      toast.error(err.message ?? "Unable to sign out. Please try again.");
     }
 
   };
@@ -231,7 +231,7 @@ const DashboardSidebar = () => {
     <>
       {/* ── DESKTOP SIDEBAR (md+) ────────────────────────────────── */}
       <aside
-        className={`hidden md:flex relative flex-col h-screen bg-[#0A1F3A] border-r border-white/5 transition-all duration-300 flex-shrink-0
+        className={`priest-workspace-sidebar hidden md:flex relative flex-col h-screen bg-[#0A1F3A] border-r border-white/5 transition-all duration-300 flex-shrink-0
           ${collapsed ? "w-16" : "w-60"}`}
       >
         {/* Collapse toggle */}
@@ -248,7 +248,7 @@ const DashboardSidebar = () => {
           className={`flex items-center gap-3 px-4 py-5 border-b border-white/5 ${collapsed ? "justify-center px-2" : ""
             }`}
         >
-          <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center bg-[#C9A84C]/15 rounded-sm border border-[#C9A84C]/25">
+          <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center bg-[#C9A84C]/15 rounded-xl border border-[#C9A84C]/25">
             <Church size={16} className="text-[#C9A84C]" />
           </div>
           {!collapsed && (
@@ -256,7 +256,7 @@ const DashboardSidebar = () => {
               <p className="font-serif text-white text-sm font-semibold leading-tight tracking-wide">
                 Priest Portal
               </p>
-              <p className="font-sans text-[10px] text-slate-400 tracking-widest uppercase">
+              <p className="font-sans text-[11px] text-slate-400 tracking-widest uppercase">
                 Administration
               </p>
             </div>
@@ -265,7 +265,7 @@ const DashboardSidebar = () => {
 
         {/* Priest info */}
         {!collapsed && loggedInPriest && (
-          <div className="mx-3 mt-4 mb-2 flex items-center gap-2.5 bg-white/3 rounded-sm px-3 py-2.5 border border-white/5">
+          <div className="mx-3 mt-4 mb-2 flex items-center gap-2.5 bg-white/3 rounded-xl px-3 py-2.5 border border-white/5">
             <div className="w-7 h-7 rounded-full bg-[#C9A84C]/20 border border-[#C9A84C]/30 flex items-center justify-center flex-shrink-0">
               <span className="text-[#C9A84C] font-serif text-xs font-bold">
                 {loggedInPriest.priest_name?.charAt(0) ?? "P"}
@@ -275,7 +275,7 @@ const DashboardSidebar = () => {
               <p className="text-white font-sans text-xs font-medium truncate">
                 {loggedInPriest.priest_name ?? "Father"}
               </p>
-              <p className="text-slate-400 font-sans text-[10px] truncate">
+              <p className="text-slate-400 font-sans text-[11px] truncate">
                 {loggedInPriest.priest_email ?? ""}
               </p>
             </div>
@@ -288,7 +288,7 @@ const DashboardSidebar = () => {
             <NavItem
               key={item.href}
               item={item}
-              isActive={pathname === item.href}
+              isActive={pathname === item.href || (item.href !== "/priest_dashboard" && pathname.startsWith(item.href + "/"))}
               collapsed={collapsed}
             />
           ))}
@@ -300,7 +300,7 @@ const DashboardSidebar = () => {
         <div className="px-2 py-3 flex flex-col gap-0.5">
           <Link
             href="/"
-            className={`group flex items-center gap-3 px-3 py-2.5 rounded-sm text-slate-400 hover:bg-white/5 hover:text-slate-100 transition-all duration-200 relative ${collapsed ? "justify-center" : ""
+            className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-white/5 hover:text-slate-100 transition-all duration-200 relative ${collapsed ? "justify-center" : ""
               }`}
           >
             <Globe size={17} className="flex-shrink-0" />
@@ -310,14 +310,14 @@ const DashboardSidebar = () => {
               </span>
             )}
             {collapsed && (
-              <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 z-50 hidden group-hover:flex bg-[#0F2A4A] border border-[#C9A84C]/20 text-white text-xs font-sans px-3 py-1.5 rounded-sm shadow-xl whitespace-nowrap pointer-events-none">
+              <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 z-50 hidden group-hover:flex bg-[#0F2A4A] border border-[#C9A84C]/20 text-white text-xs font-sans px-3 py-1.5 rounded-xl shadow-xl whitespace-nowrap pointer-events-none">
                 Public Website
               </div>
             )}
           </Link>
           <button
             onClick={handleLogout}
-            className={`group flex items-center gap-3 px-3 py-2.5 rounded-sm text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 transition-all duration-200 w-full relative ${collapsed ? "justify-center" : ""
+            className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 transition-all duration-200 w-full relative ${collapsed ? "justify-center" : ""
               }`}
           >
             <LogOut size={17} className="flex-shrink-0" />
@@ -327,7 +327,7 @@ const DashboardSidebar = () => {
               </span>
             )}
             {collapsed && (
-              <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 z-50 hidden group-hover:flex bg-[#0F2A4A] border border-[#C9A84C]/20 text-white text-xs font-sans px-3 py-1.5 rounded-sm shadow-xl whitespace-nowrap pointer-events-none">
+              <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 z-50 hidden group-hover:flex bg-[#0F2A4A] border border-[#C9A84C]/20 text-white text-xs font-sans px-3 py-1.5 rounded-xl shadow-xl whitespace-nowrap pointer-events-none">
                 Sign Out
               </div>
             )}
@@ -338,12 +338,12 @@ const DashboardSidebar = () => {
       </aside>
 
       {/* ── MOBILE BOTTOM TAB BAR (< md) ────────────────────────── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-[#0F2A4A]/8 flex items-stretch shadow-[0_-4px_24px_rgba(15,42,74,0.08)]">
+      <nav className="priest-workspace-tabs md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-[#0F2A4A]/8 flex items-stretch shadow-[0_-4px_24px_rgba(15,42,74,0.08)]">
         {BOTTOM_TAB_PRIMARY.map((item) => (
           <BottomTabItem
             key={item.href}
             item={item}
-            isActive={pathname === item.href}
+            isActive={pathname === item.href || (item.href !== "/priest_dashboard" && pathname.startsWith(item.href + "/"))}
           />
         ))}
         {/* More button */}
@@ -351,10 +351,10 @@ const DashboardSidebar = () => {
           onClick={() => setMobileDrawerOpen(true)}
           className="flex flex-col items-center justify-center gap-1 flex-1 py-2"
         >
-          <div className="flex items-center justify-center w-10 h-7 rounded-sm">
-            <MoreHorizontal size={18} className="text-[#0F2A4A]/35" />
+          <div className="flex items-center justify-center w-10 h-7 rounded-xl">
+            <MoreHorizontal size={18} className="text-[#0F2A4A]/65" />
           </div>
-          <span className="font-sans text-[9px] font-semibold uppercase tracking-widest text-[#0F2A4A]/30">
+          <span className="font-sans text-[9px] font-semibold uppercase tracking-widest text-[#0F2A4A]/65">
             More
           </span>
         </button>

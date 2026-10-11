@@ -1,137 +1,46 @@
-"use client";
-
-import { Church } from 'lucide-react'
-import React, { useState } from 'react'
-import Link from 'next/link'
+﻿"use client";
+import { Church, Menu, X, ArrowUpRight, UserRound } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuthUser } from '@/hooks/useAuthUser';
 
-const NavBar = ({ onLoginOrSignupClick, onLogoutClick }) => {
+export default function NavBar({ onLoginOrSignupClick, onLogoutClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useAuthUser();
-
+  const pathname = usePathname();
+  useEffect(() => {
+    const close = e => { if (e.key === 'Escape') setMenuOpen(false); };
+    document.addEventListener('keydown', close);
+    return () => document.removeEventListener('keydown', close);
+  }, []);
+  const links = [{ label: 'Home', href: '/' }, { label: 'Parish services', href: '/#services' }, { label: 'Our priest', href: '/#priest' }, { label: 'Parish life', href: '/#activities' }];
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0F2A4A]/95 backdrop-blur-md shadow-lg">
-      {/* Gold top border */}
-      <div className="h-[3px] bg-gradient-to-r from-transparent via-[#C9A84C] to-transparent" />
-
-      <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="bg-[#C9A84C]/10 border border-[#C9A84C]/30 rounded-full p-2 group-hover:bg-[#C9A84C]/20 transition-all duration-300">
-            <Church size={22} className="text-[#C9A84C]" />
-          </div>
-          <div className="leading-tight">
-            <span className="block text-white font-serif text-base font-semibold tracking-wide">
-              St. Antony's Church
-            </span>
-            <span className="block text-[#C9A84C]/70 text-[10px] font-sans uppercase tracking-[0.2em]">
-              Illuppur
-            </span>
-          </div>
-        </Link>
-
-        {/* Desktop Nav */}
-        <ul className="hidden md:flex items-center gap-1 font-sans text-sm">
-          {[
-            { label: 'Services', href: '#services' },
-            { label: 'Activities', href: '#activities' },
-          ].map((item) => (
-            <li key={item.label}>
-              <a
-                href={item.href}
-                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-
-          {user && (
-            <li className='ml-2'>
-              <Link
-                href='/profile'
-                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide"
-              >
-                Profile
-              </Link>
-            </li>
-          )}
-
-          {!user ? (
-            <li>
-              <button
-                onClick={onLoginOrSignupClick}
-                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide cursor-pointer"
-              >
-                Login/Signup
-              </button>
-            </li>
-          ) : (
-            <li>
-              <button
-                onClick={onLogoutClick}
-                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide cursor-pointer"
-              >
-                Logout
-              </button>
-            </li>
-          )}
-
-          <li className="ml-2">
-            <Link
-              href="/priest_login"
-              className="px-5 py-2 bg-[#C9A84C] hover:bg-[#b8973b] text-[#0F2A4A] font-semibold rounded-sm tracking-wide transition-all duration-200 text-sm"
-            >
-              Priest Login
-            </Link>
-          </li>
-        </ul>
-
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden text-[#C9A84C] focus:outline-none"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            {menuOpen
-              ? <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              : <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            }
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-[#0F2A4A] border-t border-[#C9A84C]/20 px-6 pb-6 pt-2 flex flex-col gap-3 font-sans text-sm">
-          <a href="#services" className="text-[#D9CDB8] py-2 border-b border-white/5">Services</a>
-          <a href="#activities" className="text-[#D9CDB8] py-2 border-b border-white/5">Activities</a>
-          {user && (<Link href="/profile" className="text-[#D9CDB8] py-2 border-b border-white/5">Profile</Link>)}
-          {!user ? (
-            <li>
-              <button
-                onClick={onLoginOrSignupClick}
-                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide cursor-pointer"
-              >
-                Login/Signup
-              </button>
-            </li>
-          ) : (
-            <li>
-              <button
-                onClick={onLogoutClick}
-                className="px-4 py-2 text-[#D9CDB8] hover:text-[#C9A84C] transition-colors duration-200 tracking-wide cursor-pointer"
-              >
-                Logout
-              </button>  
-            </li>
-          )}
-          <Link href="/priest_login" className="text-[#C9A84C] font-semibold py-2">Priest Login →</Link>
+    <header className="parish-header">
+      <nav aria-label="Main navigation" className="parish-nav">
+        <Link href="/" onClick={() => setMenuOpen(false)} className="parish-brand"><span className="brand-icon"><Church size={25} strokeWidth={1.4} /></span><span><strong>St. Antony’s Church</strong><small>ILLUPPUR · ROMAN CATHOLIC PARISH</small></span></Link>
+        <div className="hidden xl:flex items-center gap-6">
+          {links.map(item => <Link key={item.label} href={item.href} aria-current={item.href === pathname ? 'page' : undefined} className="nav-link">{item.label}</Link>)}
         </div>
-      )}
-    </nav>
-  )
+        <div className="hidden xl:flex items-center gap-3">
+          {user ? <><Link href="/profile" className="nav-link flex items-center gap-2"><UserRound size={16} /> My parish profile</Link><button onClick={onLogoutClick} className="nav-link">Sign out</button></> : <button onClick={onLoginOrSignupClick} className="parish-button primary compact">User sign in <UserRound size={16} /></button>}
+          <Link href="/priest_login" className="priest-signin-link"><Church size={16} /> Priest sign in <ArrowUpRight size={14} /></Link>
+        </div>
+        <div className="xl:hidden flex items-center shrink-0">
+          {user ? <Link href="/profile" className="p-3 rounded-xl" aria-label="My parish profile" onClick={() => setMenuOpen(false)}><UserRound size={20} /></Link> : <button onClick={() => { setMenuOpen(false); onLoginOrSignupClick(); }} className="p-3 rounded-xl" aria-label="Sign in to your parish account"><UserRound size={20} /></button>}
+          <button onClick={() => setMenuOpen(!menuOpen)} className="p-3 rounded-xl" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-navigation">{menuOpen ? <X size={23} /> : <Menu size={23} />}</button>
+        </div>
+      </nav>
+      <div className="mobile-signin-options xl:hidden">
+        {user ? <Link href="/profile" onClick={() => setMenuOpen(false)}><UserRound size={15} /> My profile</Link> : <button onClick={() => { setMenuOpen(false); onLoginOrSignupClick(); }}><UserRound size={15} /> User sign in</button>}
+        <Link href="/priest_login" className="mobile-priest-signin" onClick={() => setMenuOpen(false)}><Church size={15} /> Priest sign in <ArrowUpRight size={13} /></Link>
+      </div>
+      {menuOpen && <div id="mobile-navigation" className="mobile-navigation">
+        {links.map(item => <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}</Link>)}
+        {user && <Link href="/profile" onClick={() => setMenuOpen(false)}>My parish profile</Link>}
+        <button className="parish-button primary" onClick={() => { setMenuOpen(false); user ? onLogoutClick() : onLoginOrSignupClick(); }}>{user ? 'Sign out' : 'User sign in'}</button>
+        <Link href="/priest_login" onClick={() => setMenuOpen(false)}><Church size={16} /> Priest sign in <ArrowUpRight size={16} /></Link>
+      </div>}
+    </header>
+  );
 }
-
-export default NavBar

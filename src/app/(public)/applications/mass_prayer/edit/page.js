@@ -1,4 +1,6 @@
 "use client";
+import Field from '@/components/common_components/FormField';
+
 
 import { useAuthUser } from '@/hooks/useAuthUser';
 import { apiGet, apiPatch, apiPost } from '@/services/axios';
@@ -25,13 +27,7 @@ const inputCls = (error) => `
   ${error ? 'border-[#e05252] bg-[#fff5f5] focus:border-[#e05252]' : 'border-[#d4c9a8]'}
 `;
 
-const Field = ({ label, error, children }) => (
-  <div className="flex flex-col gap-1.5">
-    <Label>{label}</Label>
-    {children}
-    {error && <span className="text-xs text-[#c0392b]">{error}</span>}
-  </div>
-);
+
 
 const SectionHeading = ({ children }) => (
   <div className="text-[11px] font-bold text-[#C9A84C] tracking-[1.4px] uppercase mb-5">
@@ -97,7 +93,7 @@ const PaymentQrModal = ({ onClose, onMarkComplete, onMarkFailed }) => {
             </div>
             <p className="text-white text-sm font-medium">Scan & Pay</p>
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-colors">
+          <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -118,7 +114,7 @@ const PaymentQrModal = ({ onClose, onMarkComplete, onMarkFailed }) => {
           </div>
           <div className="text-center">
             <p className="text-sm font-semibold text-[#0F2A4A]">Pay ₹200</p>
-            <p className="text-xs text-[#0F2A4A]/40 mt-0.5">Scan this QR using any UPI app</p>
+            <p className="text-xs text-[#0F2A4A]/65 mt-0.5">Scan this QR using any UPI app</p>
           </div>
           <div className="flex items-center gap-3 w-full mt-2">
             <button onClick={onMarkFailed} className="flex-1 flex items-center justify-center gap-1.5 border border-red-200 hover:bg-red-50 text-red-500 text-xs font-semibold rounded-[7px] py-2.5 transition-colors font-[inherit] cursor-pointer">
@@ -281,7 +277,7 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
   const set = (key) => (e) => setForm(p => ({ ...p, [key]: e.target.value }));
 
   return (
-    <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-sm overflow-hidden">
+    <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-[0_6px_24px_#18344806] overflow-hidden">
 
       {/* Card header */}
       <div className="px-7 py-4 bg-[#faf9f6] border-b border-[#f0ece0] flex items-center justify-between gap-4">
@@ -289,11 +285,11 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
         <div className="flex items-center gap-3 flex-wrap min-w-0">
           <StatusBadge status={massPrayerReq.status} />
           {isPaidOnlineCompleted && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0F2A4A]/40">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0F2A4A]/65">
               <Lock size={11} /> Locked
             </span>
           )}
-          <span className="text-xs text-[#0F2A4A]/40 shrink-0">
+          <span className="text-xs text-[#0F2A4A]/65 shrink-0">
             Submitted {formatDate(massPrayerReq.createdAt)}
           </span>
           {massPrayerReq?.priest_response && (
@@ -308,7 +304,7 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
           {canEdit && !isEditing && (
             <button
               onClick={() => setIsEditing(true)}
-              className="flex items-center gap-1.5 text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#faf8f3] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
             >
               <Pencil size={11} /> Edit
             </button>
@@ -318,7 +314,7 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
             <>
               <button
                 onClick={handleCancelEdit}
-                className="flex items-center gap-1.5 text-[#0F2A4A]/50 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-[#0F2A4A]/65 hover:text-[#0F2A4A] bg-white hover:bg-[#faf8f3] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
               >
                 <X size={11} /> Cancel
               </button>
@@ -342,7 +338,7 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
                 className={`w-7 h-7 flex items-center justify-center rounded-md border transition-colors cursor-pointer
                   ${cababMenuOpen
                     ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white'
-                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/50 hover:text-[#0F2A4A] hover:bg-[#f4f2ed]'}
+                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#faf8f3]'}
                   disabled:opacity-40`}
               >
                 {cancelling ? <Loader2 size={13} className="animate-spin" /> : <MoreVertical size={13} />}
@@ -399,7 +395,7 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] rounded-[7px] px-3 py-2 transition-colors cursor-pointer font-[inherit]"
+                  className="flex items-center gap-1.5 text-xs font-semibold text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#faf8f3] border border-[#d4c9a8] rounded-[7px] px-3 py-2 transition-colors cursor-pointer font-[inherit]"
                 >
                   <ImagePlus size={13} /> Replace image
                 </button>
@@ -408,7 +404,7 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
             ) : (
               existingImageUrl
                 ? <img src={existingImageUrl} alt="Mass prayer" className="w-20 h-20 object-cover rounded-md border border-[#e2ddd0]" />
-                : <span className="text-sm text-[#0F2A4A]/40">—</span>
+                : <span className="text-sm text-[#0F2A4A]/65">—</span>
             )}
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageSelect} className="hidden" />
           </Field>
@@ -489,7 +485,7 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
           ) : payment.payment_mode === "offline" ? (
             <span className="text-sm text-[#0F2A4A] font-medium">Offline</span>
           ) : (
-            <span className="text-sm text-[#0F2A4A]/40">—</span>
+            <span className="text-sm text-[#0F2A4A]/65">—</span>
           )
         )}
       </div>
@@ -524,7 +520,7 @@ const paymentStatusStyles = {
 const PaymentStatusPill = ({ status }) => {
   const s = paymentStatusStyles[status] ?? paymentStatusStyles.pending;
   return (
-    <span className={`text-[10px] font-semibold uppercase tracking-wide border rounded-full px-2 py-0.5 ${s.bg} ${s.text} ${s.border}`}>
+    <span className={`text-[11px] font-semibold uppercase tracking-wide border rounded-full px-2 py-0.5 ${s.bg} ${s.text} ${s.border}`}>
       {s.label}
     </span>
   );
@@ -553,7 +549,7 @@ const MassPrayerRequestEditPage = () => {
   useEffect(() => { fetchMassPrayerRequests(); }, []);
 
   return (
-    <div className="min-h-screen bg-[#f4f2ed]">
+    <div className="min-h-screen bg-[#faf8f3]">
 
       {/* Page header */}
       <div className="bg-[#0F2A4A] border-b border-white/10">
@@ -567,7 +563,7 @@ const MassPrayerRequestEditPage = () => {
           </button>
           <div className="h-5 w-px bg-white/20" />
           <div>
-            <div className="text-white/50 text-[10px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
+            <div className="text-white/70 text-[11px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
               Sacrament Request
             </div>
             <div className="text-white font-bold text-base tracking-[0.2px] leading-none">
@@ -581,11 +577,11 @@ const MassPrayerRequestEditPage = () => {
       <div className="max-w-5xl mx-auto px-6 py-10">
 
         {fetching ? (
-          <div className="text-sm text-[#0F2A4A]/40 py-16 text-center">Loading…</div>
+          <div className="text-sm text-[#0F2A4A]/65 py-16 text-center">Loading…</div>
 
         ) : allMassPrayerRequests.length === 0 ? (
-          <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-sm px-8 py-14 flex flex-col items-center gap-4 text-center">
-            <div className="w-12 h-12 rounded-full bg-[#f4f2ed] border border-[#e2ddd0] flex items-center justify-center">
+          <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-[0_6px_24px_#18344806] px-8 py-14 flex flex-col items-center gap-4 text-center">
+            <div className="w-12 h-12 rounded-full bg-[#faf8f3] border border-[#e2ddd0] flex items-center justify-center">
               <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
                 <rect x="7" y="1" width="2" height="14" rx="1" fill="#C9A84C"/>
                 <rect x="2" y="5" width="12" height="2" rx="1" fill="#C9A84C"/>
@@ -593,7 +589,7 @@ const MassPrayerRequestEditPage = () => {
             </div>
             <div>
               <p className="text-sm font-semibold text-[#0F2A4A] mb-1">No mass prayer requests yet</p>
-              <p className="text-xs text-[#0F2A4A]/45">Submit a new request to get started.</p>
+              <p className="text-xs text-[#0F2A4A]/65">Submit a new request to get started.</p>
             </div>
             <button
               onClick={() => router.push("/applications/mass_prayer/apply")}
@@ -607,7 +603,7 @@ const MassPrayerRequestEditPage = () => {
         ) : (
           <div className="flex flex-col gap-5">
             <div className="flex items-center justify-between mb-1">
-              <p className="text-sm text-[#0F2A4A]/50 leading-relaxed">
+              <p className="text-sm text-[#0F2A4A]/65 leading-relaxed">
                 {allMassPrayerRequests.length} request{allMassPrayerRequests.length > 1 ? 's' : ''} found. Pending requests can be edited.
               </p>
               <button

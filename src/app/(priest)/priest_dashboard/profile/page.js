@@ -75,7 +75,7 @@ const PriestProfilePage = () => {
       <div className="mb-8">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-1.5 text-xs text-[#0F2A4A]/50 hover:text-[#0F2A4A] mb-3 transition-colors"
+          className="flex items-center gap-1.5 text-xs text-[#0F2A4A]/65 hover:text-[#0F2A4A] mb-3 transition-colors"
         >
           <ChevronLeft className="w-3.5 h-3.5" /> Back
         </button>
@@ -106,11 +106,11 @@ const PriestProfilePage = () => {
       </div>
 
       {/* Form card */}
-      <div className="bg-white rounded-2xl border border-[#0F2A4A]/10 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#0F2A4A]/10 shadow-[0_6px_24px_#18344806] overflow-hidden">
 
         <div className="px-5 py-4 border-b border-[#0F2A4A]/5 flex items-center gap-2">
-          <UserCog className="w-4 h-4 text-[#0F2A4A]/40" />
-          <span className="text-xs uppercase tracking-widest font-medium text-[#0F2A4A]/40">
+          <UserCog className="w-4 h-4 text-[#0F2A4A]/65" />
+          <span className="text-xs uppercase tracking-widest font-medium text-[#0F2A4A]/65">
             Edit details
           </span>
         </div>
@@ -119,7 +119,7 @@ const PriestProfilePage = () => {
 
           {/* Priest name field */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs uppercase tracking-widest font-medium text-[#0F2A4A]/50">
+            <label className="text-xs uppercase tracking-widest font-medium text-[#0F2A4A]/65">
               Priest name <span className="text-red-400">*</span>
             </label>
             <input

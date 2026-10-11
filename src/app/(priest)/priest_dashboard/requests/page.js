@@ -224,7 +224,7 @@ const RequestsPage = () => {
       {!loading && !error && pendingTypes.length === 0 && (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <div className="w-14 h-14 rounded-full bg-[#0F2A4A]/5 flex items-center justify-center mb-4">
-            <Inbox className="w-6 h-6 text-[#0F2A4A]/30" />
+            <Inbox className="w-6 h-6 text-[#0F2A4A]/65" />
           </div>
           <p className="text-[#0F2A4A] font-medium mb-1">All clear</p>
           <p className="text-sm text-gray-400">No pending requests at the moment.</p>
@@ -262,7 +262,7 @@ function RequestFaceCard({ type, count, onNavigate }) {
         </div>
         <div className="text-right">
           <p className="text-3xl font-bold text-white leading-none">{count}</p>
-          <p className="text-[10px] uppercase tracking-widest text-[#C9A84C] mt-1">Pending</p>
+          <p className="text-[11px] uppercase tracking-widest text-[#C9A84C] mt-1">Pending</p>
         </div>
       </div>
 

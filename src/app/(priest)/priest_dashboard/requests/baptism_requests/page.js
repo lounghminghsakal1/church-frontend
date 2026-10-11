@@ -129,7 +129,7 @@ function PageShell({ children, router, loading, onRefresh }) {
         <div>
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-1.5 text-xs text-[#0F2A4A]/50 hover:text-[#0F2A4A] mb-2 transition-colors"
+            className="flex items-center gap-1.5 text-xs text-[#0F2A4A]/65 hover:text-[#0F2A4A] mb-2 transition-colors"
           >
             <ChevronLeft className="w-3.5 h-3.5" /> Back
           </button>
@@ -268,7 +268,7 @@ function BaptismRequestCard({ req, submitting, onResponseChange, onApprove, onRe
 function InfoRow({ icon, label, children }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-medium text-[#0F2A4A]/40">
+      <span className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-medium text-[#0F2A4A]/65">
         {icon} {label}
       </span>
       <div className="text-sm font-medium text-[#0F2A4A] flex flex-col">{children}</div>
@@ -325,7 +325,7 @@ function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
       <div className="w-14 h-14 rounded-full bg-[#0F2A4A]/5 flex items-center justify-center mb-4">
-        <Inbox className="w-6 h-6 text-[#0F2A4A]/30" />
+        <Inbox className="w-6 h-6 text-[#0F2A4A]/65" />
       </div>
       <p className="text-[#0F2A4A] font-medium mb-1">No pending requests</p>
       <p className="text-sm text-gray-400">All baptism requests have been reviewed.</p>

@@ -1,3 +1,4 @@
+"use client";
 import { apiGet } from "@/services/axios";
 import { createContext, useContext, useEffect, useState } from "react";
 

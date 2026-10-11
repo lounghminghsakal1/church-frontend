@@ -1,18 +1,6 @@
-import React from 'react'
-import PriestLoginForm from './_components/PriestLoginForm'
+﻿import { Church } from 'lucide-react';
+import PriestLoginForm from './_components/PriestLoginForm';
 
-const PriestLoginPage = () => {
-  return (
-    <div className="w-full max-w-md">
-      {/* Heading */}
-      <div className="mb-10">
-        <p className="text-[#C9A84C] uppercase text-[10px] tracking-[0.35em] font-sans mb-2">Priest Portal</p>
-        <h1 className="text-[#0F2A4A] font-serif text-3xl font-bold">Welcome Back</h1>
-        <p className="text-[#0F2A4A]/50 font-sans text-sm mt-2">Sign in to manage your availability and parish services.</p>
-      </div>
-      <PriestLoginForm />
-    </div>
-  )
+export default function PriestLoginPage() {
+  return <div className="priest-login-card"><span className="priest-login-icon"><Church size={28} strokeWidth={1.3} /></span><p className="eyebrow">PRIEST PORTAL</p><h2>Welcome back, Father.</h2><p className="priest-login-intro">Sign in to manage your availability and care for your parish community.</p><PriestLoginForm /><p className="priest-login-footnote">Your dedicated space for parish administration.</p></div>;
 }
-
-export default PriestLoginPage;

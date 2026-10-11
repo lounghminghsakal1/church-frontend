@@ -155,7 +155,7 @@ const PriestViewFamilyCardModal = ({
               <p className="text-white text-sm font-medium leading-tight">
                 {isUpload ? "Upload Family Card" : "Family Card"}
               </p>
-              <p className="text-[#C9A84C]/60 text-[10px] uppercase tracking-widest">
+              <p className="text-[#C9A84C]/60 text-[11px] uppercase tracking-widest">
                 {isUpload ? `PDF only · Max ${MAX_FILE_SIZE_MB}MB` : "Read-only · Submitted by family"}
               </p>
             </div>
@@ -163,7 +163,7 @@ const PriestViewFamilyCardModal = ({
           <button
             onClick={onCancel}
             disabled={uploading}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-30"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-30"
           >
             <X className="w-4 h-4" />
           </button>
@@ -184,7 +184,7 @@ const PriestViewFamilyCardModal = ({
                   className="border-2 border-dashed border-[#0F2A4A]/20 hover:border-[#C9A84C]/60 rounded-xl p-8 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors group"
                 >
                   <div className="w-12 h-12 rounded-xl bg-[#0F2A4A]/5 group-hover:bg-[#C9A84C]/10 flex items-center justify-center transition-colors">
-                    <FileText className="w-6 h-6 text-[#0F2A4A]/30 group-hover:text-[#C9A84C] transition-colors" strokeWidth={1.4} />
+                    <FileText className="w-6 h-6 text-[#0F2A4A]/65 group-hover:text-[#C9A84C] transition-colors" strokeWidth={1.4} />
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-medium text-[#0F2A4A]">Drag & drop your PDF here</p>
@@ -193,8 +193,8 @@ const PriestViewFamilyCardModal = ({
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5 bg-[#0F2A4A]/4 rounded-lg px-3 py-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#0F2A4A]/30" />
-                    <span className="text-[11px] text-[#0F2A4A]/40">PDF format · Max {MAX_FILE_SIZE_MB}MB</span>
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#0F2A4A]/65" />
+                    <span className="text-[11px] text-[#0F2A4A]/65">PDF format · Max {MAX_FILE_SIZE_MB}MB</span>
                   </div>
                 </div>
               )}
@@ -226,8 +226,8 @@ const PriestViewFamilyCardModal = ({
           {/* ══ VIEW MODE ══ */}
           {isView && fetchingPdf && (
             <div className="flex flex-col items-center justify-center py-16 gap-3">
-              <Loader2 className="w-6 h-6 text-[#0F2A4A]/30 animate-spin" />
-              <p className="text-xs text-[#0F2A4A]/40 uppercase tracking-widest">Loading document…</p>
+              <Loader2 className="w-6 h-6 text-[#0F2A4A]/65 animate-spin" />
+              <p className="text-xs text-[#0F2A4A]/65 uppercase tracking-widest">Loading document…</p>
             </div>
           )}
 
@@ -255,7 +255,7 @@ const PriestViewFamilyCardModal = ({
           {previewUrl && (
             <div className="rounded-xl overflow-hidden border border-[#0F2A4A]/10">
               <div className="bg-[#0F2A4A]/4 px-4 py-2 border-b border-[#0F2A4A]/5 flex items-center justify-between">
-                <p className="text-[11px] uppercase tracking-widest font-medium text-[#0F2A4A]/40">
+                <p className="text-[11px] uppercase tracking-widest font-medium text-[#0F2A4A]/65">
                   {isUpload ? "Preview" : "Document"}
                 </p>
                 {isView && (

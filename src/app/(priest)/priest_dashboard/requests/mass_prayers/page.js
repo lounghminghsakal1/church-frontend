@@ -143,7 +143,7 @@ function PageShell({ children, router, loading, onRefresh }) {
         <div>
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-1.5 text-xs text-[#0F2A4A]/50 hover:text-[#0F2A4A] mb-2 transition-colors"
+            className="flex items-center gap-1.5 text-xs text-[#0F2A4A]/65 hover:text-[#0F2A4A] mb-2 transition-colors"
           >
             <ChevronLeft className="w-3.5 h-3.5" /> Back
           </button>
@@ -222,7 +222,7 @@ function MassPrayerRequestCard({ req, submitting, onResponseChange, onApprove, o
               <span className="text-gray-400 text-xs">₹{payment.amount}</span>
             )}
             {payment.payment_mode === "online" && payment.payment_status && (
-              <span className={`text-[10px] uppercase tracking-wide font-semibold border rounded-full px-2 py-0.5 ${PAYMENT_STATUS_STYLES[payment.payment_status] ?? PAYMENT_STATUS_STYLES.pending}`}>
+              <span className={`text-[11px] uppercase tracking-wide font-semibold border rounded-full px-2 py-0.5 ${PAYMENT_STATUS_STYLES[payment.payment_status] ?? PAYMENT_STATUS_STYLES.pending}`}>
                 {payment.payment_status}
               </span>
             )}
@@ -243,7 +243,7 @@ function MassPrayerRequestCard({ req, submitting, onResponseChange, onApprove, o
                 onError={() => setImageError(true)}
                 className="w-14 h-14 object-cover rounded-md border border-[#0F2A4A]/10"
               />
-              <ExternalLink className="w-3 h-3 text-[#0F2A4A]/30 group-hover:text-[#C9A84C] transition-colors" />
+              <ExternalLink className="w-3 h-3 text-[#0F2A4A]/65 group-hover:text-[#C9A84C] transition-colors" />
             </a>
           ) : (
             <span className="text-gray-400 text-xs">
@@ -310,7 +310,7 @@ function MassPrayerRequestCard({ req, submitting, onResponseChange, onApprove, o
 function InfoRow({ icon, label, children }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-medium text-[#0F2A4A]/40">
+      <span className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-medium text-[#0F2A4A]/65">
         {icon} {label}
       </span>
       <div className="text-sm font-medium text-[#0F2A4A] flex flex-col">{children}</div>
@@ -367,7 +367,7 @@ function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
       <div className="w-14 h-14 rounded-full bg-[#0F2A4A]/5 flex items-center justify-center mb-4">
-        <Inbox className="w-6 h-6 text-[#0F2A4A]/30" />
+        <Inbox className="w-6 h-6 text-[#0F2A4A]/65" />
       </div>
       <p className="text-[#0F2A4A] font-medium mb-1">No pending requests</p>
       <p className="text-sm text-gray-400">All mass prayer requests have been reviewed.</p>

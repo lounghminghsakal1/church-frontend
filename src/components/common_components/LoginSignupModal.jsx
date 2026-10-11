@@ -1,387 +1,151 @@
-import { useAuthUser } from '@/hooks/useAuthUser'
-import { apiPost } from '@/services/axios'
-import { useRouter } from 'next/navigation'
-import React, { useState, useEffect, useRef } from 'react'
-import { toast } from 'sonner'
+﻿"use client";
+import { useAuthUser } from '@/hooks/useAuthUser';
+import { apiPost } from '@/services/axios';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, useRef, useId } from 'react';
+import { Church, X, Eye, EyeOff, ArrowRight, Loader2, ShieldCheck } from 'lucide-react';
+import { toast } from 'sonner';
 
-const PRAYER_GROUPS = [
-  'St.Antony prayer group',
-  'St.Mary prayer group',
-  'Vellai mariyal prayer group',
-]
+const PRAYER_GROUPS = ['St.Antony prayer group', 'St.Mary prayer group', 'Vellai mariyal prayer group'];
 
-function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) }
-function validateMobile(m) { return /^\d{10}$/.test(m) }
-
-function getLoginErrors(f) {
-  const e = {}
-  if (!f.user_email.trim()) e.user_email = 'User email is required'
-  if (!f.user_password) e.user_password = 'Password is required'
-  return e
+function getLoginErrors(form) {
+  const errors = {};
+  if (!form.user_email.trim()) errors.user_email = 'Enter your email address';
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.user_email)) errors.user_email = 'Enter a valid email address';
+  if (!form.user_password) errors.user_password = 'Enter your password';
+  return errors;
 }
 
-function getSignupErrors(f) {
-  const e = {}
-  if (!f.user_name.trim()) e.user_name = 'Username is required'
-  if (!f.user_email.trim()) e.user_email = 'Email is required'
-  else if (!validateEmail(f.user_email)) e.user_email = 'Enter a valid email address'
-  if (!f.user_password) e.user_password = 'Password is required'
-  else if (f.user_password.length < 6) e.user_password = 'Minimum 6 characters'
-  if (!f.confirm_user_password) e.confirm_user_password = 'Confirm Password is required'
-  else if (f.user_password !== f.confirm_user_password) e.confirm_user_password = 'Confirm user password should match the password you entered'
-  if (!f.user_mobile_number.trim()) e.user_mobile_number = 'Mobile number is required'
-  else if (!validateMobile(f.user_mobile_number)) e.user_mobile_number = 'Enter a valid 10-digit number'
-  if (!f.prayer_group) e.prayer_group = 'Please select a prayer group'
-  return e
+function getSignupErrors(form) {
+  const errors = getLoginErrors(form);
+  if (!form.user_name.trim()) errors.user_name = 'Enter your name';
+  if (form.user_password && form.user_password.length < 6) errors.user_password = 'Use at least 6 characters';
+  if (!form.confirm_user_password) errors.confirm_user_password = 'Confirm your password';
+  else if (form.user_password !== form.confirm_user_password) errors.confirm_user_password = 'Passwords must match';
+  if (!/^\d{10}$/.test(form.user_mobile_number)) errors.user_mobile_number = 'Enter a 10-digit mobile number';
+  if (!form.prayer_group) errors.prayer_group = 'Choose your prayer group';
+  return errors;
 }
 
 function Field({ label, type = 'text', value, onChange, error, placeholder, autoComplete, children }) {
-  const [show, setShow] = useState(false)
-  const isPassword = type === 'password'
-
+  const [show, setShow] = useState(false);
+  const id = useId();
+  const password = type === 'password';
+  const inputProps = { id, 'aria-invalid': !!error, 'aria-describedby': error ? `${id}-error` : undefined };
   return (
-    <div className="flex flex-col gap-1.5">
-      <label className="text-[11px] font-semibold text-[#0F2A4A] tracking-wider uppercase">
-        {label}
-      </label>
-      {children ?? (
-        <div className="relative">
-          <input
-            type={isPassword && show ? 'text' : type}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            autoComplete={autoComplete}
-            className={`
-              w-full px-3.5 py-2.5 rounded-[7px] text-sm text-[#0F2A4A] font-[inherit]
-              border-[1.5px] outline-none transition-colors box-border
-              ${error
-                ? 'border-[#e05252] bg-[#fff5f5] focus:border-[#e05252]'
-                : 'border-[#d4c9a8] bg-white focus:border-[#C9A84C]'}
-              ${isPassword ? 'pr-14' : ''}
-            `}
-          />
-          {isPassword && (
-            <button
-              type="button"
-              onClick={() => setShow(s => !s)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer p-0 text-[#8a7a55] text-[11px] font-semibold tracking-[0.3px]"
-            >
-              {show ? 'HIDE' : 'SHOW'}
-            </button>
-          )}
-        </div>
-      )}
-      {error && <span className="text-xs text-[#c0392b] mt-0.5">{error}</span>}
+    <div className="auth-field">
+      <label htmlFor={id}>{label}</label>
+      {children ? React.cloneElement(children, { ...inputProps, className: 'auth-input' }) : <div className="auth-input-wrap"><input {...inputProps} type={password && show ? 'text' : type} value={value} onChange={onChange} placeholder={placeholder} autoComplete={autoComplete} inputMode={type === 'tel' ? 'numeric' : type === 'email' ? 'email' : undefined} className={`auth-input ${password ? 'has-password-toggle' : ''}`} />{password && <button type="button" className="auth-password-toggle" onClick={() => setShow(!show)} aria-label={show ? 'Hide password' : 'Show password'} aria-pressed={show}>{show ? <EyeOff size={19} /> : <Eye size={19} />}</button>}</div>}
+      {error && <p id={`${id}-error`} role="alert" className="auth-field-error">{error}</p>}
     </div>
-  )
+  );
 }
 
-const LoginSignupModal = ({ onSuccess, onCancel, onSuccessGoToLink }) => {
-  const [mode, setMode] = useState('login')
-  const [loading, setLoading] = useState(false)
-  const [loginErrors, setLoginErrors] = useState({})
-  const [signupErrors, setSignupErrors] = useState({})
-  const overlayRef = useRef(null)
-
-  const [loginForm, setLoginForm] = useState({ user_email: 'sakal@gmail.com', user_password: 'Sakal@123' })
-  const [signupForm, setSignupForm] = useState({
-    user_name: '', user_email: '', user_password: '', confirm_user_password: "",
-    user_mobile_number: '', prayer_group: '',
-  })
+export default function LoginSignupModal({ onSuccess, onCancel, onSuccessGoToLink }) {
+  const [mode, setMode] = useState('login');
+  const [loading, setLoading] = useState(false);
+  const [loginErrors, setLoginErrors] = useState({});
+  const [signupErrors, setSignupErrors] = useState({});
+  const [requestError, setRequestError] = useState('');
+  const [loginForm, setLoginForm] = useState({ user_email: '', user_password: '' });
+  const [signupForm, setSignupForm] = useState({ user_name: '', user_email: '', user_password: '', confirm_user_password: '', user_mobile_number: '', prayer_group: '' });
+  const overlayRef = useRef(null);
+  const dialogRef = useRef(null);
+  const titleId = useId();
+  const descriptionId = useId();
   const { setUser } = useAuthUser();
   const router = useRouter();
 
   useEffect(() => {
-    const h = e => { if (e.key === 'Escape') onCancel?.() }
-    document.addEventListener('keydown', h)
-    return () => document.removeEventListener('keydown', h)
-  }, [onCancel])
+    const close = event => { if (event.key === 'Escape') onCancel?.(); };
+    document.addEventListener('keydown', close);
+    return () => document.removeEventListener('keydown', close);
+  }, [onCancel]);
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = '' }
-  }, [])
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement;
+    document.body.style.overflow = 'hidden';
+    const focusTarget = window.matchMedia('(min-width: 701px)').matches ? dialogRef.current?.querySelector('input') : dialogRef.current?.querySelector('.auth-close');
+    focusTarget?.focus({ preventScroll: true });
+    const trapFocus = event => {
+      if (event.key !== 'Tab') return;
+      const controls = [...dialogRef.current.querySelectorAll('button:not(:disabled), input, select, a[href]')].filter(element => element.getClientRects().length);
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener('keydown', trapFocus);
+    return () => { document.body.style.overflow = previousOverflow; document.removeEventListener('keydown', trapFocus); previousFocus?.focus({ preventScroll: true }); };
+  }, []);
 
   function switchMode(next) {
-    setMode(next)
-    setLoginErrors({})
-    setSignupErrors({})
+    setMode(next);
+    setLoginErrors({});
+    setSignupErrors({});
+    setRequestError('');
   }
 
   const handleLogin = async () => {
-    const errors = getLoginErrors(loginForm)
-    if (Object.keys(errors).length) { setLoginErrors(errors); return }
-    setLoginErrors({})
-    setLoading(true)
+    if (loading) return;
+    const errors = getLoginErrors(loginForm);
+    if (Object.keys(errors).length) { setLoginErrors(errors); return; }
+    setLoginErrors({});
+    setRequestError('');
+    setLoading(true);
     try {
-      const res = await apiPost('/auth/user/login', loginForm)
-      if (res.status === 'success') {
-        toast.success('Logged in successfully')
-        setUser(res.data);
-        if (onSuccessGoToLink) {
-          onSuccess();
-          router.push(onSuccessGoToLink);
-          return;
-        }
-        onSuccess?.()
-      } else {
-        throw new Error(res.message ?? 'Login failed')
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message ?? err.message ?? 'Login failed')
-    } finally {
-      setLoading(false)
-    }
-  }
+      const response = await apiPost('/auth/user/login', loginForm);
+      if (response.status !== 'success') throw new Error(response.message ?? 'Unable to sign in. Please try again.');
+      setUser(response.data);
+      toast.success('Welcome back to your parish.');
+      onSuccess?.();
+      if (onSuccessGoToLink) router.push(onSuccessGoToLink);
+    } catch (error) {
+      setRequestError(error.response?.data?.message ?? error.message ?? 'Unable to sign in. Please try again.');
+    } finally { setLoading(false); }
+  };
 
   const handleSignup = async () => {
-    const errors = getSignupErrors(signupForm)
-    if (Object.keys(errors).length) { setSignupErrors(errors); return }
-    setSignupErrors({})
-    setLoading(true)
+    if (loading) return;
+    const errors = getSignupErrors(signupForm);
+    if (Object.keys(errors).length) { setSignupErrors(errors); return; }
+    setSignupErrors({});
+    setRequestError('');
+    setLoading(true);
     try {
-      const res = await apiPost('/auth/user/signup', signupForm)
-      if (res.status === 'success') {
-        toast.success('Account created! Log in to continue.')
-        switchMode('login')
-        setLoginForm({ user_email: res.data.user_email, user_password: "" })
-      } else {
-        throw new Error(res.data?.message ?? 'Signup failed')
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message ?? err.message ?? 'Signup failed')
-    } finally {
-      setLoading(false)
-    }
-  }
+      const response = await apiPost('/auth/user/signup', signupForm);
+      if (response.status !== 'success') throw new Error(response.message ?? response.data?.message ?? 'Unable to create your account. Please try again.');
+      toast.success('Account created! Sign in to continue.');
+      switchMode('login');
+      setLoginForm({ user_email: response.data?.user_email ?? signupForm.user_email, user_password: '' });
+    } catch (error) {
+      setRequestError(error.response?.data?.message ?? error.message ?? 'Unable to create your account. Please try again.');
+    } finally { setLoading(false); }
+  };
 
-  const handleBackdrop = e => { if (e.target === overlayRef.current) onCancel?.() }
-
-  const selectError = !!signupErrors.prayer_group
-
+  const signingUp = mode === 'signup';
   return (
-    <div
-      ref={overlayRef}
-      onClick={handleBackdrop}
-      className="fixed inset-0 z-[9999] bg-[rgba(10,22,40,0.65)] flex items-center justify-center p-4 backdrop-blur-sm"
-    >
-      <div
-        role="dialog"
-        aria-modal="true"
-        className="bg-[#f8f7f4] rounded-2xl w-full overflow-hidden shadow-[0_24px_80px_rgba(10,22,40,0.35)] transition-[max-width] duration-200 ease-in-out"
-        style={{ maxWidth: mode === 'signup' ? 520 : 440 }}
-      >
-        {/* Header */}
-        <div className="bg-[#0F2A4A] px-8 pt-7 pb-6 relative">
-          <button
-            onClick={onCancel}
-            aria-label="Close"
-            className="absolute top-3.5 right-4 bg-white/10 border border-white/20 rounded-md w-7 h-7 cursor-pointer text-white text-sm font-bold flex items-center justify-center font-[inherit]"
-          >
-            ✕
-          </button>
-
-          <div className="flex items-center gap-2.5 mb-5">
-            <div className="w-9 h-9 rounded-full border-2 border-[#C9A84C] flex items-center justify-center shrink-0">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <rect x="7" y="1" width="2" height="14" rx="1" fill="#C9A84C" />
-                <rect x="2" y="5" width="12" height="2" rx="1" fill="#C9A84C" />
-              </svg>
-            </div>
-            <div>
-              <div className="text-white font-bold text-sm tracking-[0.3px]">St. Antony's Church</div>
-              <div className="text-[#C9A84C] text-[11px] tracking-[1.2px] uppercase">Illuppur</div>
-            </div>
-          </div>
-
-          <div className="text-white/55 text-[11px] font-semibold tracking-[1.5px] uppercase mb-1">
-            {mode === 'login' ? 'Welcome back' : 'Create account'}
-          </div>
-          <div className="text-white text-xl font-bold tracking-[0.2px]">
-            {mode === 'login' ? 'Sign in to continue' : 'Join the community'}
-          </div>
-
-          <div className="flex mt-5 rounded-[7px] bg-white/[0.08] p-[3px] gap-[3px]">
-            {['login', 'signup'].map(m => (
-              <button
-                key={m}
-                onClick={() => switchMode(m)}
-                className={`
-                  flex-1 py-2 rounded-[5px] border-none font-bold text-[13px] cursor-pointer
-                  tracking-[0.4px] font-[inherit] transition-all duration-[180ms]
-                  ${mode === m
-                    ? 'bg-[#C9A84C] text-[#0F2A4A]'
-                    : 'bg-transparent text-white/65'}
-                `}
-              >
-                {m === 'login' ? 'Log in' : 'Sign up'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Body */}
-        <div className={`${mode === 'signup' ? 'px-8 pt-6 pb-7' : 'px-8 pt-7 pb-8'}`}>
-          {mode === 'login' ? (
-            <div className="flex flex-col gap-4">
-              <Field
-                label="User Email"
-                value={loginForm.user_email}
-                onChange={e => setLoginForm(p => ({ ...p, user_email: e.target.value }))}
-                error={loginErrors.user_email}
-                placeholder="Enter your user email id"
-                autoComplete="email"
-              />
-              <Field
-                label="Password"
-                type="password"
-                value={loginForm.user_password}
-                onChange={e => setLoginForm(p => ({ ...p, user_password: e.target.value }))}
-                error={loginErrors.user_password}
-                placeholder="Enter your password"
-                autoComplete="current-password"
-              />
-              <div className="mt-1">
-                <button
-                  onClick={handleLogin}
-                  disabled={loading}
-                  className={`
-                    w-full py-3 rounded-[7px] font-bold text-sm text-[#0F2A4A]
-                    border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150
-                    ${loading ? 'bg-[#a89050] cursor-not-allowed' : 'bg-[#C9A84C] cursor-pointer hover:bg-[#e2c06a]'}
-                  `}
-                >
-                  {loading ? 'Signing in…' : 'Log in'}
-                </button>
-              </div>
-              <div className="text-center text-[13px] text-[#6b6040]">
-                Don't have an account?{' '}
-                <button
-                  onClick={() => switchMode('signup')}
-                  className="bg-transparent border-none cursor-pointer text-[#0F2A4A] font-bold text-[13px] p-0 underline underline-offset-2 font-[inherit]"
-                >
-                  Sign up
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-x-5 gap-y-3.5">
-              <div className="col-span-2">
-                <Field
-                  label="Username"
-                  value={signupForm.user_name}
-                  onChange={e => setSignupForm(p => ({ ...p, user_name: e.target.value }))}
-                  error={signupErrors.user_name}
-                  placeholder="Choose a username"
-                  autoComplete="username"
-                />
-              </div>
-
-              <Field
-                label="Email address"
-                type="email"
-                value={signupForm.user_email}
-                onChange={e => setSignupForm(p => ({ ...p, user_email: e.target.value }))}
-                error={signupErrors.user_email}
-                placeholder="you@example.com"
-                autoComplete="email"
-              />
-
-              <Field
-                label="Mobile number"
-                value={signupForm.user_mobile_number}
-                onChange={(e) => {
-                  const value = e.target.value;
-
-                  if (/^\d{0,10}$/.test(value)) {
-                    setSignupForm((prev) => ({
-                      ...prev,
-                      user_mobile_number: value,
-                    }));
-                  }
-                }}
-                error={signupErrors.user_mobile_number}
-                placeholder="10-digit number"
-                autoComplete="tel"
-              />
-
-              <Field
-                label="Password"
-                type="password"
-                value={signupForm.user_password}
-                onChange={e => setSignupForm(p => ({ ...p, user_password: e.target.value }))}
-                error={signupErrors.user_password}
-                placeholder="Min. 6 characters"
-                autoComplete="new-password"
-              />
-
-              <Field
-                label="Confirm Password"
-                type="password"
-                value={signupForm.confirm_user_password}
-                onChange={e => setSignupForm(p => ({ ...p, confirm_user_password: e.target.value }))}
-                error={signupErrors.confirm_user_password}
-                placeholder="Enter your password again to confirm it"
-                autoComplete="new-password"
-              />
-
-              <div className="col-span-2">
-                <Field label="Prayer group" error={signupErrors.prayer_group}>
-                  <select
-                    value={signupForm.prayer_group}
-                    onChange={e => setSignupForm(p => ({ ...p, prayer_group: e.target.value }))}
-                    className={`
-                      w-full px-3.5 py-2.5 rounded-[7px] text-sm text-[#0F2A4A] font-[inherit]
-                      border-[1.5px] outline-none appearance-none cursor-pointer box-border
-                      bg-no-repeat bg-[right_14px_center]
-                      transition-colors
-                      ${selectError
-                        ? 'border-[#e05252] bg-[#fff5f5] focus:border-[#e05252]'
-                        : 'border-[#d4c9a8] bg-white focus:border-[#C9A84C]'}
-                    `}
-                    style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230F2A4A' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
-                      paddingRight: 36,
-                    }}
-                  >
-                    <option value="">Select your prayer group</option>
-                    {PRAYER_GROUPS.map(g => (
-                      <option key={g} value={g}>{g}</option>
-                    ))}
-                  </select>
-                </Field>
-              </div>
-
-              <div className="col-span-2 mt-0.5">
-                <button
-                  onClick={handleSignup}
-                  disabled={loading}
-                  className={`
-                    w-full py-3 rounded-[7px] font-bold text-sm text-[#0F2A4A]
-                    border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150
-                    ${loading ? 'bg-[#a89050] cursor-not-allowed' : 'bg-[#C9A84C] cursor-pointer hover:bg-[#e2c06a]'}
-                  `}
-                >
-                  {loading ? 'Creating account…' : 'Create account'}
-                </button>
-              </div>
-
-              <div className="col-span-2 text-center text-[13px] text-[#6b6040]">
-                Already have an account?{' '}
-                <button
-                  onClick={() => switchMode('login')}
-                  className="bg-transparent border-none cursor-pointer text-[#0F2A4A] font-bold text-[13px] p-0 underline underline-offset-2 font-[inherit]"
-                >
-                  Log in
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+    <div ref={overlayRef} onClick={event => { if (event.target === overlayRef.current) onCancel?.(); }} className="auth-overlay">
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby={titleId} aria-describedby={descriptionId} className={`auth-dialog ${signingUp ? 'auth-signup' : ''}`}>
+        <div className="auth-sheet-handle" aria-hidden="true" />
+        <button type="button" onClick={onCancel} aria-label="Close sign-in dialog" className="auth-close"><X size={21} /></button>
+        <div className="auth-heading"><span className="auth-brand-mark"><Church size={27} strokeWidth={1.3} /></span><p className="auth-parish">ST. ANTONY’S CHURCH · ILLUPPUR</p><h2 id={titleId}>{signingUp ? 'A place for you.' : 'Welcome to your parish.'}</h2><p id={descriptionId}>{signingUp ? 'Create your account to connect with your parish family.' : 'Sign in to request sacraments, share intentions, and stay connected.'}</p></div>
+        <div className="auth-mode-switch" role="group" aria-label="Choose sign in or create account"><button type="button" aria-pressed={!signingUp} onClick={() => switchMode('login')} disabled={loading}>Sign in</button><button type="button" aria-pressed={signingUp} onClick={() => switchMode('signup')} disabled={loading}>Create account</button></div>
+        <form className="auth-form" noValidate aria-busy={loading} onSubmit={event => { event.preventDefault(); signingUp ? handleSignup() : handleLogin(); }}>
+          {requestError && <p className="auth-request-error" role="alert">{requestError}</p>}
+          {signingUp ? <div className="auth-signup-fields">
+            <div className="auth-full-width"><Field label="Your name" value={signupForm.user_name} onChange={event => setSignupForm(form => ({ ...form, user_name: event.target.value }))} error={signupErrors.user_name} placeholder="Your full name" autoComplete="name" /></div>
+            <Field label="Email address" type="email" value={signupForm.user_email} onChange={event => setSignupForm(form => ({ ...form, user_email: event.target.value }))} error={signupErrors.user_email} placeholder="you@example.com" autoComplete="email" />
+            <Field label="Mobile number" type="tel" value={signupForm.user_mobile_number} onChange={event => setSignupForm(form => ({ ...form, user_mobile_number: event.target.value.replace(/\D/g, '').slice(0, 10) }))} error={signupErrors.user_mobile_number} placeholder="10-digit mobile number" autoComplete="tel-national" />
+            <Field label="Password" type="password" value={signupForm.user_password} onChange={event => setSignupForm(form => ({ ...form, user_password: event.target.value }))} error={signupErrors.user_password} placeholder="At least 6 characters" autoComplete="new-password" />
+            <Field label="Confirm password" type="password" value={signupForm.confirm_user_password} onChange={event => setSignupForm(form => ({ ...form, confirm_user_password: event.target.value }))} error={signupErrors.confirm_user_password} placeholder="Repeat your password" autoComplete="new-password" />
+            <div className="auth-full-width"><Field label="Prayer group" error={signupErrors.prayer_group}><select value={signupForm.prayer_group} onChange={event => setSignupForm(form => ({ ...form, prayer_group: event.target.value }))}><option value="">Choose your prayer group</option>{PRAYER_GROUPS.map(group => <option key={group} value={group}>{group}</option>)}</select></Field></div>
+          </div> : <div className="auth-login-fields"><Field label="Email address" type="email" value={loginForm.user_email} onChange={event => setLoginForm(form => ({ ...form, user_email: event.target.value }))} error={loginErrors.user_email} placeholder="you@example.com" autoComplete="email" /><Field label="Password" type="password" value={loginForm.user_password} onChange={event => setLoginForm(form => ({ ...form, user_password: event.target.value }))} error={loginErrors.user_password} placeholder="Enter your password" autoComplete="current-password" /></div>}
+          <button type="submit" disabled={loading} className="auth-submit">{loading ? <><Loader2 size={18} className="animate-spin" />{signingUp ? 'Creating your account…' : 'Signing you in…'}</> : <>{signingUp ? 'Create my parish account' : 'Sign in to my parish'}<ArrowRight size={18} /></>}</button>
+        </form>
+        <div className="auth-footer"><p>{signingUp ? 'Already part of our parish online?' : 'New to our parish online?'} <button type="button" disabled={loading} onClick={() => switchMode(signingUp ? 'login' : 'signup')}>{signingUp ? 'Sign in' : 'Join us'}</button></p><span><ShieldCheck size={14} /> Your parish account, in one place.</span></div>
       </div>
     </div>
-  )
+  );
 }
-
-export default LoginSignupModal

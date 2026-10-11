@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useAuthPriest } from "@/hooks/useAuthPriest";
 import { toast } from "sonner";
+import { apiPost } from "@/services/axios";
 
 // ── Page title map ────────────────────────────────────────────────
 const PAGE_TITLES = {
@@ -50,12 +51,12 @@ const PAGE_TITLES = {
 // ── All nav items (mirrors sidebar) ──────────────────────────────
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/priest_dashboard", icon: LayoutDashboard, implemented: true },
-  { label: "Availability", href: "/priest_dashboard/availability", icon: CalendarDays, implemented: true },
+  { label: "Availability", href: "/priest_dashboard#priest-availability", icon: CalendarDays, implemented: true },
   { label: "Profile", href: "/priest_dashboard/profile", icon: UserCog, implemented: true },
   { label: "Requests", href: "/priest_dashboard/requests", icon: ClipboardList, implemented: true },
   { label: "Activities", href: "/priest_dashboard/activities", icon: ClipboardList, implemented: false },
   { label: "Announcements", href: "/priest_dashboard/announcements", icon: Megaphone, implemented: false },
-];
+].filter(item => item.implemented);
 
 // ── Profile dropdown ──────────────────────────────────────────────
 const ProfileDropdown = ({ priest, onClose, onLogout, pathname }) => (
@@ -68,11 +69,11 @@ const ProfileDropdown = ({ priest, onClose, onLogout, pathname }) => (
     />
 
     {/* Panel */}
-    <div className="absolute right-0 top-full mt-2 z-40 w-72 bg-white rounded-sm border border-[#0F2A4A]/10 shadow-2xl shadow-[#0F2A4A]/10 overflow-hidden">
+    <div className="absolute right-0 top-full mt-2 z-40 w-72 bg-white rounded-xl border border-[#0F2A4A]/10 shadow-2xl shadow-[#0F2A4A]/10 overflow-hidden">
 
       {/* Priest identity header */}
       <div className="px-4 py-4 bg-[#0A1F3A] flex items-center gap-3">
-        <div className="w-10 h-10 rounded-sm bg-[#C9A84C]/20 border border-[#C9A84C]/30 flex items-center justify-center flex-shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-[#C9A84C]/20 border border-[#C9A84C]/30 flex items-center justify-center flex-shrink-0">
           <span className="text-[#C9A84C] font-serif text-base font-bold">
             {priest?.priest_name?.charAt(0) ?? "P"}
           </span>
@@ -81,13 +82,13 @@ const ProfileDropdown = ({ priest, onClose, onLogout, pathname }) => (
           <p className="font-serif text-white text-sm font-semibold truncate">
             {priest?.priest_name ? `Father ${priest.priest_name}` : "Father"}
           </p>
-          <p className="font-sans text-slate-400 text-[10px] truncate mt-0.5">
+          <p className="font-sans text-slate-400 text-[11px] truncate mt-0.5">
             {priest?.priest_email ?? "Parish Priest"}
           </p>
         </div>
         <button
           onClick={onClose}
-          className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-white/10 text-white/50 hover:text-white hover:bg-white/20 transition-colors"
+          className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:text-white hover:bg-white/20 transition-colors"
         >
           <X size={12} />
         </button>
@@ -95,7 +96,7 @@ const ProfileDropdown = ({ priest, onClose, onLogout, pathname }) => (
 
       {/* Nav links */}
       <div className="py-1.5">
-        <p className="px-4 pt-2 pb-1 font-sans text-[9px] uppercase tracking-widest text-[#0F2A4A]/35 font-semibold">
+        <p className="px-4 pt-2 pb-1 font-sans text-[9px] uppercase tracking-widest text-[#0F2A4A]/65 font-semibold">
           Navigation
         </p>
         {NAV_ITEMS.map((item) => {
@@ -115,7 +116,7 @@ const ProfileDropdown = ({ priest, onClose, onLogout, pathname }) => (
               <Icon size={15} className="flex-shrink-0" />
               <span className="font-sans text-sm font-medium flex-1">{item.label}</span>
               {!item.implemented && (
-                <span className="text-[9px] font-sans font-semibold uppercase tracking-widest text-[#C9A84C]/50 bg-[#C9A84C]/10 px-1.5 py-0.5 rounded-sm">
+                <span className="text-[9px] font-sans font-semibold uppercase tracking-widest text-[#C9A84C]/50 bg-[#C9A84C]/10 px-1.5 py-0.5 rounded-xl">
                   Soon
                 </span>
               )}
@@ -130,7 +131,7 @@ const ProfileDropdown = ({ priest, onClose, onLogout, pathname }) => (
 
       {/* Bottom actions */}
       <div className="py-1.5">
-        <p className="px-4 pt-2 pb-1 font-sans text-[9px] uppercase tracking-widest text-[#0F2A4A]/35 font-semibold">
+        <p className="px-4 pt-2 pb-1 font-sans text-[9px] uppercase tracking-widest text-[#0F2A4A]/65 font-semibold">
           Quick Links
         </p>
         <Link
@@ -162,12 +163,16 @@ const DashboardTopbar = () => {
   const router = useRouter();
   const { loggedInPriest, setLoggedInPriest } = useAuthPriest();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const page = PAGE_TITLES[pathname] ?? { title: "Priest Portal", subtitle: "" };
+  const page = PAGE_TITLES[pathname] ?? (pathname.startsWith("/priest_dashboard/requests/") ? { title: "Parish requests", subtitle: "Review and respond to your parish community" } : { title: "Priest Portal", subtitle: "" });
 
-  const handleLogout = () => {
-    setLoggedInPriest(null);
-    toast.success("Signed out successfully.");
-    router.push("/");
+  const handleLogout = async () => {
+    try {
+      const response = await apiPost('/auth/priest/logout');
+      if (response?.status !== 'success') throw new Error(response?.message || 'Unable to sign out.');
+      setLoggedInPriest(null);
+      toast.success('Signed out successfully.');
+      router.push('/');
+    } catch (error) { toast.error(error.message || 'Unable to sign out. Please try again.'); }
   };
 
   return (
@@ -175,7 +180,7 @@ const DashboardTopbar = () => {
 
       {/* Left — brand + page title */}
       <div className="flex items-center gap-3">
-        <div className="flex md:hidden items-center justify-center w-7 h-7 bg-[#C9A84C]/15 rounded-sm border border-[#C9A84C]/25 flex-shrink-0">
+        <div className="flex md:hidden items-center justify-center w-7 h-7 bg-[#C9A84C]/15 rounded-xl border border-[#C9A84C]/25 flex-shrink-0">
           <Church size={14} className="text-[#C9A84C]" />
         </div>
         <div>
@@ -183,7 +188,7 @@ const DashboardTopbar = () => {
             {page.title}
           </h1>
           {page.subtitle && (
-            <p className="hidden sm:block font-sans text-[#0F2A4A]/45 text-xs tracking-wide mt-0.5">
+            <p className="hidden sm:block font-sans text-[#0F2A4A]/65 text-xs tracking-wide mt-0.5">
               {page.subtitle}
             </p>
           )}
@@ -193,21 +198,20 @@ const DashboardTopbar = () => {
       {/* Right — bell + avatar */}
       <div className="flex items-center gap-2 md:gap-3">
         {/* Notification bell */}
-        <button className="relative w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-sm border border-[#0F2A4A]/10 text-[#0F2A4A]/40 hover:border-[#C9A84C]/40 hover:text-[#C9A84C] hover:bg-[#C9A84C]/5 transition-all duration-200">
-          <Bell size={15} />
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#C9A84C] rounded-full" />
-        </button>
+        <Link href="/" className="priest-back-link" aria-label="View parish website"><Globe size={18} /><span className="hidden sm:inline">View parish</span></Link>
 
         {/* Avatar — tappable, opens dropdown */}
         <div className="relative flex items-center gap-2.5 pl-2 md:pl-3 border-l border-[#0F2A4A]/8">
           <button
             onClick={() => setDropdownOpen((v) => !v)}
-            className={`flex items-center gap-2.5 rounded-sm transition-all duration-150 ${dropdownOpen ? "opacity-80" : "hover:opacity-80"
+            className={`flex items-center gap-2.5 rounded-xl transition-all duration-150 ${dropdownOpen ? "opacity-80" : "hover:opacity-80"
               }`}
             aria-label="Open profile menu"
+            aria-expanded={dropdownOpen}
+            style={{ minHeight: 44, minWidth: 44 }}
           >
             <div
-              className={`w-7 h-7 md:w-8 md:h-8 rounded-sm flex items-center justify-center flex-shrink-0 transition-all duration-150 ${dropdownOpen
+              className={`w-7 h-7 md:w-8 md:h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-150 ${dropdownOpen
                   ? "bg-[#C9A84C] ring-2 ring-[#C9A84C]/30"
                   : "bg-[#0F2A4A]"
                 }`}
@@ -223,7 +227,7 @@ const DashboardTopbar = () => {
               <p className="font-sans text-[#0F2A4A] text-xs font-semibold leading-tight">
                 {loggedInPriest?.priest_name ?? "Father"}
               </p>
-              <p className="font-sans text-[#0F2A4A]/40 text-[10px] leading-tight flex items-center gap-1">
+              <p className="font-sans text-[#0F2A4A]/65 text-[11px] leading-tight flex items-center gap-1">
                 <Church size={9} />
                 Priest
               </p>
