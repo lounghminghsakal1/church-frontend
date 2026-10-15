@@ -189,8 +189,7 @@ const UserFamilyCardUploadModal = ({
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
               onClick={() => inputRef.current?.click()}
-              className={`flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed cursor-pointer transition-colors px-6 py-14 text-center
-                ${dragOver ? 'border-[#C9A84C] bg-[#fdf8ee]' : 'border-[#d4c9a8] bg-[#faf9f6] hover:bg-[#f4f2ed]'}`}
+              className={`flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed cursor-pointer transition-colors px-6 py-14 text-center ${dragOver ? 'border-[#C9A84C] bg-[#fdf8ee]' : 'border-[#d4c9a8] bg-[#faf9f6] hover:bg-[#f4f2ed]'}`}
             >
               <input
                 ref={inputRef}
@@ -260,8 +259,7 @@ const UserFamilyCardUploadModal = ({
               <button
                 onClick={handleReplaceClick}
                 disabled={replacing}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-[7px] text-xs font-bold uppercase tracking-[0.6px] font-[inherit] transition-colors cursor-pointer border-none disabled:opacity-60
-                  ${showVerifyActions
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-[7px] text-xs font-bold uppercase tracking-[0.6px] font-[inherit] transition-colors cursor-pointer border-none disabled:opacity-60 ${showVerifyActions
                     ? 'text-red-600 bg-red-50 hover:bg-red-100'
                     : 'text-[#0F2A4A] bg-[#C9A84C] hover:bg-[#dbb85a]'}`}
               >
@@ -283,8 +281,7 @@ const UserFamilyCardUploadModal = ({
               <button
                 onClick={handleUpload}
                 disabled={uploading || !file}
-                className={`flex items-center gap-1.5 px-5 py-2 rounded-[7px] text-xs font-bold uppercase tracking-[0.6px] border-none font-[inherit] transition-colors cursor-pointer
-                  ${uploading || !file ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
+                className={`flex items-center gap-1.5 px-5 py-2 rounded-[7px] text-xs font-bold uppercase tracking-[0.6px] border-none font-[inherit] transition-colors cursor-pointer ${uploading || !file ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
               >
                 {uploading ? <Loader2 size={13} className="animate-spin" /> : <UploadCloud size={13} />}
                 {uploading ? 'Uploading…' : 'Upload'}

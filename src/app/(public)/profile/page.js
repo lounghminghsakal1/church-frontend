@@ -88,8 +88,7 @@ const MultiSelectOrgs = ({ value, onChange, error }) => {
                   key={org}
                   type="button"
                   onClick={() => toggleOrg(org)}
-                  className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 text-sm font-[inherit] transition-colors cursor-pointer text-left
-                    ${selected ? 'bg-[#fdf8ee] text-[#0F2A4A] font-semibold' : 'text-[#0F2A4A]/80 hover:bg-[#faf8f3]'}`}
+                  className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 text-sm font-[inherit] transition-colors cursor-pointer text-left ${selected ? 'bg-[#fdf8ee] text-[#0F2A4A] font-semibold' : 'text-[#0F2A4A]/80 hover:bg-[#faf8f3]'}`}
                 >
                   <span>{org}</span>
                   {selected && <Check size={14} className="text-[#C9A84C] shrink-0" />}
@@ -330,8 +329,7 @@ const UserProfilePage = () => {
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer
-                    ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
+                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
                 >
                   {loading ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
                   {loading ? 'Saving…' : 'Save Changes'}

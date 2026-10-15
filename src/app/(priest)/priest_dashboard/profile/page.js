@@ -83,8 +83,7 @@ const PriestProfilePage = () => {
           Account
         </p>
         <h1
-          className="text-2xl font-semibold text-[#0F2A4A]"
-          style={{ fontFamily: "Georgia, serif" }}
+          className="font-serif text-2xl font-semibold text-[#0F2A4A]"
         >
           My Profile
         </h1>

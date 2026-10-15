@@ -140,8 +140,7 @@ const PriestViewFamilyCardModal = ({
       className="fixed inset-0 z-[9999] bg-[rgba(10,22,40,0.65)] flex items-center justify-center p-4 backdrop-blur-sm"
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col overflow-hidden"
-        style={{ maxHeight: "90vh" }}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden"
       >
         {/* ── Header ── */}
         <div className="bg-[#0F2A4A] px-5 py-4 flex items-center justify-between flex-shrink-0">
@@ -271,8 +270,7 @@ const PriestViewFamilyCardModal = ({
               </div>
               <iframe
                 src={previewUrl}
-                className="w-full"
-                style={{ height: "320px" }}
+                className="h-80 w-full"
                 title="Family Card PDF"
               />
             </div>

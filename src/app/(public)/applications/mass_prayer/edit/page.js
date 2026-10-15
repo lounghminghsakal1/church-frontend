@@ -321,8 +321,7 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
               <button
                 onClick={handleSave}
                 disabled={loading}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer
-                  ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
               >
                 {loading ? <Loader2 size={11} className="animate-spin" /> : <Save size={11} />}
                 {loading ? 'Saving…' : 'Save Changes'}
@@ -335,11 +334,9 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
               <button
                 onClick={() => setCababMenuOpen(prev => !prev)}
                 disabled={cancelling}
-                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-colors cursor-pointer
-                  ${cababMenuOpen
+                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-colors cursor-pointer ${cababMenuOpen
                     ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white'
-                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#faf8f3]'}
-                  disabled:opacity-40`}
+                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#faf8f3]'} disabled:opacity-40`}
               >
                 {cancelling ? <Loader2 size={13} className="animate-spin" /> : <MoreVertical size={13} />}
               </button>
@@ -426,16 +423,14 @@ const MassPrayerReqCard = ({ massPrayerReq, onUpdated }) => {
                 <button
                   type="button"
                   onClick={() => handlePaymentModeSelect("offline")}
-                  className={`px-4 py-3 rounded-[7px] text-sm font-semibold font-[inherit] border-[1.5px] transition-colors cursor-pointer
-                    ${form.payment_mode === "offline" ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white' : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/70 hover:border-[#C9A84C]'}`}
+                  className={`px-4 py-3 rounded-[7px] text-sm font-semibold font-[inherit] border-[1.5px] transition-colors cursor-pointer ${form.payment_mode === "offline" ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white' : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/70 hover:border-[#C9A84C]'}`}
                 >
                   Offline
                 </button>
                 <button
                   type="button"
                   onClick={() => handlePaymentModeSelect("online")}
-                  className={`px-4 py-3 rounded-[7px] text-sm font-semibold font-[inherit] border-[1.5px] transition-colors cursor-pointer
-                    ${form.payment_mode === "online" ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white' : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/70 hover:border-[#C9A84C]'}`}
+                  className={`px-4 py-3 rounded-[7px] text-sm font-semibold font-[inherit] border-[1.5px] transition-colors cursor-pointer ${form.payment_mode === "online" ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white' : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/70 hover:border-[#C9A84C]'}`}
                 >
                   Online
                 </button>

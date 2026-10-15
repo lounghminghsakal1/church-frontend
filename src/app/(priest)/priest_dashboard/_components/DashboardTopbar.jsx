@@ -107,8 +107,7 @@ const ProfileDropdown = ({ priest, onClose, onLogout, pathname }) => (
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className={`flex items-center gap-3 px-4 py-2.5 transition-colors duration-150 group
-                ${isActive
+              className={`flex items-center gap-3 px-4 py-2.5 transition-colors duration-150 group ${isActive
                   ? "bg-[#C9A84C]/8 text-[#C9A84C]"
                   : "text-[#0F2A4A]/65 hover:bg-[#0F2A4A]/4 hover:text-[#0F2A4A]"
                 }`}
@@ -198,17 +197,16 @@ const DashboardTopbar = () => {
       {/* Right — bell + avatar */}
       <div className="flex items-center gap-2 md:gap-3">
         {/* Notification bell */}
-        <Link href="/" className="priest-back-link" aria-label="View parish website"><Globe size={18} /><span className="hidden sm:inline">View parish</span></Link>
+        <Link href="/" className="inline-flex min-h-11 items-center gap-2 text-xs text-slate-500 md:text-sm" aria-label="View parish website"><Globe size={18} /><span className="hidden sm:inline">View parish</span></Link>
 
         {/* Avatar — tappable, opens dropdown */}
         <div className="relative flex items-center gap-2.5 pl-2 md:pl-3 border-l border-[#0F2A4A]/8">
           <button
             onClick={() => setDropdownOpen((v) => !v)}
-            className={`flex items-center gap-2.5 rounded-xl transition-all duration-150 ${dropdownOpen ? "opacity-80" : "hover:opacity-80"
+            className={`flex min-h-11 min-w-11 items-center gap-2.5 rounded-xl transition-all duration-150 ${dropdownOpen ? "opacity-80" : "hover:opacity-80"
               }`}
             aria-label="Open profile menu"
             aria-expanded={dropdownOpen}
-            style={{ minHeight: 44, minWidth: 44 }}
           >
             <div
               className={`w-7 h-7 md:w-8 md:h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-150 ${dropdownOpen

@@ -30,6 +30,12 @@ const NAV_ITEMS = [
     implemented: true,
   },
   {
+    label: "Availability",
+    href: "/priest_dashboard#priest-availability",
+    icon: CalendarDays,
+    implemented: true,
+  },
+  {
     label: "Profile",
     href: "/priest_dashboard/profile",
     icon: UserCog,
@@ -51,7 +57,7 @@ const NAV_ITEMS = [
     label: "Announcements",
     href: "/priest_dashboard/announcements",
     icon: Megaphone,
-    implemented: false,
+    implemented: true,
   },
 ].filter(item => item.implemented);
 
@@ -65,8 +71,7 @@ const NavItem = ({ item, isActive, collapsed }) => {
   return (
     <Link
       href={item.href}
-      className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200
-        ${isActive
+      className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${isActive
           ? "bg-[#C9A84C]/15 text-[#C9A84C] border-l-2 border-[#C9A84C]"
           : "text-slate-300/70 hover:bg-white/5 hover:text-slate-100 border-l-2 border-transparent"
         }`}
@@ -231,8 +236,7 @@ const DashboardSidebar = () => {
     <>
       {/* ── DESKTOP SIDEBAR (md+) ────────────────────────────────── */}
       <aside
-        className={`priest-workspace-sidebar hidden md:flex relative flex-col h-screen bg-[#0A1F3A] border-r border-white/5 transition-all duration-300 flex-shrink-0
-          ${collapsed ? "w-16" : "w-60"}`}
+        className={`sticky top-0 [&_nav_a]:min-h-12 hidden md:flex flex-col h-screen bg-[#0A1F3A] border-r border-white/5 transition-all duration-300 flex-shrink-0 ${collapsed ? "w-16" : "w-60"}`}
       >
         {/* Collapse toggle */}
         <button
@@ -338,7 +342,7 @@ const DashboardSidebar = () => {
       </aside>
 
       {/* ── MOBILE BOTTOM TAB BAR (< md) ────────────────────────── */}
-      <nav className="priest-workspace-tabs md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-[#0F2A4A]/8 flex items-stretch shadow-[0_-4px_24px_rgba(15,42,74,0.08)]">
+      <nav className="pb-[env(safe-area-inset-bottom)] [&>a]:min-h-16 [&>button]:min-h-16 [&>a>span]:text-[10px] [&>button>span]:text-[10px] md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-[#0F2A4A]/8 flex items-stretch shadow-[0_-4px_24px_rgba(15,42,74,0.08)]">
         {BOTTOM_TAB_PRIMARY.map((item) => (
           <BottomTabItem
             key={item.href}

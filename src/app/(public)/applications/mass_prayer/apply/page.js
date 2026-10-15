@@ -277,8 +277,7 @@ const MassPrayerApplyPage = ({ user }) => {
                 {!imageFile ? (
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className={`border-2 border-dashed rounded-[7px] p-6 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors
-                      ${errors.mass_prayer_image ? 'border-[#e05252] bg-[#fff5f5]' : 'border-[#d4c9a8] hover:border-[#C9A84C]'}`}
+                    className={`border-2 border-dashed rounded-[7px] p-6 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors ${errors.mass_prayer_image ? 'border-[#e05252] bg-[#fff5f5]' : 'border-[#d4c9a8] hover:border-[#C9A84C]'}`}
                   >
                     <ImagePlus size={20} className="text-[#0F2A4A]/65" />
                     <p className="text-xs text-[#0F2A4A]/65">
@@ -323,8 +322,7 @@ const MassPrayerApplyPage = ({ user }) => {
                 <button
                   type="button"
                   onClick={() => handlePaymentModeSelect("offline")}
-                  className={`px-4 py-3 rounded-[7px] text-sm font-semibold font-[inherit] border-[1.5px] transition-colors cursor-pointer
-                    ${mpForm.payment_mode === "offline"
+                  className={`px-4 py-3 rounded-[7px] text-sm font-semibold font-[inherit] border-[1.5px] transition-colors cursor-pointer ${mpForm.payment_mode === "offline"
                       ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white'
                       : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/70 hover:border-[#C9A84C]'}`}
                 >
@@ -333,8 +331,7 @@ const MassPrayerApplyPage = ({ user }) => {
                 <button
                   type="button"
                   onClick={() => handlePaymentModeSelect("online")}
-                  className={`px-4 py-3 rounded-[7px] text-sm font-semibold font-[inherit] border-[1.5px] transition-colors cursor-pointer
-                    ${mpForm.payment_mode === "online"
+                  className={`px-4 py-3 rounded-[7px] text-sm font-semibold font-[inherit] border-[1.5px] transition-colors cursor-pointer ${mpForm.payment_mode === "online"
                       ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white'
                       : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/70 hover:border-[#C9A84C]'}`}
                 >
@@ -373,11 +370,7 @@ const MassPrayerApplyPage = ({ user }) => {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className={`
-                shrink-0 px-10 py-2.5 rounded-[7px] font-bold text-sm text-[#0F2A4A]
-                border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150
-                ${loading ? 'bg-[#a89050] cursor-not-allowed' : 'bg-[#C9A84C] cursor-pointer hover:bg-[#dbb85a]'}
-              `}
+              className={` shrink-0 px-10 py-2.5 rounded-[7px] font-bold text-sm text-[#0F2A4A] border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150 ${loading ? 'bg-[#a89050] cursor-not-allowed' : 'bg-[#C9A84C] cursor-pointer hover:bg-[#dbb85a]'} `}
             >
               {loading ? 'Submitting…' : 'Submit Request'}
             </button>

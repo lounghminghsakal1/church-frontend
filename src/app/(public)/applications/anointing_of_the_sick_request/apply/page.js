@@ -197,12 +197,10 @@ const AnointingOfTheSickRequestApplypage = ({ user }) => {
                   className="flex items-center gap-3 cursor-pointer select-none mt-1"
                 >
                   <span
-                    className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200
-                      ${aosForm.is_urgent ? 'bg-[#C9A84C]' : 'bg-[#d4c9a8]/60'}`}
+                    className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 ${aosForm.is_urgent ? 'bg-[#C9A84C]' : 'bg-[#d4c9a8]/60'}`}
                   >
                     <span
-                      className={`inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow transition-transform duration-200
-                        ${aosForm.is_urgent ? 'translate-x-6' : 'translate-x-1'}`}
+                      className={`inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow transition-transform duration-200 ${aosForm.is_urgent ? 'translate-x-6' : 'translate-x-1'}`}
                     />
                   </span>
                   <span className={`text-sm font-semibold ${aosForm.is_urgent ? 'text-[#c0392b]' : 'text-[#0F2A4A]/65'}`}>
@@ -221,11 +219,7 @@ const AnointingOfTheSickRequestApplypage = ({ user }) => {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className={`
-                shrink-0 px-10 py-2.5 rounded-[7px] font-bold text-sm text-[#0F2A4A]
-                border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150
-                ${loading ? 'bg-[#a89050] cursor-not-allowed' : 'bg-[#C9A84C] cursor-pointer hover:bg-[#dbb85a]'}
-              `}
+              className={` shrink-0 px-10 py-2.5 rounded-[7px] font-bold text-sm text-[#0F2A4A] border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150 ${loading ? 'bg-[#a89050] cursor-not-allowed' : 'bg-[#C9A84C] cursor-pointer hover:bg-[#dbb85a]'} `}
             >
               {loading ? 'Submitting…' : 'Submit Request'}
             </button>

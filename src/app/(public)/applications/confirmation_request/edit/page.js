@@ -194,8 +194,7 @@ const ConfirReqCard = ({ confirReq, onUpdated }) => {
               <button
                 onClick={handleSave}
                 disabled={loading}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer
-                  ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
               >
                 {loading ? <Loader2 size={11} className="animate-spin" /> : <Save size={11} />}
                 {loading ? 'Saving…' : 'Save Changes'}
@@ -209,11 +208,9 @@ const ConfirReqCard = ({ confirReq, onUpdated }) => {
               <button
                 onClick={() => setCababMenuOpen(prev => !prev)}
                 disabled={cancelling}
-                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-colors cursor-pointer
-                  ${cababMenuOpen
+                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-colors cursor-pointer ${cababMenuOpen
                     ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white'
-                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#faf8f3]'}
-                  disabled:opacity-40`}
+                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#faf8f3]'} disabled:opacity-40`}
               >
                 {cancelling
                   ? <Loader2 size={13} className="animate-spin" />

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { apiGet } from '@/services/axios';
 import { useEffect, useState } from 'react';
 import PriestAvailabilityCard from './PriestAvailabilityCard';

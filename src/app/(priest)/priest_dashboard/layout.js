@@ -6,8 +6,8 @@ import DashboardTopbar from "./_components/DashboardTopbar";
 
 const PriestDashboardLayout = ({ children }) => {
   return (
-    <div className="priest-portal flex min-h-screen bg-[#f4f1e9]">
-      <a href="#priest-content" className="skip-link">Skip to dashboard content</a>
+    <div className="font-sans flex min-h-screen bg-[#f4f1e9]">
+      <a href="#priest-content" className="fixed -top-24 left-5 z-[10000] rounded-xl bg-navy px-5 py-3 text-white focus:top-3">Skip to dashboard content</a>
       {/* Sidebar — renders itself only on md+ via hidden md:flex */}
       <DashboardSidebar />
 

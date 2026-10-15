@@ -1,4 +1,6 @@
-﻿"use client";
+'use client';
+import { inputClasses, buttonClassName } from '@/components/ui/styles';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { useAuthUser } from '@/hooks/useAuthUser';
 import { apiPost } from '@/services/axios';
 import { useRouter } from 'next/navigation';
@@ -33,15 +35,16 @@ function Field({ label, type = 'text', value, onChange, error, placeholder, auto
   const password = type === 'password';
   const inputProps = { id, 'aria-invalid': !!error, 'aria-describedby': error ? `${id}-error` : undefined };
   return (
-    <div className="auth-field">
+    <div className="flex min-w-0 flex-col gap-2 [&>label]:text-sm [&>label]:font-semibold [&>label]:text-navy/75">
       <label htmlFor={id}>{label}</label>
-      {children ? React.cloneElement(children, { ...inputProps, className: 'auth-input' }) : <div className="auth-input-wrap"><input {...inputProps} type={password && show ? 'text' : type} value={value} onChange={onChange} placeholder={placeholder} autoComplete={autoComplete} inputMode={type === 'tel' ? 'numeric' : type === 'email' ? 'email' : undefined} className={`auth-input ${password ? 'has-password-toggle' : ''}`} />{password && <button type="button" className="auth-password-toggle" onClick={() => setShow(!show)} aria-label={show ? 'Hide password' : 'Show password'} aria-pressed={show}>{show ? <EyeOff size={19} /> : <Eye size={19} />}</button>}</div>}
-      {error && <p id={`${id}-error`} role="alert" className="auth-field-error">{error}</p>}
+      {children ? React.cloneElement(children, { ...inputProps, className: inputClasses }) : <div className="relative"><input {...inputProps} type={password && show ? 'text' : type} value={value} onChange={onChange} placeholder={placeholder} autoComplete={autoComplete} inputMode={type === 'tel' ? 'numeric' : type === 'email' ? 'email' : undefined} className={`w-full min-w-0 rounded-xl border border-navy/15 bg-white px-3.5 py-3 text-base text-navy outline-none transition-colors placeholder:text-slate-400 focus:border-gold focus:ring-2 focus:ring-gold/20 aria-invalid:border-red-400 aria-invalid:bg-red-50 disabled:opacity-50 sm:text-sm ${password ? "pr-14" : ''}`} />{password && <button type="button" className="absolute top-1 right-1 grid size-11 place-items-center rounded-lg text-slate-500 hover:bg-slate-50 hover:text-navy" onClick={() => setShow(!show)} aria-label={show ? 'Hide password' : 'Show password'} aria-pressed={show}>{show ? <EyeOff size={19} /> : <Eye size={19} />}</button>}</div>}
+      {error && <p id={`${id}-error`} role="alert" className="text-xs text-red-600">{error}</p>}
     </div>
   );
 }
 
 export default function LoginSignupModal({ onSuccess, onCancel, onSuccessGoToLink }) {
+  useBodyScrollLock();
   const [mode, setMode] = useState('login');
   const [loading, setLoading] = useState(false);
   const [loginErrors, setLoginErrors] = useState({});
@@ -63,9 +66,7 @@ export default function LoginSignupModal({ onSuccess, onCancel, onSuccessGoToLin
   }, [onCancel]);
 
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
     const previousFocus = document.activeElement;
-    document.body.style.overflow = 'hidden';
     const focusTarget = window.matchMedia('(min-width: 701px)').matches ? dialogRef.current?.querySelector('input') : dialogRef.current?.querySelector('.auth-close');
     focusTarget?.focus({ preventScroll: true });
     const trapFocus = event => {
@@ -77,7 +78,7 @@ export default function LoginSignupModal({ onSuccess, onCancel, onSuccessGoToLin
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
     };
     document.addEventListener('keydown', trapFocus);
-    return () => { document.body.style.overflow = previousOverflow; document.removeEventListener('keydown', trapFocus); previousFocus?.focus({ preventScroll: true }); };
+    return () => { document.removeEventListener('keydown', trapFocus); previousFocus?.focus({ preventScroll: true }); };
   }, []);
 
   function switchMode(next) {
@@ -114,7 +115,9 @@ export default function LoginSignupModal({ onSuccess, onCancel, onSuccessGoToLin
     setRequestError('');
     setLoading(true);
     try {
-      const response = await apiPost('/auth/user/signup', signupForm);
+      const signupPayload = {...signupForm};
+      delete signupPayload.confirm_user_password; 
+      const response = await apiPost('/auth/user/signup', signupPayload);
       if (response.status !== 'success') throw new Error(response.message ?? response.data?.message ?? 'Unable to create your account. Please try again.');
       toast.success('Account created! Sign in to continue.');
       switchMode('login');
@@ -126,25 +129,25 @@ export default function LoginSignupModal({ onSuccess, onCancel, onSuccessGoToLin
 
   const signingUp = mode === 'signup';
   return (
-    <div ref={overlayRef} onClick={event => { if (event.target === overlayRef.current) onCancel?.(); }} className="auth-overlay">
-      <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby={titleId} aria-describedby={descriptionId} className={`auth-dialog ${signingUp ? 'auth-signup' : ''}`}>
-        <div className="auth-sheet-handle" aria-hidden="true" />
-        <button type="button" onClick={onCancel} aria-label="Close sign-in dialog" className="auth-close"><X size={21} /></button>
-        <div className="auth-heading"><span className="auth-brand-mark"><Church size={27} strokeWidth={1.3} /></span><p className="auth-parish">ST. ANTONY’S CHURCH · ILLUPPUR</p><h2 id={titleId}>{signingUp ? 'A place for you.' : 'Welcome to your parish.'}</h2><p id={descriptionId}>{signingUp ? 'Create your account to connect with your parish family.' : 'Sign in to request sacraments, share intentions, and stay connected.'}</p></div>
-        <div className="auth-mode-switch" role="group" aria-label="Choose sign in or create account"><button type="button" aria-pressed={!signingUp} onClick={() => switchMode('login')} disabled={loading}>Sign in</button><button type="button" aria-pressed={signingUp} onClick={() => switchMode('signup')} disabled={loading}>Create account</button></div>
-        <form className="auth-form" noValidate aria-busy={loading} onSubmit={event => { event.preventDefault(); signingUp ? handleSignup() : handleLogin(); }}>
-          {requestError && <p className="auth-request-error" role="alert">{requestError}</p>}
-          {signingUp ? <div className="auth-signup-fields">
-            <div className="auth-full-width"><Field label="Your name" value={signupForm.user_name} onChange={event => setSignupForm(form => ({ ...form, user_name: event.target.value }))} error={signupErrors.user_name} placeholder="Your full name" autoComplete="name" /></div>
+    <div ref={overlayRef} onClick={event => { if (event.target === overlayRef.current) onCancel?.(); }} className="fixed inset-0 z-[9999] flex items-end justify-center bg-navy/50 pt-3 backdrop-blur-sm md:items-center md:p-6">
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby={titleId} aria-describedby={descriptionId} className={`relative max-h-[calc(100dvh-12px)] w-full overflow-y-auto overscroll-contain rounded-t-3xl bg-white px-6 pt-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl md:max-h-[calc(100dvh-48px)] md:rounded-2xl md:p-9 ${signingUp ? 'md:max-w-xl' : 'md:max-w-lg'}`}>
+        <div className="mx-auto mb-5 h-1 w-10 rounded-full bg-slate-300 md:hidden" aria-hidden="true" />
+        <button type="button" onClick={onCancel} aria-label="Close sign-in dialog" className="absolute top-4 right-4 grid size-11 place-items-center rounded-xl bg-slate-50 text-slate-500 transition-colors hover:bg-slate-100 hover:text-navy"><X size={21} /></button>
+        <div className="pt-1 text-center [&>h2]:font-serif [&>h2]:text-3xl [&>h2]:tracking-tight [&>p:last-child]:mx-auto [&>p:last-child]:mt-3 [&>p:last-child]:max-w-sm [&>p:last-child]:text-sm [&>p:last-child]:leading-7 [&>p:last-child]:text-slate-500"><span className="mx-auto mb-4 grid h-14 w-12 place-items-center rounded-t-3xl rounded-b-xl border border-gold/30 bg-gold/10 text-gold-dark"><Church size={27} strokeWidth={1.3} /></span><p className="mb-3 text-[9px] font-semibold tracking-widest text-gold-dark">ST. ANTONY’S CHURCH · ILLUPPUR</p><h2 id={titleId}>{signingUp ? 'A place for you.' : 'Welcome to your parish.'}</h2><p id={descriptionId}>{signingUp ? 'Create your account to connect with your parish family.' : 'Sign in to request sacraments, share intentions, and stay connected.'}</p></div>
+        <div className="my-6 flex gap-1 rounded-xl border border-navy/5 bg-slate-50 p-1 [&>button]:min-h-11 [&>button]:flex-1 [&>button]:rounded-lg [&>button]:text-sm [&>button]:font-semibold [&>button]:text-slate-500 [&>button[aria-pressed=true]]:bg-white [&>button[aria-pressed=true]]:text-navy [&>button[aria-pressed=true]]:shadow-sm" role="group" aria-label="Choose sign in or create account"><button type="button" aria-pressed={!signingUp} onClick={() => switchMode('login')} disabled={loading}>Sign in</button><button type="button" aria-pressed={signingUp} onClick={() => switchMode('signup')} disabled={loading}>Create account</button></div>
+        <form className="flex flex-col gap-5" noValidate aria-busy={loading} onSubmit={event => { event.preventDefault(); signingUp ? handleSignup() : handleLogin(); }}>
+          {requestError && <p data-testid="request-error" className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">{requestError}</p>}
+          {signingUp ? <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="col-span-full"><Field label="Your name" value={signupForm.user_name} onChange={event => setSignupForm(form => ({ ...form, user_name: event.target.value }))} error={signupErrors.user_name} placeholder="Your full name" autoComplete="name" /></div>
             <Field label="Email address" type="email" value={signupForm.user_email} onChange={event => setSignupForm(form => ({ ...form, user_email: event.target.value }))} error={signupErrors.user_email} placeholder="you@example.com" autoComplete="email" />
             <Field label="Mobile number" type="tel" value={signupForm.user_mobile_number} onChange={event => setSignupForm(form => ({ ...form, user_mobile_number: event.target.value.replace(/\D/g, '').slice(0, 10) }))} error={signupErrors.user_mobile_number} placeholder="10-digit mobile number" autoComplete="tel-national" />
             <Field label="Password" type="password" value={signupForm.user_password} onChange={event => setSignupForm(form => ({ ...form, user_password: event.target.value }))} error={signupErrors.user_password} placeholder="At least 6 characters" autoComplete="new-password" />
             <Field label="Confirm password" type="password" value={signupForm.confirm_user_password} onChange={event => setSignupForm(form => ({ ...form, confirm_user_password: event.target.value }))} error={signupErrors.confirm_user_password} placeholder="Repeat your password" autoComplete="new-password" />
-            <div className="auth-full-width"><Field label="Prayer group" error={signupErrors.prayer_group}><select value={signupForm.prayer_group} onChange={event => setSignupForm(form => ({ ...form, prayer_group: event.target.value }))}><option value="">Choose your prayer group</option>{PRAYER_GROUPS.map(group => <option key={group} value={group}>{group}</option>)}</select></Field></div>
-          </div> : <div className="auth-login-fields"><Field label="Email address" type="email" value={loginForm.user_email} onChange={event => setLoginForm(form => ({ ...form, user_email: event.target.value }))} error={loginErrors.user_email} placeholder="you@example.com" autoComplete="email" /><Field label="Password" type="password" value={loginForm.user_password} onChange={event => setLoginForm(form => ({ ...form, user_password: event.target.value }))} error={loginErrors.user_password} placeholder="Enter your password" autoComplete="current-password" /></div>}
-          <button type="submit" disabled={loading} className="auth-submit">{loading ? <><Loader2 size={18} className="animate-spin" />{signingUp ? 'Creating your account…' : 'Signing you in…'}</> : <>{signingUp ? 'Create my parish account' : 'Sign in to my parish'}<ArrowRight size={18} /></>}</button>
+            <div className="col-span-full"><Field label="Prayer group" error={signupErrors.prayer_group}><select value={signupForm.prayer_group} onChange={event => setSignupForm(form => ({ ...form, prayer_group: event.target.value }))}><option value="">Choose your prayer group</option>{PRAYER_GROUPS.map(group => <option key={group} value={group}>{group}</option>)}</select></Field></div>
+          </div> : <div className="flex flex-col gap-4"><Field label="Email address" type="email" value={loginForm.user_email} onChange={event => setLoginForm(form => ({ ...form, user_email: event.target.value }))} error={loginErrors.user_email} placeholder="you@example.com" autoComplete="email" /><Field label="Password" type="password" value={loginForm.user_password} onChange={event => setLoginForm(form => ({ ...form, user_password: event.target.value }))} error={loginErrors.user_password} placeholder="Enter your password" autoComplete="current-password" /></div>}
+          <button type="submit" disabled={loading} className={buttonClassName("primary", "w-full")}>{loading ? <><Loader2 size={18} className="animate-spin" />{signingUp ? 'Creating your account…' : 'Signing you in…'}</> : <>{signingUp ? 'Create my parish account' : 'Sign in to my parish'}<ArrowRight size={18} /></>}</button>
         </form>
-        <div className="auth-footer"><p>{signingUp ? 'Already part of our parish online?' : 'New to our parish online?'} <button type="button" disabled={loading} onClick={() => switchMode(signingUp ? 'login' : 'signup')}>{signingUp ? 'Sign in' : 'Join us'}</button></p><span><ShieldCheck size={14} /> Your parish account, in one place.</span></div>
+        <div className="mt-5 text-center [&>p]:text-xs [&>p]:text-slate-500 [&_button]:min-h-11 [&_button]:px-1 [&_button]:font-semibold [&_button]:text-navy [&_button]:underline [&_button]:underline-offset-4 [&>span]:mt-3 [&>span]:flex [&>span]:items-center [&>span]:justify-center [&>span]:gap-1.5 [&>span]:border-t [&>span]:border-navy/10 [&>span]:pt-4 [&>span]:text-xs [&>span]:text-slate-500"><p>{signingUp ? 'Already part of our parish online?' : 'New to our parish online?'} <button type="button" disabled={loading} onClick={() => switchMode(signingUp ? 'login' : 'signup')}>{signingUp ? 'Sign in' : 'Join us'}</button></p><span><ShieldCheck size={14} /> Your parish account, in one place.</span></div>
       </div>
     </div>
   );

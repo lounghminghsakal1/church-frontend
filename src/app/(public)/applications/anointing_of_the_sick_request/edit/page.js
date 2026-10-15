@@ -222,8 +222,7 @@ const AnointingOfTheSickReqCard = ({ aosReq, onUpdated }) => {
               <button
                 onClick={handleSave}
                 disabled={loading}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer
-                  ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
               >
                 {loading ? <Loader2 size={11} className="animate-spin" /> : <Save size={11} />}
                 {loading ? 'Saving…' : 'Save Changes'}
@@ -237,11 +236,9 @@ const AnointingOfTheSickReqCard = ({ aosReq, onUpdated }) => {
               <button
                 onClick={() => setCababMenuOpen(prev => !prev)}
                 disabled={cancelling}
-                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-colors cursor-pointer
-                  ${cababMenuOpen
+                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-colors cursor-pointer ${cababMenuOpen
                     ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white'
-                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#faf8f3]'}
-                  disabled:opacity-40`}
+                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#faf8f3]'} disabled:opacity-40`}
               >
                 {cancelling
                   ? <Loader2 size={13} className="animate-spin" />
@@ -327,12 +324,10 @@ const AnointingOfTheSickReqCard = ({ aosReq, onUpdated }) => {
                 className="flex items-center gap-3 cursor-pointer select-none mt-1"
               >
                 <span
-                  className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200
-                    ${form.is_urgent ? 'bg-[#C9A84C]' : 'bg-[#d4c9a8]/60'}`}
+                  className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 ${form.is_urgent ? 'bg-[#C9A84C]' : 'bg-[#d4c9a8]/60'}`}
                 >
                   <span
-                    className={`inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow transition-transform duration-200
-                      ${form.is_urgent ? 'translate-x-6' : 'translate-x-1'}`}
+                    className={`inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow transition-transform duration-200 ${form.is_urgent ? 'translate-x-6' : 'translate-x-1'}`}
                   />
                 </span>
                 <span className={`text-sm font-semibold ${form.is_urgent ? 'text-[#c0392b]' : 'text-[#0F2A4A]/65'}`}>

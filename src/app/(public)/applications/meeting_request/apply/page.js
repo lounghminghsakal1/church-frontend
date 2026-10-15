@@ -161,11 +161,7 @@ const MeetingRequestApplyPage = ({ user }) => {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className={`
-                shrink-0 px-10 py-2.5 rounded-[7px] font-bold text-sm text-[#0F2A4A]
-                border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150
-                ${loading ? 'bg-[#a89050] cursor-not-allowed' : 'bg-[#C9A84C] cursor-pointer hover:bg-[#dbb85a]'}
-              `}
+              className={` shrink-0 px-10 py-2.5 rounded-[7px] font-bold text-sm text-[#0F2A4A] border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150 ${loading ? 'bg-[#a89050] cursor-not-allowed' : 'bg-[#C9A84C] cursor-pointer hover:bg-[#dbb85a]'} `}
             >
               {loading ? 'Submitting…' : 'Submit Request'}
             </button>
