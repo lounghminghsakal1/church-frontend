@@ -12,31 +12,31 @@ import { ArrowLeft, Pencil, X, Save, PlusCircle, Loader2, XCircle, MoreVertical 
 // ── Shared primitives ────────────────────────────────────────────────
 
 const Label = ({ children }) => (
-  <label className="text-[11px] font-semibold text-[#0F2A4A]/60 tracking-wider uppercase">
+  <label className="text-[11px] font-semibold text-muted tracking-wider uppercase">
     {children}
   </label>
 );
 
 const inputCls = (error) => `
-  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-[#0F2A4A] font-[inherit]
+  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-ink font-[inherit]
   border-[1.5px] outline-none transition-colors box-border bg-white
-  focus:border-[#C9A84C]
-  ${error ? 'border-[#e05252] bg-[#fff5f5] focus:border-[#e05252]' : 'border-[#d4c9a8]'}
+  focus:border-ink
+  ${error ? 'border-ink bg-soft focus:border-ink' : 'border-line'}
 `;
 
 
 
 const SectionHeading = ({ children }) => (
-  <div className="text-[11px] font-bold text-[#C9A84C] tracking-[1.4px] uppercase mb-5">
+  <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
     {children}
   </div>
 );
 
 const statusStyles = {
-  pending:   { dot: 'bg-amber-400',   text: 'text-amber-700',   bg: 'bg-amber-50',   border: 'border-amber-200',   label: 'Pending'   },
-  approved:  { dot: 'bg-emerald-400', text: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200', label: 'Approved'  },
-  rejected:  { dot: 'bg-red-400',     text: 'text-red-700',     bg: 'bg-red-50',     border: 'border-red-200',     label: 'Rejected'  },
-  cancelled: { dot: 'bg-red-500',     text: 'text-red-700',     bg: 'bg-red-50',     border: 'border-red-200',     label: 'Cancelled' },
+  pending:   { dot: 'bg-accent',   text: 'text-ink',   bg: 'bg-soft',   border: 'border-line',   label: 'Pending'   },
+  approved:  { dot: 'bg-accent', text: 'text-ink', bg: 'bg-soft', border: 'border-line', label: 'Approved'  },
+  rejected:  { dot: 'bg-accent',     text: 'text-ink',     bg: 'bg-soft',     border: 'border-line',     label: 'Rejected'  },
+  cancelled: { dot: 'bg-ink',     text: 'text-ink',     bg: 'bg-soft',     border: 'border-line',     label: 'Cancelled' },
 };
 
 const StatusBadge = ({ status }) => {
@@ -154,19 +154,19 @@ const MeetReqCard = ({ MeetReq, onUpdated }) => {
   const set = (key) => (e) => setForm(p => ({ ...p, [key]: e.target.value }));
 
   return (
-    <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-[0_6px_24px_#18344806] overflow-hidden">
+    <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-hidden">
 
       {/* Card header */}
-      <div className="px-7 py-4 bg-[#faf9f6] border-b border-[#f0ece0] flex items-center justify-between gap-4">
+      <div className="px-7 py-4 bg-background border-b border-soft flex items-center justify-between gap-4">
 
         {/* Left: status + meta */}
         <div className="flex items-center gap-3 flex-wrap min-w-0">
           <StatusBadge status={MeetReq.status} />
-          <span className="text-xs text-[#0F2A4A]/65 shrink-0">
+          <span className="text-xs text-muted shrink-0">
             Submitted {formatDate(MeetReq.createdAt)}
           </span>
           {MeetReq?.priest_response && (
-            <span className="text-gray-800 text-xs md:text-sm">
+            <span className="text-ink text-xs md:text-sm">
               <span className="font-semibold">Priest Response:</span> {MeetReq.priest_response}
             </span>
           )}
@@ -178,7 +178,7 @@ const MeetReqCard = ({ MeetReq, onUpdated }) => {
           {canEdit && !isEditing && (
             <button
               onClick={() => setIsEditing(true)}
-              className="flex items-center gap-1.5 text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#faf8f3] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-muted hover:text-ink bg-white hover:bg-background border border-line rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
             >
               <Pencil size={11} /> Edit
             </button>
@@ -188,14 +188,14 @@ const MeetReqCard = ({ MeetReq, onUpdated }) => {
             <>
               <button
                 onClick={handleCancel}
-                className="flex items-center gap-1.5 text-[#0F2A4A]/65 hover:text-[#0F2A4A] bg-white hover:bg-[#faf8f3] border border-[#d4c9a8] rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-muted hover:text-ink bg-white hover:bg-background border border-line rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
               >
                 <X size={11} /> Cancel
               </button>
               <button
                 onClick={handleSave}
                 disabled={loading}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer ${loading ? 'bg-accent text-white cursor-not-allowed' : 'bg-accent hover:bg-accent text-ink'}`}
               >
                 {loading ? <Loader2 size={11} className="animate-spin" /> : <Save size={11} />}
                 {loading ? 'Saving…' : 'Save Changes'}
@@ -210,8 +210,8 @@ const MeetReqCard = ({ MeetReq, onUpdated }) => {
                 onClick={() => setCababMenuOpen(prev => !prev)}
                 disabled={cancelling}
                 className={`w-7 h-7 flex items-center justify-center rounded-md border transition-colors cursor-pointer ${cababMenuOpen
-                    ? 'bg-[#0F2A4A] border-[#0F2A4A] text-white'
-                    : 'bg-white border-[#d4c9a8] text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#faf8f3]'} disabled:opacity-40`}
+                    ? 'bg-ink border-ink text-white'
+                    : 'bg-white border-line text-muted hover:text-ink hover:bg-background'} disabled:opacity-40`}
               >
                 {cancelling
                   ? <Loader2 size={13} className="animate-spin" />
@@ -219,12 +219,12 @@ const MeetReqCard = ({ MeetReq, onUpdated }) => {
               </button>
 
               {cababMenuOpen && (
-                <div className="absolute right-0 top-[calc(100%+6px)] z-20 w-44 bg-white border border-[#e2ddd0] rounded-xl shadow-lg overflow-hidden">
-                  <div className="absolute -top-1.5 right-2.5 w-3 h-3 bg-white border-l border-t border-[#e2ddd0] rotate-45" />
+                <div className="absolute right-0 top-[calc(100%+6px)] z-20 w-44 bg-white border border-line rounded-xl shadow-lg overflow-hidden">
+                  <div className="absolute -top-1.5 right-2.5 w-3 h-3 bg-white border-l border-t border-line rotate-45" />
                   <div className="py-1">
                     <button
                       onClick={handleCancelRequest}
-                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-red-500 hover:bg-red-50 transition-colors cursor-pointer font-[inherit]"
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-ink hover:bg-soft transition-colors cursor-pointer font-[inherit]"
                     >
                       <XCircle size={13} className="shrink-0" />
                       Cancel request
@@ -239,19 +239,19 @@ const MeetReqCard = ({ MeetReq, onUpdated }) => {
       </div>
 
       {/* Person details */}
-      <div className="px-7 py-6 border-b border-[#f0ece0]">
+      <div className="px-7 py-6 border-b border-soft">
         <SectionHeading>Person's Details</SectionHeading>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <Field label="Person's Name" error={errors.person_name}>
             {isEditing
               ? <input value={form.person_name} onChange={set('person_name')} placeholder="Enter meeting person's full name" className={inputCls(errors.person_name)} />
-              : <span className="text-sm text-[#0F2A4A] font-medium">{MeetReq.person_name || '—'}</span>
+              : <span className="text-sm text-ink font-medium">{MeetReq.person_name || '—'}</span>
             }
           </Field>
           <Field label="Preferred Meeting Date & Time" error={errors.preferred_meeting_date_and_time}>
             {isEditing
               ? <input type="datetime-local" value={form.preferred_meeting_date_and_time} onChange={set('preferred_meeting_date_and_time')} className={inputCls(errors.preferred_meeting_date_and_time) + ' cursor-pointer'} />
-              : <span className="text-sm text-[#0F2A4A] font-medium">{formatDateTime(MeetReq.preferred_meeting_date_and_time)}</span>
+              : <span className="text-sm text-ink font-medium">{formatDateTime(MeetReq.preferred_meeting_date_and_time)}</span>
             }
           </Field>
         </div>
@@ -269,7 +269,7 @@ const MeetReqCard = ({ MeetReq, onUpdated }) => {
                 placeholder="Briefly describe the purpose of this meeting request…"
                 className={inputCls(errors.meeting_purpose) + ' resize-none'}
               />
-            : <span className="text-sm text-[#0F2A4A] font-medium whitespace-pre-wrap">{MeetReq.meeting_purpose || '—'}</span>
+            : <span className="text-sm text-ink font-medium whitespace-pre-wrap">{MeetReq.meeting_purpose || '—'}</span>
           }
         </Field>
       </div>
@@ -301,21 +301,21 @@ const MeetingRequestEditPage = () => {
   useEffect(() => { fetchExistingMeetingRequests(); }, []);
 
   return (
-    <div className="min-h-screen bg-[#faf8f3]">
+    <div className="min-h-screen bg-background">
 
       {/* Page header */}
-      <div className="bg-[#0F2A4A] border-b border-white/10">
+      <div className="bg-ink border-b border-white/10">
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors bg-white/10 hover:bg-white/15 border border-white/15 rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors bg-white/10 hover:bg-white/15 border border-white/15 rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] cursor-pointer shrink-0"
           >
             <ArrowLeft size={12} />
             Back
           </button>
           <div className="h-5 w-px bg-white/20" />
           <div>
-            <div className="text-white/70 text-[11px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
+            <div className="text-white/80 text-[11px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
               Meeting Request
             </div>
             <div className="text-white font-bold text-base tracking-[0.2px] leading-none">
@@ -329,23 +329,23 @@ const MeetingRequestEditPage = () => {
       <div className="max-w-5xl mx-auto px-6 py-10">
 
         {fetching ? (
-          <div className="text-sm text-[#0F2A4A]/65 py-16 text-center">Loading…</div>
+          <div className="text-sm text-muted py-16 text-center">Loading…</div>
 
         ) : allMeetingRequests.length === 0 ? (
-          <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-[0_6px_24px_#18344806] px-8 py-14 flex flex-col items-center gap-4 text-center">
-            <div className="w-12 h-12 rounded-full bg-[#faf8f3] border border-[#e2ddd0] flex items-center justify-center">
+          <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 px-8 py-14 flex flex-col items-center gap-4 text-center">
+            <div className="w-12 h-12 rounded-full bg-background border border-line flex items-center justify-center">
               <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-                <rect x="7" y="1" width="2" height="14" rx="1" fill="#C9A84C" />
-                <rect x="2" y="5" width="12" height="2" rx="1" fill="#C9A84C" />
+                <rect x="7" y="1" width="2" height="14" rx="1" fill="var(--color-accent)" />
+                <rect x="2" y="5" width="12" height="2" rx="1" fill="var(--color-accent)" />
               </svg>
             </div>
             <div>
-              <p className="text-sm font-semibold text-[#0F2A4A] mb-1">No meeting requests yet</p>
-              <p className="text-xs text-[#0F2A4A]/65">Submit a new request to get started.</p>
+              <p className="text-sm font-semibold text-ink mb-1">No meeting requests yet</p>
+              <p className="text-xs text-muted">Submit a new request to get started.</p>
             </div>
             <button
               onClick={() => router.push("/applications/meeting_request/apply")}
-              className="mt-2 flex items-center gap-2 bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A] font-bold text-xs uppercase tracking-[0.8px] px-5 py-2.5 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit]"
+              className="mt-2 flex items-center gap-2 bg-accent hover:bg-accent text-ink font-bold text-xs uppercase tracking-[0.8px] px-5 py-2.5 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit]"
             >
               <PlusCircle size={13} />
               Create Request
@@ -355,12 +355,12 @@ const MeetingRequestEditPage = () => {
         ) : (
           <div className="flex flex-col gap-5">
             <div className="flex items-center justify-between mb-1">
-              <p className="text-sm text-[#0F2A4A]/65 leading-relaxed">
+              <p className="text-sm text-muted leading-relaxed">
                 {allMeetingRequests.length} request{allMeetingRequests.length > 1 ? 's' : ''} found. Pending requests can be edited.
               </p>
               <button
                 onClick={() => router.push("/applications/meeting_request/apply")}
-                className="flex items-center gap-1.5 bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A] font-bold text-xs uppercase tracking-[0.8px] px-4 py-2 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit]"
+                className="flex items-center gap-1.5 bg-accent hover:bg-accent text-ink font-bold text-xs uppercase tracking-[0.8px] px-4 py-2 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit]"
               >
                 <PlusCircle size={12} />
                 New Request

@@ -11,16 +11,16 @@ import { ArrowLeft } from 'lucide-react';
 // ── Shared primitives ────────────────────────────────────────────────
 
 const Label = ({ children }) => (
-  <label className="text-[11px] font-semibold text-[#0F2A4A]/60 tracking-wider uppercase">
+  <label className="text-[11px] font-semibold text-muted tracking-wider uppercase">
     {children}
   </label>
 );
 
 const inputCls = (error) => `
-  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-[#0F2A4A] font-[inherit]
+  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-ink font-[inherit]
   border-[1.5px] outline-none transition-colors box-border bg-white
-  focus:border-[#C9A84C]
-  ${error ? 'border-[#e05252] bg-[#fff5f5] focus:border-[#e05252]' : 'border-[#d4c9a8]'}
+  focus:border-ink
+  ${error ? 'border-ink bg-soft focus:border-ink' : 'border-line'}
 `;
 
 
@@ -76,21 +76,21 @@ const MeetingRequestApplyPage = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8f3]">
+    <div className="min-h-screen bg-background">
 
       {/* Page header bar */}
-      <div className="bg-[#0F2A4A] border-b border-white/10">
+      <div className="bg-ink border-b border-white/10">
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors bg-white/10 hover:bg-white/15 border border-white/15 rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors bg-white/10 hover:bg-white/15 border border-white/15 rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] cursor-pointer shrink-0"
           >
             <ArrowLeft size={12} />
             Back
           </button>
           <div className="h-5 w-px bg-white/20" />
           <div>
-            <div className="text-white/70 text-[11px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
+            <div className="text-white/80 text-[11px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
               Meeting Request
             </div>
             <div className="text-white font-bold text-base tracking-[0.2px] leading-none">
@@ -103,15 +103,15 @@ const MeetingRequestApplyPage = ({ user }) => {
       {/* Form area */}
       <div className="max-w-5xl mx-auto px-6 py-10">
 
-        <p className="text-sm text-[#0F2A4A]/65 mb-8 leading-relaxed">
+        <p className="text-sm text-muted mb-8 leading-relaxed">
           Fill in the details below to submit a meeting request. The priest will reach out to confirm the schedule.
         </p>
 
-        <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-[0_6px_24px_#18344806] overflow-hidden">
+        <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-hidden">
 
           {/* Section: Person details */}
-          <div className="px-7 py-6 border-b border-[#f0ece0]">
-            <div className="text-[11px] font-bold text-[#C9A84C] tracking-[1.4px] uppercase mb-5">
+          <div className="px-7 py-6 border-b border-soft">
+            <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
               Person's Details
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -138,8 +138,8 @@ const MeetingRequestApplyPage = ({ user }) => {
           </div>
 
           {/* Section: Meeting purpose */}
-          <div className="px-7 py-6 border-b border-[#f0ece0]">
-            <div className="text-[11px] font-bold text-[#C9A84C] tracking-[1.4px] uppercase mb-5">
+          <div className="px-7 py-6 border-b border-soft">
+            <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
               Meeting Purpose
             </div>
             <Field label="Purpose of Meeting" error={errors.meeting_purpose}>
@@ -154,14 +154,14 @@ const MeetingRequestApplyPage = ({ user }) => {
           </div>
 
           {/* Footer / Submit */}
-          <div className="px-7 py-5 bg-[#faf9f6] flex items-center justify-between gap-4">
-            <p className="text-xs text-[#0F2A4A]/65 leading-relaxed max-w-sm">
+          <div className="px-7 py-5 bg-background flex items-center justify-between gap-4">
+            <p className="text-xs text-muted leading-relaxed max-w-sm">
               By submitting, you agree to be contacted by the parish regarding this meeting request.
             </p>
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className={` shrink-0 px-10 py-2.5 rounded-[7px] font-bold text-sm text-[#0F2A4A] border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150 ${loading ? 'bg-[#a89050] cursor-not-allowed' : 'bg-[#C9A84C] cursor-pointer hover:bg-[#dbb85a]'} `}
+              className={` shrink-0 px-10 py-2.5 rounded-[7px] font-bold text-sm text-ink border-none uppercase tracking-[0.8px] font-[inherit] transition-colors duration-150 ${loading ? 'bg-accent cursor-not-allowed' : 'bg-accent cursor-pointer hover:bg-accent'} `}
             >
               {loading ? 'Submitting…' : 'Submit Request'}
             </button>

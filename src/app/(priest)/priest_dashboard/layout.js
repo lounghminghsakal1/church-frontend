@@ -6,8 +6,8 @@ import DashboardTopbar from "./_components/DashboardTopbar";
 
 const PriestDashboardLayout = ({ children }) => {
   return (
-    <div className="font-sans flex min-h-screen bg-[#f4f1e9]">
-      <a href="#priest-content" className="fixed -top-24 left-5 z-[10000] rounded-xl bg-navy px-5 py-3 text-white focus:top-3">Skip to dashboard content</a>
+    <div className="font-sans flex min-h-screen bg-soft">
+      <a href="#priest-content" className="fixed -top-24 left-5 z-[10000] rounded-xl bg-ink px-5 py-3 text-white focus:top-3">Skip to dashboard content</a>
       {/* Sidebar — renders itself only on md+ via hidden md:flex */}
       <DashboardSidebar />
 
@@ -22,12 +22,12 @@ const PriestDashboardLayout = ({ children }) => {
         </main>
 
         {/* Footer — desktop only */}
-        <footer className="hidden md:flex flex-shrink-0 items-center justify-between px-6 py-3 bg-white border-t border-[#0F2A4A]/6">
-          <p className="font-sans text-[11px] text-[#0F2A4A]/65 tracking-wide uppercase">
+        <footer className="hidden md:flex flex-shrink-0 items-center justify-between px-6 py-3 bg-white border-t border-ink/6">
+          <p className="font-sans text-[11px] text-muted tracking-wide uppercase">
             Priest Administration Portal
           </p>
-          <div className="h-0.5 w-16 bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
-          <p className="font-sans text-[11px] text-[#0F2A4A]/65 tracking-wide">
+          <div className="h-0.5 w-16 bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+          <p className="font-sans text-[11px] text-muted tracking-wide">
             © {new Date().getFullYear()} Parish Management
           </p>
         </footer>

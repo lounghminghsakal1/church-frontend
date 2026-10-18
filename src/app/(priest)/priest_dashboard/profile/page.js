@@ -75,41 +75,41 @@ const PriestProfilePage = () => {
       <div className="mb-8">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-1.5 text-xs text-[#0F2A4A]/65 hover:text-[#0F2A4A] mb-3 transition-colors"
+          className="flex items-center gap-1.5 text-xs text-muted hover:text-ink mb-3 transition-colors"
         >
           <ChevronLeft className="w-3.5 h-3.5" /> Back
         </button>
-        <p className="text-xs uppercase tracking-widest text-[#C9A84C] font-medium mb-1">
+        <p className="text-xs uppercase tracking-widest text-accent-ink font-medium mb-1">
           Account
         </p>
         <h1
-          className="font-serif text-2xl font-semibold text-[#0F2A4A]"
+          className="font-serif text-2xl font-semibold text-ink"
         >
           My Profile
         </h1>
       </div>
 
       {/* Avatar + name display */}
-      <div className="bg-[#0F2A4A] rounded-2xl px-6 py-6 flex items-center gap-4 mb-6">
-        <div className="w-14 h-14 rounded-xl bg-[#C9A84C]/20 flex items-center justify-center flex-shrink-0">
-          <User className="w-7 h-7 text-[#C9A84C]" strokeWidth={1.4} />
+      <div className="bg-ink rounded-2xl px-6 py-6 flex items-center gap-4 mb-6">
+        <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
+          <User className="w-7 h-7 text-accent-ink" strokeWidth={1.4} />
         </div>
         <div>
           <p className="text-white font-semibold text-base leading-tight">
             {loggedInPriest?.priest_name ?? "—"}
           </p>
-          <p className="text-[#C9A84C]/70 text-xs mt-0.5 uppercase tracking-widest">
+          <p className="text-accent-ink/70 text-xs mt-0.5 uppercase tracking-widest">
             Parish Priest
           </p>
         </div>
       </div>
 
       {/* Form card */}
-      <div className="bg-white rounded-2xl border border-[#0F2A4A]/10 shadow-[0_6px_24px_#18344806] overflow-hidden">
+      <div className="bg-white rounded-2xl border border-ink/10 shadow-sm shadow-ink/5 overflow-hidden">
 
-        <div className="px-5 py-4 border-b border-[#0F2A4A]/5 flex items-center gap-2">
-          <UserCog className="w-4 h-4 text-[#0F2A4A]/65" />
-          <span className="text-xs uppercase tracking-widest font-medium text-[#0F2A4A]/65">
+        <div className="px-5 py-4 border-b border-ink/5 flex items-center gap-2">
+          <UserCog className="w-4 h-4 text-muted" />
+          <span className="text-xs uppercase tracking-widest font-medium text-muted">
             Edit details
           </span>
         </div>
@@ -118,8 +118,8 @@ const PriestProfilePage = () => {
 
           {/* Priest name field */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs uppercase tracking-widest font-medium text-[#0F2A4A]/65">
-              Priest name <span className="text-red-400">*</span>
+            <label className="text-xs uppercase tracking-widest font-medium text-muted">
+              Priest name <span className="text-ink">*</span>
             </label>
             <input
               type="text"
@@ -127,14 +127,14 @@ const PriestProfilePage = () => {
               onChange={(e) => handleChange("priest_name", e.target.value)}
               disabled={saving}
               placeholder="Enter your name"
-              className="w-full text-sm rounded-xl border border-[#0F2A4A]/15 focus:border-[#0F2A4A]/40 focus:outline-none focus:ring-2 focus:ring-[#0F2A4A]/10 px-3.5 py-2.5 text-[#0F2A4A] placeholder:text-gray-300 disabled:opacity-50 transition"
+              className="w-full text-sm rounded-xl border border-ink/15 focus:border-ink/40 focus:outline-none focus:ring-2 focus:ring-ink/10 px-3.5 py-2.5 text-ink placeholder:text-muted disabled:opacity-50 transition"
             />
           </div>
 
           {/* Coming soon notice */}
-          <div className="flex items-start gap-3 bg-[#C9A84C]/8 border border-[#C9A84C]/25 rounded-xl px-4 py-3">
-            <Clock className="w-4 h-4 text-[#C9A84C] mt-0.5 flex-shrink-0" />
-            <p className="text-xs text-[#0F2A4A]/60 leading-relaxed">
+          <div className="flex items-start gap-3 bg-accent/8 border border-accent/25 rounded-xl px-4 py-3">
+            <Clock className="w-4 h-4 text-accent-ink mt-0.5 flex-shrink-0" />
+            <p className="text-xs text-muted leading-relaxed">
               More fields — profile photo, age, bio and contact details — are coming soon.
             </p>
           </div>
@@ -146,14 +146,14 @@ const PriestProfilePage = () => {
           <button
             onClick={handleSubmit}
             disabled={saving || !isDirty}
-            className="w-full flex items-center justify-center gap-2 bg-[#0F2A4A] hover:bg-[#1a3d6b] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-xl py-3 transition-colors"
+            className="w-full flex items-center justify-center gap-2 bg-ink hover:bg-ink disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-xl py-3 transition-colors"
           >
             {saving
               ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</>
-              : <><Save className="w-4 h-4 text-[#C9A84C]" /> Save changes</>}
+              : <><Save className="w-4 h-4 text-accent-ink" /> Save changes</>}
           </button>
           {!isDirty && !saving && (
-            <p className="text-center text-xs text-gray-300 mt-2">No changes to save</p>
+            <p className="text-center text-xs text-muted mt-2">No changes to save</p>
           )}
         </div>
 

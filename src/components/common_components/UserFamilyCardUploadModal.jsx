@@ -127,22 +127,22 @@ const UserFamilyCardUploadModal = ({
   const isViewMode = mode === 'view';
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/50 p-4">
+      <div className="bg-white rounded-xl border border-line shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#f0ece0] shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-soft shrink-0">
           <div>
-            <div className="text-[11px] font-semibold tracking-[1.5px] uppercase text-[#C9A84C] mb-0.5">
+            <div className="text-[11px] font-semibold tracking-[1.5px] uppercase text-accent-ink mb-0.5">
               Family Card
             </div>
-            <div className="text-sm font-bold text-[#0F2A4A]">
+            <div className="text-sm font-bold text-ink">
               {isViewMode ? 'View Document' : 'Upload Document'}
             </div>
           </div>
           <button
             onClick={onCancel}
-            className="w-8 h-8 flex items-center justify-center rounded-md text-[#0F2A4A]/65 hover:text-[#0F2A4A] hover:bg-[#f4f2ed] transition-colors cursor-pointer border-none bg-transparent"
+            className="w-8 h-8 flex items-center justify-center rounded-md text-muted hover:text-ink hover:bg-soft transition-colors cursor-pointer border-none bg-transparent"
           >
             <X size={16} />
           </button>
@@ -153,7 +153,7 @@ const UserFamilyCardUploadModal = ({
 
           {isViewMode ? (
             <>
-              <div className="rounded-lg border border-[#e2ddd0] overflow-hidden bg-[#f4f2ed] h-[55vh] relative">
+              <div className="rounded-lg border border-line overflow-hidden bg-soft h-[55vh] relative">
                 <iframe
                   src={familyCardUrl}
                   title="Family card document"
@@ -161,7 +161,7 @@ const UserFamilyCardUploadModal = ({
                 />
                 {replacing && (
                   <div className="absolute inset-0 flex items-center justify-center bg-white/70">
-                    <Loader2 size={22} className="animate-spin text-[#C9A84C]" />
+                    <Loader2 size={22} className="animate-spin text-accent-ink" />
                   </div>
                 )}
               </div>
@@ -170,13 +170,13 @@ const UserFamilyCardUploadModal = ({
                   href={familyCardUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0F2A4A]/65 hover:text-[#0F2A4A] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-ink transition-colors"
                 >
                   <ExternalLink size={12} />
                   Open in new tab
                 </a>
                 {fileName && (
-                  <span className="text-xs text-[#0F2A4A]/65 truncate max-w-[55%] text-right">
+                  <span className="text-xs text-muted truncate max-w-[55%] text-right">
                     {fileName}
                   </span>
                 )}
@@ -189,7 +189,7 @@ const UserFamilyCardUploadModal = ({
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
               onClick={() => inputRef.current?.click()}
-              className={`flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed cursor-pointer transition-colors px-6 py-14 text-center ${dragOver ? 'border-[#C9A84C] bg-[#fdf8ee]' : 'border-[#d4c9a8] bg-[#faf9f6] hover:bg-[#f4f2ed]'}`}
+              className={`flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed cursor-pointer transition-colors px-6 py-14 text-center ${dragOver ? 'border-accent bg-soft' : 'border-line bg-background hover:bg-soft'}`}
             >
               <input
                 ref={inputRef}
@@ -200,18 +200,18 @@ const UserFamilyCardUploadModal = ({
               />
               {file ? (
                 <>
-                  <FileText size={28} className="text-[#C9A84C]" strokeWidth={1.5} />
+                  <FileText size={28} className="text-accent-ink" strokeWidth={1.5} />
                   <div>
-                    <p className="text-sm font-semibold text-[#0F2A4A]">{file.name}</p>
-                    <p className="text-xs text-[#0F2A4A]/65 mt-0.5">{(file.size / 1024 / 1024).toFixed(2)} MB · click to change</p>
+                    <p className="text-sm font-semibold text-ink">{file.name}</p>
+                    <p className="text-xs text-muted mt-0.5">{(file.size / 1024 / 1024).toFixed(2)} MB · click to change</p>
                   </div>
                 </>
               ) : (
                 <>
-                  <UploadCloud size={28} className="text-[#0F2A4A]/65" strokeWidth={1.5} />
+                  <UploadCloud size={28} className="text-muted" strokeWidth={1.5} />
                   <div>
-                    <p className="text-sm font-semibold text-[#0F2A4A]">Drag & drop your file here</p>
-                    <p className="text-xs text-[#0F2A4A]/65 mt-0.5">or click to browse · PDF or image, max 10MB</p>
+                    <p className="text-sm font-semibold text-ink">Drag & drop your file here</p>
+                    <p className="text-xs text-muted mt-0.5">or click to browse · PDF or image, max 10MB</p>
                   </div>
                 </>
               )}
@@ -221,7 +221,7 @@ const UserFamilyCardUploadModal = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#f0ece0] bg-[#faf9f6] flex items-center justify-end gap-3 shrink-0">
+        <div className="px-6 py-4 border-t border-soft bg-background flex items-center justify-end gap-3 shrink-0">
 
           {isViewMode ? (
             <>
@@ -238,7 +238,7 @@ const UserFamilyCardUploadModal = ({
               <button
                 onClick={onCancel}
                 disabled={replacing}
-                className="px-4 py-2 rounded-[7px] text-xs font-semibold text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] font-[inherit] transition-colors cursor-pointer disabled:opacity-40"
+                className="px-4 py-2 rounded-[7px] text-xs font-semibold text-muted hover:text-ink bg-white hover:bg-soft border border-line font-[inherit] transition-colors cursor-pointer disabled:opacity-40"
               >
                 Close
               </button>
@@ -248,7 +248,7 @@ const UserFamilyCardUploadModal = ({
                 <button
                   onClick={handleProceed}
                   disabled={replacing}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-[7px] text-xs font-bold uppercase tracking-[0.6px] text-[#0F2A4A] bg-[#C9A84C] hover:bg-[#dbb85a] border-none font-[inherit] transition-colors cursor-pointer disabled:opacity-40"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-[7px] text-xs font-bold uppercase tracking-[0.6px] text-ink bg-accent hover:bg-accent border-none font-[inherit] transition-colors cursor-pointer disabled:opacity-40"
                 >
                   <CheckCircle2 size={13} />
                   Looks good, proceed
@@ -260,8 +260,8 @@ const UserFamilyCardUploadModal = ({
                 onClick={handleReplaceClick}
                 disabled={replacing}
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-[7px] text-xs font-bold uppercase tracking-[0.6px] font-[inherit] transition-colors cursor-pointer border-none disabled:opacity-60 ${showVerifyActions
-                    ? 'text-red-600 bg-red-50 hover:bg-red-100'
-                    : 'text-[#0F2A4A] bg-[#C9A84C] hover:bg-[#dbb85a]'}`}
+                    ? 'text-ink bg-soft hover:bg-soft'
+                    : 'text-ink bg-accent hover:bg-accent'}`}
               >
                 {replacing ? <Loader2 size={13} className="animate-spin" /> : <RefreshCcw size={13} />}
                 {replacing ? 'Replacing…' : (showVerifyActions ? 'Replace & proceed' : 'Replace Document')}
@@ -273,7 +273,7 @@ const UserFamilyCardUploadModal = ({
               <button
                 onClick={onCancel}
                 disabled={uploading}
-                className="px-4 py-2 rounded-[7px] text-xs font-semibold text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#f4f2ed] border border-[#d4c9a8] font-[inherit] transition-colors cursor-pointer disabled:opacity-40"
+                className="px-4 py-2 rounded-[7px] text-xs font-semibold text-muted hover:text-ink bg-white hover:bg-soft border border-line font-[inherit] transition-colors cursor-pointer disabled:opacity-40"
               >
                 Cancel
               </button>
@@ -281,7 +281,7 @@ const UserFamilyCardUploadModal = ({
               <button
                 onClick={handleUpload}
                 disabled={uploading || !file}
-                className={`flex items-center gap-1.5 px-5 py-2 rounded-[7px] text-xs font-bold uppercase tracking-[0.6px] border-none font-[inherit] transition-colors cursor-pointer ${uploading || !file ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
+                className={`flex items-center gap-1.5 px-5 py-2 rounded-[7px] text-xs font-bold uppercase tracking-[0.6px] border-none font-[inherit] transition-colors cursor-pointer ${uploading || !file ? 'bg-accent text-white cursor-not-allowed' : 'bg-accent hover:bg-accent text-ink'}`}
               >
                 {uploading ? <Loader2 size={13} className="animate-spin" /> : <UploadCloud size={13} />}
                 {uploading ? 'Uploading…' : 'Upload'}

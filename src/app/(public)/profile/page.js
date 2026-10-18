@@ -16,22 +16,22 @@ import { useRouter } from 'next/navigation';
 // ── Shared primitives ────────────────────────────────────────────────
 
 const Label = ({ children }) => (
-  <label className="text-[11px] font-semibold text-[#0F2A4A]/60 tracking-wider uppercase">
+  <label className="text-[11px] font-semibold text-muted tracking-wider uppercase">
     {children}
   </label>
 );
 
 const inputCls = (error) => `
-  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-[#0F2A4A] font-[inherit]
+  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-ink font-[inherit]
   border-[1.5px] outline-none transition-colors box-border bg-white
-  focus:border-[#C9A84C]
-  ${error ? 'border-[#e05252] bg-[#fff5f5] focus:border-[#e05252]' : 'border-[#d4c9a8]'}
+  focus:border-ink
+  ${error ? 'border-ink bg-soft focus:border-ink' : 'border-line'}
 `;
 
 
 
 const SectionHeading = ({ children }) => (
-  <div className="text-[11px] font-bold text-[#C9A84C] tracking-[1.4px] uppercase mb-5">
+  <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
     {children}
   </div>
 );
@@ -70,17 +70,17 @@ const MultiSelectOrgs = ({ value, onChange, error }) => {
           onClick={() => setOpen(p => !p)}
           className={inputCls(error) + ' flex items-center justify-between cursor-pointer text-left'}
         >
-          <span className={value.length ? 'text-[#0F2A4A]' : 'text-[#0F2A4A]/65'}>
+          <span className={value.length ? 'text-ink' : 'text-muted'}>
             {value.length ? `${value.length} selected` : 'Select organizations'}
           </span>
-          <ChevronDown size={14} className={`text-[#0F2A4A]/65 transition-transform ${open ? 'rotate-180' : ''}`} />
+          <ChevronDown size={14} className={`text-muted transition-transform ${open ? 'rotate-180' : ''}`} />
         </button>
 
         {open && (
           // Use fixed positioning anchored via a useLayoutEffect, but a simpler fix:
           // render portal-style with fixed + JS coords, OR simply use position:absolute
           // with overflow visible on all parents. We fix the parents instead (see card below).
-          <div className="absolute left-0 right-0 top-[calc(100%+6px)] z-[200] bg-white border border-[#e2ddd0] rounded-[9px] shadow-lg overflow-hidden">
+          <div className="absolute left-0 right-0 top-[calc(100%+6px)] z-[200] bg-white border border-line rounded-[9px] shadow-lg overflow-hidden">
             {CHURCH_ORGS.map(org => {
               const selected = value.includes(org);
               return (
@@ -88,10 +88,10 @@ const MultiSelectOrgs = ({ value, onChange, error }) => {
                   key={org}
                   type="button"
                   onClick={() => toggleOrg(org)}
-                  className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 text-sm font-[inherit] transition-colors cursor-pointer text-left ${selected ? 'bg-[#fdf8ee] text-[#0F2A4A] font-semibold' : 'text-[#0F2A4A]/80 hover:bg-[#faf8f3]'}`}
+                  className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 text-sm font-[inherit] transition-colors cursor-pointer text-left ${selected ? 'bg-soft text-ink font-semibold' : 'text-ink/80 hover:bg-background'}`}
                 >
                   <span>{org}</span>
-                  {selected && <Check size={14} className="text-[#C9A84C] shrink-0" />}
+                  {selected && <Check size={14} className="text-accent-ink shrink-0" />}
                 </button>
               );
             })}
@@ -105,13 +105,13 @@ const MultiSelectOrgs = ({ value, onChange, error }) => {
           {value.map(org => (
             <span
               key={org}
-              className="inline-flex items-center gap-1.5 bg-[#fdf8ee] border border-[#e7d9ad] text-[#0F2A4A] text-xs font-semibold px-2.5 py-1 rounded-full"
+              className="inline-flex items-center gap-1.5 bg-soft border border-line text-ink text-xs font-semibold px-2.5 py-1 rounded-full"
             >
               {org}
               <button
                 type="button"
                 onClick={() => removeOrg(org)}
-                className="text-[#0F2A4A]/65 hover:text-[#c0392b] transition-colors cursor-pointer border-none bg-transparent p-0 flex items-center"
+                className="text-muted hover:text-ink transition-colors cursor-pointer border-none bg-transparent p-0 flex items-center"
               >
                 <X size={12} />
               </button>
@@ -254,37 +254,37 @@ const UserProfilePage = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#faf8f3] flex items-center justify-center">
-        <Loader2 className="animate-spin text-[#0F2A4A]/65" size={28} />
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="animate-spin text-muted" size={28} />
       </div>
     );
   }
 
 
   const verificationStyles = {
-    pending:  { bg: 'bg-amber-50',   text: 'text-amber-700',   border: 'border-amber-200',   label: 'Pending Verification' },
-    verified: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', label: 'Verified' },
-    rejected: { bg: 'bg-red-50',     text: 'text-red-700',     border: 'border-red-200',     label: 'Rejected' },
+    pending:  { bg: 'bg-soft',   text: 'text-ink',   border: 'border-line',   label: 'Pending Verification' },
+    verified: { bg: 'bg-soft', text: 'text-ink', border: 'border-line', label: 'Verified' },
+    rejected: { bg: 'bg-soft',     text: 'text-ink',     border: 'border-line',     label: 'Rejected' },
   };
   const vStyle = verificationStyles[user.verification_status] ?? verificationStyles.pending;
 
   return (
-    <div className="min-h-screen bg-[#faf8f3]">
+    <div className="min-h-screen bg-background">
 
       {/* Page header bar */}
            {/* Page header bar */}
-      <div className="bg-[#0F2A4A] border-b border-white/10">
+      <div className="bg-ink border-b border-white/10">
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors bg-white/10 hover:bg-white/15 border border-white/15 rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors bg-white/10 hover:bg-white/15 border border-white/15 rounded-md px-3 py-1.5 text-xs font-semibold font-[inherit] cursor-pointer shrink-0"
           >
             <ArrowLeft size={12} />
             Back
           </button>
           <div className="h-5 w-px bg-white/20" />
           <div>
-            <div className="text-white/70 text-[11px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
+            <div className="text-white/80 text-[11px] font-semibold tracking-[1.5px] uppercase leading-none mb-0.5">
               Profile Page
             </div>
             <div className="text-white font-bold text-base tracking-[0.2px] leading-none">
@@ -297,15 +297,15 @@ const UserProfilePage = () => {
       <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col gap-6">
 
         {/* Profile details card — overflow visible so the org dropdown can escape */}
-        <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-[0_6px_24px_#18344806] overflow-visible">
+        <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-visible">
 
           {/* Card header / actions */}
-          <div className="px-7 py-5 border-b border-[#f0ece0] flex items-center justify-between rounded-t-xl">
+          <div className="px-7 py-5 border-b border-soft flex items-center justify-between rounded-t-xl">
             <div>
-              <div className="text-[11px] font-bold text-[#C9A84C] tracking-[1.4px] uppercase mb-1">
+              <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-1">
                 Profile Details
               </div>
-              <p className="text-xs text-[#0F2A4A]/65">
+              <p className="text-xs text-muted">
                 {isEditing ? 'Editing your profile information' : 'Your parish registration details'}
               </p>
             </div>
@@ -313,7 +313,7 @@ const UserProfilePage = () => {
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex items-center gap-1.5 text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#faf8f3] border border-[#d4c9a8] rounded-md px-3.5 py-2 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-muted hover:text-ink bg-white hover:bg-background border border-line rounded-md px-3.5 py-2 text-xs font-semibold font-[inherit] transition-colors cursor-pointer"
               >
                 <Pencil size={12} /> Edit Profile
               </button>
@@ -322,14 +322,14 @@ const UserProfilePage = () => {
                 <button
                   onClick={handleCancel}
                   disabled={loading}
-                  className="flex items-center gap-1.5 text-[#0F2A4A]/65 hover:text-[#0F2A4A] bg-white hover:bg-[#faf8f3] border border-[#d4c9a8] rounded-md px-3.5 py-2 text-xs font-semibold font-[inherit] transition-colors cursor-pointer disabled:opacity-40"
+                  className="flex items-center gap-1.5 text-muted hover:text-ink bg-white hover:bg-background border border-line rounded-md px-3.5 py-2 text-xs font-semibold font-[inherit] transition-colors cursor-pointer disabled:opacity-40"
                 >
                   <X size={12} /> Cancel
                 </button>
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer ${loading ? 'bg-[#a89050] text-white cursor-not-allowed' : 'bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A]'}`}
+                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-md text-xs font-semibold font-[inherit] border-none transition-colors cursor-pointer ${loading ? 'bg-accent text-white cursor-not-allowed' : 'bg-accent hover:bg-accent text-ink'}`}
                 >
                   {loading ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
                   {loading ? 'Saving…' : 'Save Changes'}
@@ -339,19 +339,19 @@ const UserProfilePage = () => {
           </div>
 
           {/* Personal Details */}
-          <div className="px-7 py-6 border-b border-[#f0ece0]">
+          <div className="px-7 py-6 border-b border-soft">
             <SectionHeading>Personal Details</SectionHeading>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
 
               <Field label="Full Name" error={errors.user_name}>
                 {isEditing
                   ? <input value={form.user_name} onChange={set('user_name')} placeholder="Enter your full name" className={inputCls(errors.user_name)} />
-                  : <span className="flex items-center gap-2 text-sm text-[#0F2A4A] font-medium"><User size={14} className="text-[#0F2A4A]/65" />{user.user_name || '—'}</span>
+                  : <span className="flex items-center gap-2 text-sm text-ink font-medium"><User size={14} className="text-muted" />{user.user_name || '—'}</span>
                 }
               </Field>
 
               <Field label="Email">
-                <span className="flex items-center gap-2 text-sm text-[#0F2A4A]/65 font-medium">
+                <span className="flex items-center gap-2 text-sm text-muted font-medium">
                   {user.user_email || '—'}
                 </span>
               </Field>
@@ -365,14 +365,14 @@ const UserProfilePage = () => {
                       inputMode="numeric"
                       className={inputCls(errors.user_mobile_number)}
                     />
-                  : <span className="flex items-center gap-2 text-sm text-[#0F2A4A] font-medium"><Phone size={14} className="text-[#0F2A4A]/65" />{user.user_mobile_number || '—'}</span>
+                  : <span className="flex items-center gap-2 text-sm text-ink font-medium"><Phone size={14} className="text-muted" />{user.user_mobile_number || '—'}</span>
                 }
               </Field>
 
               <Field label="Spouse's Name" error={errors.spouse_name}>
                 {isEditing
                   ? <input value={form.spouse_name} onChange={set('spouse_name')} placeholder="Enter spouse's name (if applicable)" className={inputCls(errors.spouse_name)} />
-                  : <span className="flex items-center gap-2 text-sm text-[#0F2A4A] font-medium"><Heart size={14} className="text-[#0F2A4A]/65" />{user.spouse_name || '—'}</span>
+                  : <span className="flex items-center gap-2 text-sm text-ink font-medium"><Heart size={14} className="text-muted" />{user.spouse_name || '—'}</span>
                 }
               </Field>
 
@@ -380,7 +380,7 @@ const UserProfilePage = () => {
                 <Field label="Address" error={errors.address}>
                   {isEditing
                     ? <input value={form.address} onChange={set('address')} placeholder="Enter your address" className={inputCls(errors.address)} />
-                    : <span className="flex items-center gap-2 text-sm text-[#0F2A4A] font-medium"><MapPin size={14} className="text-[#0F2A4A]/65 shrink-0" />{user.address || '—'}</span>
+                    : <span className="flex items-center gap-2 text-sm text-ink font-medium"><MapPin size={14} className="text-muted shrink-0" />{user.address || '—'}</span>
                   }
                 </Field>
               </div>
@@ -406,7 +406,7 @@ const UserProfilePage = () => {
                     ))}
                   </select>
                 ) : (
-                  <span className="text-sm text-[#0F2A4A] font-medium">{user.prayer_group || '—'}</span>
+                  <span className="text-sm text-ink font-medium">{user.prayer_group || '—'}</span>
                 )}
               </Field>
 
@@ -420,13 +420,13 @@ const UserProfilePage = () => {
                 ) : user.church_organizations?.length ? (
                   <div className="flex flex-wrap gap-2">
                     {user.church_organizations.map(org => (
-                      <span key={org} className="inline-flex items-center bg-[#fdf8ee] border border-[#e7d9ad] text-[#0F2A4A] text-xs font-semibold px-2.5 py-1 rounded-full">
+                      <span key={org} className="inline-flex items-center bg-soft border border-line text-ink text-xs font-semibold px-2.5 py-1 rounded-full">
                         {org}
                       </span>
                     ))}
                   </div>
                 ) : (
-                  <span className="text-sm text-[#0F2A4A]/65">None selected</span>
+                  <span className="text-sm text-muted">None selected</span>
                 )}
               </Field>
 
@@ -436,13 +436,13 @@ const UserProfilePage = () => {
         </div>
 
         {/* Family Card section */}
-        <div className="bg-white rounded-xl border border-[#e2ddd0] shadow-[0_6px_24px_#18344806] overflow-hidden">
-          <div className="px-7 py-5 border-b border-[#f0ece0] flex items-center justify-between gap-4 flex-wrap">
+        <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-hidden">
+          <div className="px-7 py-5 border-b border-soft flex items-center justify-between gap-4 flex-wrap">
             <div>
-              <div className="text-[11px] font-bold text-[#C9A84C] tracking-[1.4px] uppercase mb-1">
+              <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-1">
                 Family Card Document
               </div>
-              <p className="text-xs text-[#0F2A4A]/65">
+              <p className="text-xs text-muted">
                 Used to verify your family details for sacrament requests
               </p>
             </div>
@@ -466,16 +466,16 @@ const UserProfilePage = () => {
             {fileUrl ? (
               <div className="flex flex-col gap-4">
                 {/* Compact file row — no inline preview, just the name + two action buttons */}
-                <div className="flex items-center gap-3 p-3.5 rounded-lg border border-[#e2ddd0] bg-[#faf9f6]">
-                  <FileText size={18} className="text-[#0F2A4A]/65 shrink-0" strokeWidth={1.5} />
-                  <span className="text-sm text-[#0F2A4A]/60 truncate flex-1 min-w-0">
+                <div className="flex items-center gap-3 p-3.5 rounded-lg border border-line bg-background">
+                  <FileText size={18} className="text-muted shrink-0" strokeWidth={1.5} />
+                  <span className="text-sm text-muted truncate flex-1 min-w-0">
                     {user.family_card_document?.file_name || 'Family card document'}
                   </span>
 
                   {/* View Fully */}
                   <button
                     onClick={() => setFamilyCardModal('view')}
-                    className="flex items-center gap-1.5 text-[#0F2A4A]/60 hover:text-[#0F2A4A] bg-white hover:bg-[#faf8f3] border border-[#d4c9a8] rounded-[7px] px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer shrink-0"
+                    className="flex items-center gap-1.5 text-muted hover:text-ink bg-white hover:bg-background border border-line rounded-[7px] px-3 py-1.5 text-xs font-semibold font-[inherit] transition-colors cursor-pointer shrink-0"
                   >
                     <Eye size={12} /> View Fully
                   </button>
@@ -484,7 +484,7 @@ const UserProfilePage = () => {
                   <button
                     onClick={handleRowReplaceClick}
                     disabled={replacingCard}
-                    className="flex items-center gap-1.5 bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A] font-bold text-xs uppercase tracking-[0.6px] px-3 py-1.5 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit] shrink-0 disabled:opacity-60"
+                    className="flex items-center gap-1.5 bg-accent hover:bg-accent text-ink font-bold text-xs uppercase tracking-[0.6px] px-3 py-1.5 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit] shrink-0 disabled:opacity-60"
                   >
                     {replacingCard ? <Loader2 size={13} className="animate-spin" /> : <RefreshIcon />}
                     {replacingCard ? 'Replacing…' : 'Replace'}
@@ -493,15 +493,15 @@ const UserProfilePage = () => {
               </div>
             ) : (
               <div className="flex flex-col items-center gap-3 py-10 text-center">
-                <FileText size={26} className="text-[#0F2A4A]/20" strokeWidth={1.5} />
+                <FileText size={26} className="text-ink/20" strokeWidth={1.5} />
                 <div>
-                  <p className="text-sm font-semibold text-[#0F2A4A] mb-1">No family card uploaded</p>
-                  <p className="text-xs text-[#0F2A4A]/65">Upload one to get verified for sacrament requests.</p>
+                  <p className="text-sm font-semibold text-ink mb-1">No family card uploaded</p>
+                  <p className="text-xs text-muted">Upload one to get verified for sacrament requests.</p>
                 </div>
                 <button
                   onClick={handleRowReplaceClick}
                   disabled={replacingCard}
-                  className="mt-1 flex items-center gap-1.5 bg-[#C9A84C] hover:bg-[#dbb85a] text-[#0F2A4A] font-bold text-xs uppercase tracking-[0.6px] px-4 py-2 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit] disabled:opacity-60"
+                  className="mt-1 flex items-center gap-1.5 bg-accent hover:bg-accent text-ink font-bold text-xs uppercase tracking-[0.6px] px-4 py-2 rounded-[7px] transition-colors cursor-pointer border-none font-[inherit] disabled:opacity-60"
                 >
                   {replacingCard ? <Loader2 size={13} className="animate-spin" /> : 'Upload Document'}
                 </button>
