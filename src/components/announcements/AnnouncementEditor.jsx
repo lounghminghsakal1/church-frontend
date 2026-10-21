@@ -1,4 +1,5 @@
 'use client';
+import DateTimePicker from '@/components/ui/DateTimePicker';
 import { buttonClassName, inputClasses } from '@/components/ui/styles';
 
 
@@ -95,7 +96,7 @@ export default function AnnouncementEditor({ item, onClose, onSaved }) {
       <fieldset disabled={busy || conflict}>
         <label>Title<input className={`${inputClasses} min-h-12`} name="title" value={fields.title} onChange={change} required placeholder="e.g. Parish feast celebration" /></label>
         <label>Description<textarea className={`${inputClasses} min-h-40 resize-y leading-7`} name="description" value={fields.description} onChange={change} rows={6} required placeholder="What would you like the parish to know?" /></label>
-        <div data-testid="announcement-form-dates" className="grid grid-cols-1 gap-4 sm:grid-cols-2"><label>Show from (IST)<input className={`${inputClasses} min-h-12`} type="datetime-local" step="1" name="start_date" required value={fields.start_date} onChange={change} /></label><label>Show until (IST)<input className={`${inputClasses} min-h-12`} type="datetime-local" step="1" name="end_date" required value={fields.end_date} onChange={change} /></label></div>
+        <div data-testid="announcement-form-dates" className="grid grid-cols-1 gap-4 sm:grid-cols-2"><label>Show from (IST)<DateTimePicker className={`${inputClasses} min-h-12`} type="datetime-local" label="Show from (IST)" step="1" name="start_date" required value={fields.start_date} onChange={change} /></label><label>Show until (IST)<DateTimePicker className={`${inputClasses} min-h-12`} type="datetime-local" label="Show until (IST)" min={fields.start_date} step="1" name="end_date" required value={fields.end_date} onChange={change} /></label></div>
         <p data-testid="announcement-help" className="text-xs leading-relaxed text-muted">All times use Asia/Kolkata (IST), including when you are travelling.</p>
         <label>Visibility<select className={`${inputClasses} min-h-12`} name="status" value={fields.status} onChange={change}><option value="active">Active — show within the selected dates</option><option value="inactive">Inactive — keep hidden</option></select></label>
         <label>More information link <span>(optional)</span><input className={`${inputClasses} min-h-12`} type="url" name="link" value={fields.link} onChange={change} placeholder="https://…" /></label>

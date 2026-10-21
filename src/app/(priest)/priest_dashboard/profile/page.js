@@ -69,7 +69,7 @@ const PriestProfilePage = () => {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-0 sm:p-6 max-w-2xl mx-auto">
 
       {/* Header */}
       <div className="mb-8">
@@ -90,15 +90,15 @@ const PriestProfilePage = () => {
       </div>
 
       {/* Avatar + name display */}
-      <div className="bg-ink rounded-2xl px-6 py-6 flex items-center gap-4 mb-6">
+      <div className="bg-ink rounded-2xl px-5 py-6 flex flex-col items-start gap-4 mb-6 sm:flex-row sm:items-center sm:px-6">
         <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
-          <User className="w-7 h-7 text-accent-ink" strokeWidth={1.4} />
+          <User className="w-7 h-7 text-accent" strokeWidth={1.4} />
         </div>
-        <div>
+        <div className="min-w-0 wrap-anywhere">
           <p className="text-white font-semibold text-base leading-tight">
             {loggedInPriest?.priest_name ?? "—"}
           </p>
-          <p className="text-accent-ink/70 text-xs mt-0.5 uppercase tracking-widest">
+          <p className="text-accent text-xs mt-2 uppercase tracking-widest">
             Parish Priest
           </p>
         </div>
@@ -150,7 +150,7 @@ const PriestProfilePage = () => {
           >
             {saving
               ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</>
-              : <><Save className="w-4 h-4 text-accent-ink" /> Save changes</>}
+              : <><Save className="w-4 h-4 text-accent" /> Save changes</>}
           </button>
           {!isDirty && !saving && (
             <p className="text-center text-xs text-muted mt-2">No changes to save</p>

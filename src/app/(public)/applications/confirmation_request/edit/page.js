@@ -1,4 +1,5 @@
 "use client";
+import { inputClassName } from '@/components/ui/styles';
 import Field from '@/components/common_components/FormField';
 
 
@@ -17,12 +18,7 @@ const Label = ({ children }) => (
   </label>
 );
 
-const inputCls = (error) => `
-  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-ink font-[inherit]
-  border-[1.5px] outline-none transition-colors box-border bg-white
-  focus:border-ink
-  ${error ? 'border-ink bg-soft focus:border-ink' : 'border-line'}
-`;
+const inputCls = inputClassName;
 
 
 
@@ -156,7 +152,7 @@ const ConfirReqCard = ({ confirReq, onUpdated }) => {
     <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-hidden">
 
       {/* Card header */}
-      <div className="px-7 py-4 bg-background border-b border-soft flex items-center justify-between gap-4">
+      <div className="px-5 py-4 sm:px-7 bg-background border-b border-soft flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
 
         {/* Left: status + meta */}
         <div className="flex items-center gap-3 flex-wrap min-w-0">
@@ -238,7 +234,7 @@ const ConfirReqCard = ({ confirReq, onUpdated }) => {
       </div>
 
       {/* Parent details */}
-      <div className="px-7 py-6 border-b border-soft">
+      <div className="px-5 py-6 sm:px-7 border-b border-soft">
         <SectionHeading>Parent Details</SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
           <Field label="Father's Name" error={errors.father_name}>
@@ -257,7 +253,7 @@ const ConfirReqCard = ({ confirReq, onUpdated }) => {
       </div>
 
       {/* Confirmation details */}
-      <div className="px-7 py-6">
+      <div className="px-5 py-6 sm:px-7">
         <SectionHeading>Confirmation Details</SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
           <Field label="Person Receiving Confirmation" error={errors.confirmation_person_name}>
@@ -349,7 +345,7 @@ const ConfirmationRequestEditPage = () => {
 
         ) : (
           <div className="flex flex-col gap-5">
-            <div className="flex items-center justify-between mb-1">
+            <div className="flex flex-col items-stretch justify-between gap-3 mb-1 sm:flex-row sm:items-center">
               <p className="text-sm text-muted leading-relaxed">
                 {allconfirRequests.length} request{allconfirRequests.length > 1 ? 's' : ''} found. Pending requests can be edited.
               </p>

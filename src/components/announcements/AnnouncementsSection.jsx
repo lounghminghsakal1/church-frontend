@@ -1,5 +1,6 @@
 'use client';
 import { buttonClassName } from '@/components/ui/styles';
+import styles from '@/components/pages_components/parish.module.css';
 
 
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -58,8 +59,8 @@ function PublicAnnouncements() {
     <div data-testid="announcement-toolbar" className="mb-5 flex items-center justify-between gap-4 text-xs text-muted"><span>{visible.length} current {visible.length === 1 ? 'announcement' : 'announcements'}</span><button data-testid="announcement-text-button" className="inline-flex min-h-11 items-center gap-2 text-sm text-ink underline underline-offset-4 disabled:opacity-50" onClick={load} disabled={loading}><RefreshCw size={15} className={loading ? 'animate-spin' : ''} />Refresh</button></div>
     {error ? <div data-testid="announcement-state" className="flex flex-col items-center gap-4 rounded-2xl border border-ink/10 bg-white px-6 py-12 text-center [&>svg]:text-accent-ink [&_h2]:font-serif [&_h2]:text-2xl [&_h3]:font-serif [&_h3]:text-2xl [&_p]:max-w-lg [&_p]:text-sm [&_p]:text-muted" role="alert"><p>{error.message}</p><button className={buttonClassName("secondary")} onClick={load}>Try again</button></div> : current ?
       <div role="region" aria-roledescription="carousel" aria-label="Parish announcements">
-        <article data-testid="announcement-feature" className="grid grid-cols-1 overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-sm sm:grid-cols-2" aria-roledescription="slide" aria-label={`${currentIndex + 1} of ${visible.length}`}>
-          <AnnouncementImage src={current.image_url} title={current.title} variant="feature" />
+        <article data-testid="announcement-feature" className={`${styles.noticeFeature} ${safeAnnouncementUrl(current.image_url) ? styles.noticeHasImage : ''}`} aria-roledescription="slide" aria-label={`${currentIndex + 1} of ${visible.length}`}>
+          {safeAnnouncementUrl(current.image_url) && <AnnouncementImage src={current.image_url} title={current.title} variant="feature" />}
           <div data-testid="announcement-feature-copy" className="min-w-0 self-center p-6 md:p-10 [&>h3]:mb-5 [&>h3]:font-serif [&>h3]:text-3xl [&>h3]:leading-tight [&>h3]:wrap-anywhere md:[&>h3]:text-4xl" aria-live="polite"><p className="mb-3 text-[10px] font-semibold tracking-[0.18em] text-accent-ink uppercase">FROM YOUR PARISH</p><h3>{current.title}</h3><p data-testid="announcement-excerpt" className="line-clamp-3 text-sm leading-7 whitespace-pre-line wrap-anywhere text-muted">{current.description}</p><p data-testid="announcement-date" className="my-5 text-xs leading-7 text-muted">Available until {parishDate(current.end_date)} IST</p><button onClick={() => openDetail(current)} className={buttonClassName("primary")}>Read announcement <ArrowUpRight size={17} /></button></div>
         </article>
         {visible.length > 1 && <div data-testid="announcement-carousel-controls" className="mt-6 flex items-center justify-center gap-4 text-xs text-muted"><button data-testid="announcement-icon-button" className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl border border-ink/10 bg-white text-ink transition-colors hover:bg-soft disabled:cursor-not-allowed disabled:opacity-50" aria-label="Previous announcement" onClick={() => setIndex((currentIndex + visible.length - 1) % visible.length)}><ChevronLeft size={21} /></button><div data-testid="announcement-dots" className="flex max-w-1/2 flex-wrap items-center justify-center [&>button]:grid [&>button]:h-11 [&>button]:w-7 [&>button]:place-items-center [&>button]:after:size-2 [&>button]:after:rounded-full [&>button]:after:bg-line [&>button]:after:content-[''] [&>button[aria-pressed=true]]:after:w-5 [&>button[aria-pressed=true]]:after:bg-ink">{visible.map((item, i) => <button key={item._id} aria-label={`Show announcement ${i + 1}: ${item.title}`} aria-pressed={i === currentIndex} onClick={() => setIndex(i)} />)}</div><span>{currentIndex + 1} / {visible.length}</span><button data-testid="announcement-icon-button" className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl border border-ink/10 bg-white text-ink transition-colors hover:bg-soft disabled:cursor-not-allowed disabled:opacity-50" aria-label="Next announcement" onClick={() => setIndex((currentIndex + 1) % visible.length)}><ChevronRight size={21} /></button></div>}
@@ -76,7 +77,13 @@ function PublicAnnouncements() {
 }
 
 export default function AnnouncementsSection() {
-  return <section id="announcements" className="mx-auto max-w-7xl px-5 py-14 md:px-8 md:py-20 [&_h2]:font-serif [&_h2]:text-3xl [&_h2]:leading-tight [&_h2]:tracking-tight md:[&_h2]:text-4xl pb-12"><div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end md:gap-10"><div><p className="mb-3 text-[10px] font-semibold tracking-[0.18em] text-accent-ink uppercase">THE PARISH NOTICEBOARD</p><h2>News for our community.</h2></div><p className="max-w-sm text-sm leading-8 text-muted">Parish celebrations, important notices, and moments to come together.</p></div>
-    <PublicAnnouncements />
-  </section>;
+  return (
+    <section id="announcements" className={`${styles.section} ${styles.noticeSection}`} aria-labelledby="announcements-title">
+      <div className={styles.sectionHeading}>
+        <div><p className={styles.eyebrow}>EVENTS & PARISH NEWS</p><h2 id="announcements-title">What?s happening at the parish.</h2></div>
+        <p className={styles.sectionIntro}>Celebrations, community updates, and the latest notices, all in one place.</p>
+      </div>
+      <PublicAnnouncements />
+    </section>
+  );
 }

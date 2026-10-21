@@ -1,4 +1,5 @@
 "use client";
+import { inputClassName } from '@/components/ui/styles';
 import Field from '@/components/common_components/FormField';
 
 
@@ -21,12 +22,7 @@ const Label = ({ children }) => (
   </label>
 );
 
-const inputCls = (error) => `
-  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-ink font-[inherit]
-  border-[1.5px] outline-none transition-colors box-border bg-white
-  focus:border-ink
-  ${error ? 'border-ink bg-soft focus:border-ink' : 'border-line'}
-`;
+const inputCls = inputClassName;
 
 
 
@@ -288,7 +284,7 @@ const UserProfilePage = () => {
               Profile Page
             </div>
             <div className="text-white font-bold text-base tracking-[0.2px] leading-none">
-              Baptism Application
+              My parish profile
             </div>
           </div>
         </div>
@@ -300,7 +296,7 @@ const UserProfilePage = () => {
         <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-visible">
 
           {/* Card header / actions */}
-          <div className="px-7 py-5 border-b border-soft flex items-center justify-between rounded-t-xl">
+          <div className="px-5 py-5 sm:px-7 border-b border-soft flex flex-col items-stretch gap-3 rounded-t-xl sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-1">
                 Profile Details
@@ -339,7 +335,7 @@ const UserProfilePage = () => {
           </div>
 
           {/* Personal Details */}
-          <div className="px-7 py-6 border-b border-soft">
+          <div className="px-5 py-6 sm:px-7 border-b border-soft">
             <SectionHeading>Personal Details</SectionHeading>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
 
@@ -351,7 +347,7 @@ const UserProfilePage = () => {
               </Field>
 
               <Field label="Email">
-                <span className="flex items-center gap-2 text-sm text-muted font-medium">
+                <span className="block break-all text-sm text-muted font-medium">
                   {user.user_email || '—'}
                 </span>
               </Field>
@@ -389,7 +385,7 @@ const UserProfilePage = () => {
           </div>
 
           {/* Parish Affiliation */}
-          <div className="px-7 py-6">
+          <div className="px-5 py-6 sm:px-7">
             <SectionHeading>Parish Affiliation</SectionHeading>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
 
@@ -437,7 +433,7 @@ const UserProfilePage = () => {
 
         {/* Family Card section */}
         <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-hidden">
-          <div className="px-7 py-5 border-b border-soft flex items-center justify-between gap-4 flex-wrap">
+          <div className="px-5 py-5 sm:px-7 border-b border-soft flex items-center justify-between gap-4 flex-wrap">
             <div>
               <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-1">
                 Family Card Document
@@ -452,7 +448,7 @@ const UserProfilePage = () => {
             </span>
           </div>
 
-          <div className="px-7 py-6">
+          <div className="px-5 py-6 sm:px-7">
             {/* Hidden input shared by the row's Replace button — opens the file
                 manager directly and uploads as soon as a file is chosen. */}
             <input
@@ -466,12 +462,13 @@ const UserProfilePage = () => {
             {fileUrl ? (
               <div className="flex flex-col gap-4">
                 {/* Compact file row — no inline preview, just the name + two action buttons */}
-                <div className="flex items-center gap-3 p-3.5 rounded-lg border border-line bg-background">
+                <div className="grid grid-cols-[18px_minmax(0,1fr)] items-center gap-3 p-3.5 rounded-lg border border-line bg-background sm:flex">
                   <FileText size={18} className="text-muted shrink-0" strokeWidth={1.5} />
                   <span className="text-sm text-muted truncate flex-1 min-w-0">
                     {user.family_card_document?.file_name || 'Family card document'}
                   </span>
 
+                  <div className="col-span-2 grid grid-cols-2 gap-2 sm:flex sm:shrink-0">
                   {/* View Fully */}
                   <button
                     onClick={() => setFamilyCardModal('view')}
@@ -489,6 +486,7 @@ const UserProfilePage = () => {
                     {replacingCard ? <Loader2 size={13} className="animate-spin" /> : <RefreshIcon />}
                     {replacingCard ? 'Replacing…' : 'Replace'}
                   </button>
+                  </div>
                 </div>
               </div>
             ) : (

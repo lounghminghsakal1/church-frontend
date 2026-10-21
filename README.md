@@ -34,3 +34,25 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Mobile layout checks
+
+Run `npm run build`, then `npm run start -- -p 3101`. In a second terminal, run
+`npm run test:mobile` from the project root.
+
+The audit discovers all page routes and checks 320px, 390px, 430px, 768px and
+844px landscape viewports. It includes populated request lists, editing forms,
+priest review panels, announcement editors, navigation and document/payment
+dialogs. API calls use fixtures; no parish records are changed. Failures and
+screenshots are saved to the temporary directory printed by the test.
+
+Chrome defaults to its standard Windows installation path. Set
+`REQUEST_UI_BROWSER` for another Chromium binary, or `REQUEST_UI_ORIGIN` for a
+preview on another port. These checks use browser emulation; real-device testing
+is still useful for native keyboards and document viewers.
+
+With the same preview running, `npm run test:date-picker` checks calendar and time
+selection, keyboard navigation, cancellation, minimum dates/times, nested dialogs,
+and the meeting, announcement and priest-availability API payloads. Pure calendar
+and date conversion checks run with
+`node --test tests/date-time-picker.test.mjs tests/announcements.test.mjs`.

@@ -1,4 +1,6 @@
 "use client";
+import DateTimePicker from '@/components/ui/DateTimePicker';
+import { inputClassName } from '@/components/ui/styles';
 import Field from '@/components/common_components/FormField';
 
 
@@ -17,12 +19,7 @@ const Label = ({ children }) => (
   </label>
 );
 
-const inputCls = (error) => `
-  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-ink font-[inherit]
-  border-[1.5px] outline-none transition-colors box-border bg-white
-  focus:border-ink
-  ${error ? 'border-ink bg-soft focus:border-ink' : 'border-line'}
-`;
+const inputCls = inputClassName;
 
 
 
@@ -119,7 +116,7 @@ const EucharistRequestApplypage = ({ user }) => {
         <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-hidden">
 
           {/* Section: Parent Details */}
-          <div className="px-7 py-6 border-b border-soft">
+          <div className="px-5 py-6 sm:px-7 border-b border-soft">
             <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
               Parent Details
             </div>
@@ -144,7 +141,7 @@ const EucharistRequestApplypage = ({ user }) => {
           </div>
 
           {/* Section: Eucharist person Details */}
-          <div className="px-7 py-6 border-b border-soft">
+          <div className="px-5 py-6 sm:px-7 border-b border-soft">
             <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
               Eucharist Person Details
             </div>
@@ -159,7 +156,7 @@ const EucharistRequestApplypage = ({ user }) => {
               </Field>
               <div className="grid grid-cols-1 gap-x-6">
                 <Field label="Preferred Baptism Date & Time" error={errors.preferred_eucharist_date_and_time}>
-                  <input
+                  <DateTimePicker
                     type="datetime-local"
                     value={eRForm.preferred_eucharist_date_and_time}
                     onChange={e => seteRForm(p => ({ ...p, preferred_eucharist_date_and_time: e.target.value }))}
@@ -171,7 +168,7 @@ const EucharistRequestApplypage = ({ user }) => {
           </div>
 
           {/* Footer / Submit */}
-          <div className="px-7 py-5 bg-background flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="px-5 py-5 sm:px-7 bg-background flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-muted leading-relaxed max-w-sm">
               By submitting, you agree to be contacted by the parish regarding this request.
             </p>

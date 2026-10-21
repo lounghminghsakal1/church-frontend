@@ -1,5 +1,8 @@
 "use client";
+import DateTimePicker from '@/components/ui/DateTimePicker';
+import { inputClassName } from '@/components/ui/styles';
 import Field from '@/components/common_components/FormField';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 
 import { apiPost } from '@/services/axios';
@@ -16,12 +19,7 @@ const Label = ({ children }) => (
   </label>
 );
 
-const inputCls = (error) => `
-  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-ink font-[inherit]
-  border-[1.5px] outline-none transition-colors box-border bg-white
-  focus:border-ink
-  ${error ? 'border-ink bg-soft focus:border-ink' : 'border-line'}
-`;
+const inputCls = inputClassName;
 
 
 
@@ -31,6 +29,7 @@ const MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024;
 // ── Payment QR Modal ────────────────────────────────────────────────
 
 const PaymentQrModal = ({ onClose, onMarkComplete, onMarkFailed }) => {
+  useBodyScrollLock();
   const overlayRef = useRef(null);
   const handleBackdrop = (e) => { if (e.target === overlayRef.current) onClose?.(); };
 
@@ -40,10 +39,10 @@ const PaymentQrModal = ({ onClose, onMarkComplete, onMarkFailed }) => {
       onClick={handleBackdrop}
       className="fixed inset-0 z-[9999] bg-ink/65 flex items-center justify-center p-4 backdrop-blur-sm"
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+      <div role="dialog" aria-modal="true" aria-label="Mass prayer payment" className="bg-white rounded-2xl shadow-2xl w-full max-w-sm max-h-[calc(100dvh-32px)] overflow-y-auto overscroll-contain">
 
         {/* Header */}
-        <div className="bg-ink px-5 py-4 flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-ink px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
               <QrCode className="w-4 h-4 text-accent" strokeWidth={1.5} />
@@ -52,7 +51,7 @@ const PaymentQrModal = ({ onClose, onMarkComplete, onMarkFailed }) => {
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label="Close payment dialog" className="size-11 shrink-0 rounded-lg flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -256,7 +255,7 @@ const MassPrayerApplyPage = ({ user }) => {
         <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-hidden">
 
           {/* Section: Mass Prayer Details */}
-          <div className="px-7 py-6 border-b border-soft">
+          <div className="px-5 py-6 sm:px-7 border-b border-soft">
             <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
               Mass Prayer Details
             </div>
@@ -264,7 +263,7 @@ const MassPrayerApplyPage = ({ user }) => {
             <div className="flex flex-col gap-5">
 
               <Field label="Preferred Mass Prayer Date & Time" error={errors.mass_prayer_date_and_time}>
-                <input
+                <DateTimePicker
                   type="datetime-local"
                   value={mpForm.mass_prayer_date_and_time}
                   onChange={set('mass_prayer_date_and_time')}
@@ -312,7 +311,7 @@ const MassPrayerApplyPage = ({ user }) => {
           </div>
 
           {/* Section: Payment Mode */}
-          <div className="px-7 py-6 border-b border-soft">
+          <div className="px-5 py-6 sm:px-7 border-b border-soft">
             <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
               Payment Mode
             </div>
@@ -363,7 +362,7 @@ const MassPrayerApplyPage = ({ user }) => {
           </div>
 
           {/* Footer / Submit */}
-          <div className="px-7 py-5 bg-background flex items-center justify-between gap-4">
+          <div className="px-5 py-5 sm:px-7 bg-background flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
             <p className="text-xs text-muted leading-relaxed max-w-sm">
               By submitting, you agree to be contacted by the parish regarding this request.
             </p>

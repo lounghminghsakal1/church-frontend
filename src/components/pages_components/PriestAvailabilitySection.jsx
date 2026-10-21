@@ -3,7 +3,7 @@ import { apiGet } from '@/services/axios';
 import { useEffect, useState } from 'react';
 import PriestAvailabilityCard from './PriestAvailabilityCard';
 
-export default function PriestAvailabilitySection({ onRequestMeeting }) {
+export default function PriestAvailabilitySection({ onRequestMeeting, compact = false }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -24,7 +24,7 @@ export default function PriestAvailabilitySection({ onRequestMeeting }) {
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [retry]);
-  return <PriestAvailabilityCard data={data} loading={loading} error={error} now={now} onRetry={() => { setLoading(true); setRetry(value => value + 1); }} onRequestMeeting={onRequestMeeting} />;
+  return <PriestAvailabilityCard compact={compact} data={data} loading={loading} error={error} now={now} onRetry={() => { setLoading(true); setRetry(value => value + 1); }} onRequestMeeting={onRequestMeeting} />;
 }
 
 export const formatDateTime = dateString => {

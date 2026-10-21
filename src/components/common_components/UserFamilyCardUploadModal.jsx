@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { apiPost } from '@/services/axios';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { X, UploadCloud, FileText, RefreshCcw, Loader2, CheckCircle2, ExternalLink } from 'lucide-react';
 
 /**
@@ -35,6 +36,7 @@ const UserFamilyCardUploadModal = ({
   onSuccess,
   onProceed,
 }) => {
+  useBodyScrollLock();
   const [file, setFile] = useState(null);
   const [dragOver, setDragOver] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -128,7 +130,7 @@ const UserFamilyCardUploadModal = ({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/50 p-4">
-      <div className="bg-white rounded-xl border border-line shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div role="dialog" aria-modal="true" aria-label="Family card document" className="bg-white rounded-xl border border-line shadow-xl w-full max-w-2xl max-h-[calc(100dvh-32px)] flex flex-col overflow-hidden">
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-soft shrink-0">
@@ -142,14 +144,15 @@ const UserFamilyCardUploadModal = ({
           </div>
           <button
             onClick={onCancel}
-            className="w-8 h-8 flex items-center justify-center rounded-md text-muted hover:text-ink hover:bg-soft transition-colors cursor-pointer border-none bg-transparent"
+            aria-label="Close family card document"
+            className="size-11 shrink-0 flex items-center justify-center rounded-md text-muted hover:text-ink hover:bg-soft transition-colors cursor-pointer border-none bg-transparent"
           >
             <X size={16} />
           </button>
         </div>
 
         {/* Body */}
-        <div className="flex-1 overflow-y-auto px-6 py-6">
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6 sm:py-6">
 
           {isViewMode ? (
             <>
@@ -221,7 +224,7 @@ const UserFamilyCardUploadModal = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-soft bg-background flex items-center justify-end gap-3 shrink-0">
+        <div className="px-4 py-4 sm:px-6 border-t border-soft bg-background flex flex-col-reverse items-stretch justify-end gap-3 shrink-0 sm:flex-row sm:flex-wrap sm:items-center">
 
           {isViewMode ? (
             <>

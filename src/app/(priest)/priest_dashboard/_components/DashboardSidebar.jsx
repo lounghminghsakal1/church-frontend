@@ -20,17 +20,20 @@ import {
 import { useAuthPriest } from "@/hooks/useAuthPriest";
 import { toast } from "sonner";
 import { apiPost } from "@/services/axios";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 // ── Nav items ─────────────────────────────────────────────────────
 const NAV_ITEMS = [
   {
     label: "Dashboard",
+    mobileLabel: "Home",
     href: "/priest_dashboard",
     icon: LayoutDashboard,
     implemented: true,
   },
   {
     label: "Availability",
+    mobileLabel: "Schedule",
     href: "/priest_dashboard#priest-availability",
     icon: CalendarDays,
     implemented: true,
@@ -71,7 +74,7 @@ const NavItem = ({ item, isActive, collapsed }) => {
   return (
     <Link
       href={item.href}
-      className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${isActive
+      className={`group relative flex items-center gap-3 min-h-12 px-3 py-3 rounded-lg transition-all duration-200 ${isActive
           ? "bg-accent/15 text-accent border-l-2 border-accent"
           : "text-soft/70 hover:bg-white/5 hover:text-soft border-l-2 border-transparent"
         }`}
@@ -84,7 +87,7 @@ const NavItem = ({ item, isActive, collapsed }) => {
           }`}
       />
       {!collapsed && (
-        <span className="font-sans text-xs font-medium tracking-wide truncate">
+        <span className="font-sans text-sm font-medium truncate">
           {item.label}
         </span>
       )}
@@ -114,7 +117,8 @@ const BottomTabItem = ({ item, isActive, onClick }) => {
     <Link
       href={item.href}
       onClick={onClick}
-      className="flex flex-col items-center justify-center gap-1 flex-1 py-2 relative"
+      aria-label={item.label}
+      className="relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-center"
     >
       <div
         className={`relative flex items-center justify-center w-10 h-7 rounded-xl transition-all duration-200 ${isActive ? "bg-accent/15" : ""
@@ -130,18 +134,18 @@ const BottomTabItem = ({ item, isActive, onClick }) => {
         )}
       </div>
       <span
-        className={`font-sans text-[9px] font-semibold uppercase tracking-widest transition-colors duration-200 ${isActive ? "text-accent-ink" : "text-muted"
+        className={`font-sans text-[11px] font-medium leading-tight transition-colors duration-200 ${isActive ? "text-accent-ink" : "text-muted"
           }`}
       >
-        {item.label}
+        {item.mobileLabel || item.label}
       </span>
     </Link>
   );
 };
 
 // ── Mobile overflow drawer ────────────────────────────────────────
-const MobileOverflowDrawer = ({ open, onClose, pathname, onLogout }) => {
-  if (!open) return null;
+const MobileOverflowDrawer = ({ onClose, pathname, onLogout }) => {
+  useBodyScrollLock();
   return (
     <>
       {/* Backdrop */}
@@ -150,14 +154,15 @@ const MobileOverflowDrawer = ({ open, onClose, pathname, onLogout }) => {
         onClick={onClose}
       />
       {/* Drawer */}
-      <div className="fixed bottom-16 left-0 right-0 z-50 bg-white border-t border-ink/10 rounded-t-xl shadow-2xl px-4 pt-4 pb-6 animate-slide-up">
+      <div className="fixed bottom-[calc(64px+env(safe-area-inset-bottom))] left-0 right-0 z-50 max-h-[calc(100dvh-80px-env(safe-area-inset-bottom))] overflow-y-auto bg-white border-t border-ink/10 rounded-t-xl shadow-2xl px-4 pt-4 pb-6 animate-slide-up">
         <div className="flex items-center justify-between mb-4">
           <p className="font-sans text-[11px] text-muted uppercase tracking-widest font-medium">
             More
           </p>
           <button
             onClick={onClose}
-            className="w-7 h-7 flex items-center justify-center rounded-full bg-ink/5 text-muted"
+            aria-label="Close more navigation"
+            className="size-11 flex items-center justify-center rounded-full bg-ink/5 text-muted"
           >
             <X size={14} />
           </button>
@@ -287,7 +292,7 @@ const DashboardSidebar = () => {
         )}
 
         {/* Nav */}
-        <nav className="flex-1 px-2 pt-3 pb-2 flex flex-col gap-0.5 overflow-y-auto">
+        <nav className="flex-1 px-2 pt-3 pb-2 flex flex-col gap-1.5 overflow-y-auto">
           {NAV_ITEMS.map((item) => (
             <NavItem
               key={item.href}
@@ -309,7 +314,7 @@ const DashboardSidebar = () => {
           >
             <Globe size={17} className="flex-shrink-0" />
             {!collapsed && (
-              <span className="font-sans text-xs font-medium tracking-wide">
+              <span className="font-sans text-sm font-medium">
                 Public Website
               </span>
             )}
@@ -326,7 +331,7 @@ const DashboardSidebar = () => {
           >
             <LogOut size={17} className="flex-shrink-0" />
             {!collapsed && (
-              <span className="font-sans text-xs font-medium tracking-wide">
+              <span className="font-sans text-sm font-medium">
                 Sign Out
               </span>
             )}
@@ -342,7 +347,7 @@ const DashboardSidebar = () => {
       </aside>
 
       {/* ── MOBILE BOTTOM TAB BAR (< md) ────────────────────────── */}
-      <nav className="pb-[env(safe-area-inset-bottom)] [&>a]:min-h-16 [&>button]:min-h-16 [&>a>span]:text-[10px] [&>button>span]:text-[10px] md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-ink/8 flex items-stretch shadow-lg shadow-ink/10">
+      <nav aria-label="Priest mobile navigation" className="pb-[env(safe-area-inset-bottom)] [&>a]:min-h-16 [&>button]:min-h-16 md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-ink/8 flex items-stretch shadow-lg shadow-ink/10">
         {BOTTOM_TAB_PRIMARY.map((item) => (
           <BottomTabItem
             key={item.href}
@@ -353,24 +358,25 @@ const DashboardSidebar = () => {
         {/* More button */}
         <button
           onClick={() => setMobileDrawerOpen(true)}
-          className="flex flex-col items-center justify-center gap-1 flex-1 py-2"
+          aria-label="More navigation"
+          aria-expanded={mobileDrawerOpen}
+          className="flex min-w-0 flex-col items-center justify-center gap-1 flex-1 px-1 py-2"
         >
           <div className="flex items-center justify-center w-10 h-7 rounded-xl">
             <MoreHorizontal size={18} className="text-muted" />
           </div>
-          <span className="font-sans text-[9px] font-semibold uppercase tracking-widest text-muted">
+          <span className="font-sans text-[11px] font-medium leading-tight text-muted">
             More
           </span>
         </button>
       </nav>
 
       {/* Mobile overflow drawer */}
-      <MobileOverflowDrawer
-        open={mobileDrawerOpen}
+      {mobileDrawerOpen && <MobileOverflowDrawer
         onClose={() => setMobileDrawerOpen(false)}
         pathname={pathname}
         onLogout={handleLogout}
-      />
+      />}
     </>
   );
 };

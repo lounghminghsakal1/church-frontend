@@ -1,0 +1,17 @@
+@media (max-width: 639px) {
+  .workspace [data-testid="request-record-summary"] { flex-direction: column; align-items: stretch; gap: 16px; padding: 20px; }
+  .workspace [data-testid="request-person-avatar"] { align-self: flex-start; }
+  .workspace [data-testid="request-record-identity"] { flex: none; width: 100%; }
+  .workspace [data-testid="request-record-title"] { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .workspace [data-testid="request-record-date"] { flex: none; width: 100%; margin-left: 0; padding-top: 14px; border-top: 1px solid var(--parish-line); }
+  .workspace [data-testid="request-record-summary"] > [data-testid="request-status"] { align-self: flex-start; }
+  .workspace [data-testid="request-record-summary"] > button { margin-left: 0; width: 100%; justify-content: space-between; }
+  .workspace [data-testid="request-detail-grid"] { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .workspace [data-testid="request-details-panel"], .workspace [data-testid="request-review-panel"] { padding: 20px; }
+  .workspace [data-testid="request-review-actions"], .workspace [data-testid="request-confirm-decision"] > div { flex-direction: column; }
+  .workspace [data-testid="request-review-panel"] > label { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .workspace [data-testid="request-list-heading"] { align-items: stretch; flex-direction: column; gap: 10px; }
+  .workspace [data-testid="request-list-heading"] > label { justify-content: space-between; }
+  .workspace [data-testid="request-list-heading"] select { flex: 1; max-width: none; border: 1px solid var(--parish-line); border-radius: 8px; background: var(--parish-white); }
+  .workspace [data-testid="request-attachment"] { flex-direction: column; align-items: stretch; }
+}

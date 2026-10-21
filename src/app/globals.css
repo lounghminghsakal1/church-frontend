@@ -1,25 +1,52 @@
 @import "tailwindcss";
 
 :root {
-  /* The only three base colours. All surfaces and borders derive from these. */
+  /* Forest, ivory and brass: shared by public pages and priest administration. */
   --parish-white: #ffffff;
-  --parish-sky: #87ceeb;
-  --parish-blue: #164e78;
+  --parish-primary: #214e43;
+  --parish-primary-hover: #183c33;
+  --parish-accent: #d2b982;
+  --parish-background: #f8f6f0;
+  --parish-soft: #eeefe6;
+  --parish-line: #d4dacf;
+  --parish-foreground: #293c34;
+  --parish-muted: #5f6d64;
+  --parish-accent-ink: #715c34;
+}
 
-  --parish-background: color-mix(in srgb, var(--parish-sky) 7%, var(--parish-white));
-  --parish-soft: color-mix(in srgb, var(--parish-sky) 20%, var(--parish-white));
-  --parish-line: color-mix(in srgb, var(--parish-blue) 24%, var(--parish-white));
-  --parish-muted: color-mix(in srgb, var(--parish-blue) 85%, var(--parish-white));
-  --parish-accent-ink: color-mix(in srgb, var(--parish-blue) 85%, var(--parish-sky));
+@layer base {
+  body { text-rendering: optimizeLegibility; }
+  button { min-height: 44px; }
+  input, select, textarea { accent-color: var(--parish-accent-ink); }
+  input::placeholder, textarea::placeholder { opacity: .75; }
+  textarea { resize: vertical; }
+  :target { scroll-margin-top: 100px; }
+}
+
+/* Keep touch-device fields readable and prevent iOS focus zoom. */
+@media (max-width: 1023px) {
+  html body :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([data-time-part]), select, textarea) {
+    font-size: 16px;
+  }
+}
+
+.parish-menu { animation: parish-menu-enter 180ms ease-out both; }
+@keyframes parish-menu-enter {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .parish-menu { animation: none; }
 }
 
 @theme inline {
   --color-*: initial;
   --color-white: var(--parish-white);
   --color-background: var(--parish-background);
-  --color-foreground: var(--parish-blue);
-  --color-ink: var(--parish-blue);
-  --color-accent: var(--parish-sky);
+  --color-foreground: var(--parish-foreground);
+  --color-ink: var(--parish-primary);
+  --color-primary-hover: var(--parish-primary-hover);
+  --color-accent: var(--parish-accent);
   --color-accent-ink: var(--parish-accent-ink);
   --color-soft: var(--parish-soft);
   --color-line: var(--parish-line);
@@ -32,6 +59,6 @@
 /* Toasts share the parish palette, including validation and success feedback. */
 [data-sonner-toaster] {
   --normal-bg: var(--parish-white);
-  --normal-text: var(--parish-blue);
+  --normal-text: var(--parish-foreground);
   --normal-border: var(--parish-line);
 }

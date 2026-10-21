@@ -1,4 +1,6 @@
 "use client";
+import DateTimePicker from '@/components/ui/DateTimePicker';
+import { inputClassName } from '@/components/ui/styles';
 import Field from '@/components/common_components/FormField';
 
 
@@ -17,12 +19,7 @@ const Label = ({ children }) => (
   </label>
 );
 
-const inputCls = (error) => `
-  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-ink font-[inherit]
-  border-[1.5px] outline-none transition-colors box-border bg-white
-  focus:border-ink
-  ${error ? 'border-ink bg-soft focus:border-ink' : 'border-line'}
-`;
+const inputCls = inputClassName;
 
 
 
@@ -183,7 +180,7 @@ const AnointingOfTheSickReqCard = ({ aosReq, onUpdated }) => {
     <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-hidden">
 
       {/* Card header */}
-      <div className="px-7 py-4 bg-background border-b border-soft flex items-center justify-between gap-4">
+      <div className="px-5 py-4 sm:px-7 bg-background border-b border-soft flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
 
         {/* Left: status + meta */}
         <div className="flex items-center gap-3 flex-wrap min-w-0">
@@ -266,7 +263,7 @@ const AnointingOfTheSickReqCard = ({ aosReq, onUpdated }) => {
       </div>
 
       {/* Patient details */}
-      <div className="px-7 py-6 border-b border-soft">
+      <div className="px-5 py-6 sm:px-7 border-b border-soft">
         <SectionHeading>Patient Details</SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
           <Field label="Patient's Name" error={errors.patient_name}>
@@ -305,12 +302,12 @@ const AnointingOfTheSickReqCard = ({ aosReq, onUpdated }) => {
       </div>
 
       {/* Visit details */}
-      <div className="px-7 py-6">
+      <div className="px-5 py-6 sm:px-7">
         <SectionHeading>Visit Details</SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 items-start">
           <Field label="Preferred Visit Date & Time (optional)" error={errors.preferred_visit_date_and_time}>
             {isEditing
-              ? <input type="datetime-local" value={form.preferred_visit_date_and_time} onChange={set('preferred_visit_date_and_time')} className={inputCls(errors.preferred_visit_date_and_time) + ' cursor-pointer'} />
+              ? <DateTimePicker type="datetime-local" value={form.preferred_visit_date_and_time} onChange={set('preferred_visit_date_and_time')} className={inputCls(errors.preferred_visit_date_and_time) + ' cursor-pointer'} />
               : <span className="text-sm text-ink font-medium">{formatDateTime(aosReq.preferred_visit_date_and_time)}</span>
             }
           </Field>
@@ -423,7 +420,7 @@ const AnointingOfTheSickRequestEditPage = () => {
 
         ) : (
           <div className="flex flex-col gap-5">
-            <div className="flex items-center justify-between mb-1">
+            <div className="flex flex-col items-stretch justify-between gap-3 mb-1 sm:flex-row sm:items-center">
               <p className="text-sm text-muted leading-relaxed">
                 {allAosRequests.length} request{allAosRequests.length > 1 ? 's' : ''} found. Pending requests can be edited.
               </p>

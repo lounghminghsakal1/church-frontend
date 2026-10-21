@@ -10,9 +10,9 @@ export const statusClasses = {
   inactive: 'border-line bg-soft text-muted',
 };
 
-const buttonBase = 'inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50';
+const buttonBase = 'inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border font-semibold transition-[background-color,border-color,box-shadow,transform] duration-200 active:translate-y-px motion-reduce:transform-none disabled:cursor-not-allowed disabled:opacity-50';
 const buttonVariants = {
-  primary: 'border-ink bg-ink text-white hover:border-ink/90 hover:bg-ink/90',
+  primary: 'border-ink bg-ink text-white hover:border-primary-hover hover:bg-primary-hover hover:shadow-sm hover:shadow-ink/10',
   secondary: 'border-ink/15 bg-white text-ink hover:border-ink/25 hover:bg-soft',
   accent: 'border-accent bg-accent text-ink hover:bg-accent/85',
   reject: 'border-line bg-white text-ink hover:bg-soft',
@@ -27,4 +27,8 @@ export function buttonClassName(variant = 'primary', className = '', size = 'md'
   return `${buttonBase} ${buttonVariants[variant] || buttonVariants.primary} ${buttonSizes[size] || buttonSizes.md} ${className}`.trim();
 }
 
-export const inputClasses = 'w-full min-w-0 rounded-xl border border-line bg-white px-3.5 py-3 text-base text-ink outline-none transition-colors placeholder:text-muted focus:border-ink focus:ring-2 focus:ring-ink/20 aria-invalid:border-ink aria-invalid:bg-soft disabled:opacity-50 sm:text-sm';
+export const inputClasses = 'w-full min-w-0 rounded-lg border border-line bg-white px-3.5 py-3 text-base text-ink outline-none transition-colors placeholder:text-muted hover:border-ink/40 focus:border-ink focus:ring-3 focus:ring-accent/30 aria-invalid:border-ink aria-invalid:bg-soft disabled:opacity-50 sm:text-sm';
+
+export function inputClassName(error) {
+  return error ? inputClasses.replace('bg-white', 'bg-soft').replace('border-line', 'border-ink') : inputClasses;
+}

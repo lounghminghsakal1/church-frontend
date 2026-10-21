@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:mobile": "node tests/mobile-layout.browser.mjs",
+    "test:date-picker": "node tests/date-time-picker.browser.mjs"
   },
   "dependencies": {
     "axios": "^1.16.1",

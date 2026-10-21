@@ -2,12 +2,30 @@ import { buttonClassName } from '@/components/ui/styles';
 import { UserRound, CalendarDays, Clock, ArrowUpRight, RefreshCw, ChevronDown, Check, CircleHelp } from 'lucide-react';
 
 import { getAvailabilitySchedule } from '@/utils/priestAvailability';
+import styles from './parish.module.css';
 
-export default function PriestAvailabilityCard({ data, loading = false, error = false, now, onRetry, onRequestMeeting, preview = false }) {
+export default function PriestAvailabilityCard({ data, loading = false, error = false, now, onRetry, onRequestMeeting, preview = false, compact = false }) {
   const { available, busy, date, validDate, expired } = getAvailabilitySchedule(data, now);
   const confirmed = !loading && !error && !expired;
   const tone = confirmed && available ? 'available' : confirmed && busy ? 'busy' : 'unknown';
   const status = loading ? 'Checking schedule…' : error ? 'Unable to check schedule' : expired ? 'Schedule needs an update' : available ? 'Available for visits' : busy ? 'Away at the moment' : 'Please confirm your visit';
+  if (compact) return (
+    <article data-testid="priest-arrival" data-tone={tone} className={styles.availability} aria-label="Parish priest availability" aria-busy={loading}>
+      <div className={styles.availabilityIdentity}>
+        <span className={styles.availabilityIcon}><UserRound size={22} strokeWidth={1.5} /></span>
+        <div><p className={styles.availabilityLabel}>PRIEST AVAILABILITY</p><h2>{data?.priest?.priest_name || 'Parish priest'}</h2></div>
+      </div>
+      <div className={styles.availabilityStatus} role="status" aria-live="polite">
+        <span className={styles.statusLine}>{tone === 'available' ? <Check size={16} /> : tone === 'busy' ? <Clock size={16} /> : <CircleHelp size={16} />}<strong>{status}</strong></span>
+        <p>{confirmed && validDate ? <>{available ? 'Until ' : 'Next available: '}<time dateTime={date.toISOString()}>{date.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} IST</time></> : loading ? 'Getting the latest parish update.' : 'Please confirm with the parish before visiting.'}</p>
+      </div>
+      <div className={styles.availabilityActions}>
+        {onRetry && <button type="button" disabled={loading} onClick={onRetry} className={styles.availabilityRefresh} aria-label="Refresh priest availability"><RefreshCw size={16} className={loading ? 'animate-spin motion-reduce:animate-none' : ''} /></button>}
+        {onRequestMeeting && <button type="button" onClick={onRequestMeeting} className={buttonClassName('primary', '', 'sm')}>Request a meeting <ArrowUpRight size={16} /></button>}
+      </div>
+      {data?.notes && !loading && !error && <details className={styles.availabilityNote}><summary>Message from the parish <ChevronDown size={14} /></summary><p>{data.notes}</p></details>}
+    </article>
+  );
   return (
     <article className={`overflow-hidden rounded-2xl border bg-white shadow-sm ${tone === 'available' ? 'border-line' : tone === 'busy' ? 'border-line' : 'border-ink/10'} ${preview ? 'md:[&>div:nth-child(2)]:flex-col md:[&>div:nth-child(2)]:items-stretch' : ''}`} aria-label={preview ? 'Preview of parishioner availability card' : 'Parish priest availability'}>
       <div className="flex items-center gap-3 px-5 pt-5 pb-4 [&_h2]:font-serif [&_h2]:text-xl [&_h2]:leading-snug [&_h2]:wrap-anywhere"><span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-ink"><UserRound size={24} strokeWidth={1.5} /></span><div><p className="mb-1 text-[9px] font-semibold tracking-widest text-accent-ink">{preview ? 'PARISHIONER PREVIEW' : 'YOUR PARISH PRIEST'}</p><h2>{data?.priest?.priest_name || 'Parish priest'}</h2></div>{onRetry && <button type="button" className="ml-auto grid size-11 shrink-0 place-items-center rounded-xl text-muted hover:bg-soft disabled:opacity-50" disabled={loading} onClick={onRetry} aria-label="Refresh priest availability"><RefreshCw size={16} className={loading ? 'animate-spin' : ''} /></button>}</div>

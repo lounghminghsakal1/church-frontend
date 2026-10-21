@@ -1,4 +1,5 @@
 'use client';
+import styles from './requests.module.css';
 import { buttonClassName } from '@/components/ui/styles';
 
 
@@ -35,7 +36,7 @@ export default function RequestsOverview() {
   const pending = values.reduce((sum, item) => sum + (item.count || 0), 0);
   const urgent = values.reduce((sum, item) => sum + (item.urgent || 0), 0);
   const awaiting = values.filter(item => item.count > 0).length;
-  return <div data-testid="request-workspace" className="mx-auto max-w-7xl text-ink [&_button]:disabled:cursor-not-allowed [&_button]:disabled:opacity-50">
+  return <div data-testid="request-workspace" className={styles.workspace + " mx-auto max-w-7xl text-ink [&_button]:disabled:cursor-not-allowed [&_button]:disabled:opacity-50"}>
     <header data-testid="request-page-heading" className="mb-7 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center [&_h1]:font-serif [&_h1]:text-3xl [&_h1]:font-semibold [&_h1]:leading-tight md:[&_h1]:text-4xl [&_h1+p]:mt-3 [&_h1+p]:max-w-2xl [&_h1+p]:text-sm [&_h1+p]:leading-7 [&_h1+p]:text-muted"><div><p className="mb-3 text-[10px] font-semibold tracking-[0.18em] text-accent-ink uppercase">CARE FOR YOUR COMMUNITY</p><h1>Parish requests</h1><p>See who needs your attention, then take a moment to review each request.</p></div><button data-testid="request-button" className={buttonClassName("secondary")} onClick={load} disabled={loading}><RefreshCw size={16} className={loading ? 'animate-spin' : ''} />{loading ? 'Refreshing…' : 'Refresh requests'}</button></header>
     <section data-testid="request-summary" className="mb-7 grid grid-cols-1 divide-y divide-ink/10 overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-sm md:grid-cols-3 md:divide-x md:divide-y-0 [&>div]:flex [&>div]:items-center [&>div]:gap-4 [&>div]:p-6 [&_strong]:text-3xl [&_strong]:font-semibold [&_strong]:tracking-tight [&_small]:text-base [&_small]:font-normal [&_small]:text-muted [&_p]:mt-1 [&_p]:text-xs [&_p]:text-muted" aria-label="Request summary" aria-busy={loading}>
       <div><span data-testid="request-summary-icon" className="grid size-12 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-ink"><Clock3 size={22} /></span><div><strong>{loading && !updated ? '—' : `${pending}${failed ? '+' : ''}`}</strong><p>Awaiting your review</p></div></div>

@@ -1,4 +1,6 @@
 "use client";
+import DateTimePicker from '@/components/ui/DateTimePicker';
+import { inputClassName } from '@/components/ui/styles';
 import Field from '@/components/common_components/FormField';
 
 
@@ -16,12 +18,7 @@ const Label = ({ children }) => (
   </label>
 );
 
-const inputCls = (error) => `
-  w-full px-3.5 py-2.5 rounded-[7px] text-sm text-ink font-[inherit]
-  border-[1.5px] outline-none transition-colors box-border bg-white
-  focus:border-ink
-  ${error ? 'border-ink bg-soft focus:border-ink' : 'border-line'}
-`;
+const inputCls = inputClassName;
 
 
 
@@ -110,7 +107,7 @@ const MeetingRequestApplyPage = ({ user }) => {
         <div className="bg-white rounded-xl border border-line shadow-sm shadow-ink/5 overflow-hidden">
 
           {/* Section: Person details */}
-          <div className="px-7 py-6 border-b border-soft">
+          <div className="px-5 py-6 sm:px-7 border-b border-soft">
             <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
               Person's Details
             </div>
@@ -126,7 +123,7 @@ const MeetingRequestApplyPage = ({ user }) => {
               </Field>
 
               <Field label="Preferred Meeting Date & Time" error={errors.preferred_meeting_date_and_time}>
-                <input
+                <DateTimePicker
                   type="datetime-local"
                   value={mRForm.preferred_meeting_date_and_time}
                   onChange={set('preferred_meeting_date_and_time')}
@@ -138,7 +135,7 @@ const MeetingRequestApplyPage = ({ user }) => {
           </div>
 
           {/* Section: Meeting purpose */}
-          <div className="px-7 py-6 border-b border-soft">
+          <div className="px-5 py-6 sm:px-7 border-b border-soft">
             <div className="text-[11px] font-bold text-accent-ink tracking-[1.4px] uppercase mb-5">
               Meeting Purpose
             </div>
@@ -154,7 +151,7 @@ const MeetingRequestApplyPage = ({ user }) => {
           </div>
 
           {/* Footer / Submit */}
-          <div className="px-7 py-5 bg-background flex items-center justify-between gap-4">
+          <div className="px-5 py-5 sm:px-7 bg-background flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
             <p className="text-xs text-muted leading-relaxed max-w-sm">
               By submitting, you agree to be contacted by the parish regarding this meeting request.
             </p>
